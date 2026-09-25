@@ -142,6 +142,20 @@
     @media (max-width: 600px) {
       .logiciels-grid { grid-template-columns: 1fr; }
     }
+    .eq-bars { display:flex; align-items:flex-end; gap:3px; height:18px; }
+    .eq-bar { width:3px; border-radius:2px; background:var(--accent); animation:eq-bounce 0.7s ease-in-out infinite alternate; }
+    .eq-bar:nth-child(1){animation-duration:0.65s;}
+    .eq-bar:nth-child(2){animation-duration:0.45s;animation-delay:0.12s;}
+    .eq-bar:nth-child(3){animation-duration:0.75s;animation-delay:0.06s;}
+    .eq-bar:nth-child(4){animation-duration:0.55s;animation-delay:0.19s;}
+    .eq-bar:nth-child(5){animation-duration:0.85s;animation-delay:0.09s;}
+    @keyframes eq-bounce { from{height:3px} to{height:18px} }
+    .wave-divider { width:100%; height:28px; margin:4px 0; opacity:0.2; display:block; }
+    .artist-card { background:rgba(255,255,255,0.03); border:1px solid var(--line); border-radius:18px; padding:22px; }
+    .artist-row { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid var(--line); font-size:0.9rem; }
+    .artist-row:last-child { border-bottom:none; }
+    .artist-row span:first-child { color:var(--muted); font-size:0.78rem; text-transform:uppercase; letter-spacing:0.1em; font-weight:700; }
+    .artist-row span:last-child { color:var(--text); font-weight:600; }
   </style>
 </head>
 <body>
@@ -149,6 +163,7 @@
   <main class="page">
     <div class="topbar">
       <a class="back" href="portfolio_bts_vinyle.html?tracklist=1">← Retour à la tracklist</a>
+      <div class="eq-bars" aria-hidden="true"><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span></div>
       <div class="track-badge">Track 01 — Présentation</div>
     </div>
 
@@ -179,6 +194,8 @@
         </div>
       </article>
     </section>
+
+    <svg class="wave-divider" viewBox="0 0 1200 28" preserveAspectRatio="none" aria-hidden="true"><path d="M0,14 C100,2 200,26 300,14 C400,2 500,26 600,14 C700,2 800,26 900,14 C1000,2 1100,26 1200,14" stroke="var(--accent)" stroke-width="1.5" fill="none"/></svg>
 
     <section class="grid">
       <article class="panel card">
@@ -214,6 +231,18 @@
       </article>
 
     </section>
+
+    <svg class="wave-divider" viewBox="0 0 1200 28" preserveAspectRatio="none" aria-hidden="true"><path d="M0,14 C100,2 200,26 300,14 C400,2 500,26 600,14 C700,2 800,26 900,14 C1000,2 1100,26 1200,14" stroke="var(--accent)" stroke-width="1.5" fill="none"/></svg>
+
+    <div class="artist-card" style="margin-bottom:24px;">
+      <div class="eyebrow" style="margin-bottom:14px;">Fiche artiste</div>
+      <div class="artist-row"><span>Artiste</span><span>Quentin Xiong</span></div>
+      <div class="artist-row"><span>Genre</span><span>Communication · Création · Événementiel</span></div>
+      <div class="artist-row"><span>Label</span><span>Alema Business School</span></div>
+      <div class="artist-row"><span>BPM</span><span>Élevé — toujours en mouvement</span></div>
+      <div class="artist-row"><span>Influences</span><span>Musique · Visuel · Stratégie · Terrain</span></div>
+      <div class="artist-row"><span>Sortie</span><span>Promo BTS Communication 2024 – 2026</span></div>
+    </div>
 
     <div class="section-title">
       <span class="eyebrow">Expériences</span>

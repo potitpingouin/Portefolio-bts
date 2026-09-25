@@ -617,6 +617,20 @@
         height: 42px;
       }
     }
+    .eq-bars { display:flex; align-items:flex-end; gap:3px; height:18px; }
+    .eq-bar { width:3px; border-radius:2px; background:var(--accent); animation:eq-bounce 0.7s ease-in-out infinite alternate; }
+    .eq-bar:nth-child(1){animation-duration:0.65s;}
+    .eq-bar:nth-child(2){animation-duration:0.45s;animation-delay:0.12s;}
+    .eq-bar:nth-child(3){animation-duration:0.75s;animation-delay:0.06s;}
+    .eq-bar:nth-child(4){animation-duration:0.55s;animation-delay:0.19s;}
+    .eq-bar:nth-child(5){animation-duration:0.85s;animation-delay:0.09s;}
+    @keyframes eq-bounce { from{height:3px} to{height:18px} }
+    .wave-divider { width:100%; height:28px; margin:4px 0; opacity:0.2; display:block; }
+    .face-label { display:inline-flex; align-items:center; gap:8px; font-size:0.72rem; font-weight:900; text-transform:uppercase; letter-spacing:0.16em; color:var(--accent); }
+    .face-label::before { content:''; width:28px; height:1px; background:var(--accent); opacity:0.6; }
+    .radio-card .creation-media { position:relative; background:linear-gradient(135deg,rgba(215,181,109,0.12),rgba(200,139,255,0.08)); }
+    .radio-card .creation-media::before { content:''; position:absolute; inset:0; background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='60' viewBox='0 0 200 60'%3E%3Cpath d='M0,30 Q5,10 10,30 Q15,50 20,30 Q25,5 30,30 Q35,55 40,30 Q45,8 50,30 Q55,52 60,30 Q65,12 70,30 Q75,48 80,30 Q85,6 90,30 Q95,54 100,30 Q105,10 110,30 Q115,50 120,30 Q125,5 130,30 Q135,55 140,30 Q145,8 150,30 Q155,52 160,30 Q165,12 170,30 Q175,48 180,30 Q185,6 190,30 Q195,54 200,30' stroke='rgba(215,181,109,0.35)' stroke-width='1.5' fill='none'/%3E%3C/svg%3E") center/cover no-repeat; }
+    .radio-play-icon { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:48px; height:48px; border-radius:50%; background:rgba(215,181,109,0.2); border:1.5px solid rgba(215,181,109,0.5); display:flex; align-items:center; justify-content:center; font-size:1.2rem; z-index:2; backdrop-filter:blur(4px); }
   </style>
 </head>
 <body>
@@ -625,9 +639,11 @@
   <main class="page">
     <div class="topbar">
       <a class="back" href="portfolio_bts_vinyle.html?tracklist=1">← Retour à la tracklist</a>
+      <div class="eq-bars" aria-hidden="true"><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span></div>
       <div class="track-badge">Track 03 — Mes créations</div>
     </div>
 
+    <svg class="wave-divider" viewBox="0 0 1200 28" preserveAspectRatio="none" aria-hidden="true"><path d="M0,14 C100,2 200,26 300,14 C400,2 500,26 600,14 C700,2 800,26 900,14 C1000,2 1100,26 1200,14" stroke="var(--accent)" stroke-width="1.5" fill="none"/></svg>
     <section class="hero panel">
       <div class="eyebrow">Portfolio créatif</div>
       <h1>Mes créations</h1>
@@ -644,7 +660,8 @@
     <section class="category">
       <div class="category-head">
         <div>
-          <div class="eyebrow">Catégorie 01</div>
+          <div class="face-label">Face A</div>
+          <div class="eyebrow" style="margin-top:8px;">Catégorie 01</div>
           <h2>Print</h2>
           <p>Affiches, supports print, direction artistique — de la couverture magazine au flyer en passant par le menu et le ticket.</p>
         </div>
@@ -752,7 +769,8 @@
     <section class="category">
       <div class="category-head">
         <div>
-          <div class="eyebrow">Catégorie 02</div>
+          <div class="face-label">Face B</div>
+          <div class="eyebrow" style="margin-top:8px;">Catégorie 02</div>
           <h2>Contenus digitaux</h2>
           <p>Interfaces, newsletters, projets web et contenus digitaux pensés pour l’expérience utilisateur et la diffusion en ligne.</p>
         </div>
@@ -802,7 +820,8 @@
     <section class="category">
       <div class="category-head">
         <div>
-          <div class="eyebrow">Catégorie 03</div>
+          <div class="face-label">Face C</div>
+          <div class="eyebrow" style="margin-top:8px;">Catégorie 03</div>
           <h2>Audiovisuel</h2>
           <p>Contenus audio et vidéo, spots radio et vidéos conçus pour transmettre un message de manière plus vivante.</p>
         </div>
@@ -810,8 +829,9 @@
       </div>
 
       <div class="gallery">
-        <article class="panel creation-card clickable" data-title="Spot radio — Nantes" data-description="Brief : créer un spot radio pour promouvoir Nantes comme destination ou comme territoire. La radio est un média particulier : il n’y a pas d’image, pas de visuel — juste la voix, le rythme et les mots. Tout repose sur l’écriture et la diction. J’ai travaillé l’accroche d’ouverture pour capter l’attention dans les 3 premières secondes (on change de station très vite), puis construit un message court, rythmé, avec une chute mémorable. Ce projet m’a appris à penser la communication en format sonore — un exercice rare et formateur." data-strategie="En radio, on ne retient pas tout — on retient une phrase, une émotion, un son. J’ai donc construit le script en partant de la fin : quelle est la phrase que je veux que l’auditeur retienne ? Une fois cette accroche finale trouvée, j’ai construit le spot pour y amener naturellement. Le ton choisi est positif et ancré dans le réel — pas de superlatifs vides, mais des images concrètes qui font visualiser Nantes. Le rythme de lecture a été travaillé pour tenir dans le format (30 secondes), avec des pauses calculées pour ne pas paraître précipité." data-cibles="Auditeurs de radio locale ou nationale, 25-50 ans|Touristes potentiels et familles en recherche de destination|Nantais et habitants de la région Loire-Atlantique" data-objectifs="Valoriser Nantes comme destination attractive et dynamique|Créer une émotion positive associée à la ville|Inciter à découvrir ou revisiter Nantes" data-videos="Spot Radio Nantes.mp4">
+        <article class="panel creation-card clickable radio-card" data-title="Spot radio — Nantes" data-description="Brief : créer un spot radio pour promouvoir Nantes comme destination ou comme territoire. La radio est un média particulier : il n’y a pas d’image, pas de visuel — juste la voix, le rythme et les mots. Tout repose sur l’écriture et la diction. J’ai travaillé l’accroche d’ouverture pour capter l’attention dans les 3 premières secondes (on change de station très vite), puis construit un message court, rythmé, avec une chute mémorable. Ce projet m’a appris à penser la communication en format sonore — un exercice rare et formateur." data-strategie="En radio, on ne retient pas tout — on retient une phrase, une émotion, un son. J’ai donc construit le script en partant de la fin : quelle est la phrase que je veux que l’auditeur retienne ? Une fois cette accroche finale trouvée, j’ai construit le spot pour y amener naturellement. Le ton choisi est positif et ancré dans le réel — pas de superlatifs vides, mais des images concrètes qui font visualiser Nantes. Le rythme de lecture a été travaillé pour tenir dans le format (30 secondes), avec des pauses calculées pour ne pas paraître précipité." data-cibles="Auditeurs de radio locale ou nationale, 25-50 ans|Touristes potentiels et familles en recherche de destination|Nantais et habitants de la région Loire-Atlantique" data-objectifs="Valoriser Nantes comme destination attractive et dynamique|Créer une émotion positive associée à la ville|Inciter à découvrir ou revisiter Nantes" data-videos="Spot Radio Nantes.mp4">
           <div class="creation-media">
+            <div class="radio-play-icon" aria-hidden="true">▶</div>
             <video class="inline-video" muted playsinline preload="metadata">
               <source src="Spot Radio Nantes.mp4" type="video/mp4">
             </video>
@@ -829,8 +849,9 @@
           </div>
         </article>
 
-        <article class="panel creation-card clickable" data-title="Spot radio — Grande Récré" data-description="Brief : créer un spot radio pour La Grande Récré, chaîne de magasins de jouets. Par rapport au spot Nantes, le registre est complètement différent : on est dans le ludique, l'enthousiasme, le monde de l'enfance. La cible primaire, ce sont les enfants — mais la cible décisionnaire, c'est le parent. J'ai dû écrire un spot qui parle aux deux en même temps : assez fun pour que l'enfant accroche, assez clair pour que le parent retienne le message. Ce double ciblage, c'est le défi central de toute communication dans l'univers du jouet." data-strategie="La Grande Récré joue dans un marché très saisonnier (Noël, anniversaires) et très concurrentiel. Le spot devait donc être reconnaissable, positif et mémorable. J'ai utilisé un ton enlevé avec une voix enthousiaste qui correspond à l'univers de la marque — on doit presque voir des couleurs vives en écoutant. L'accroche est centrée sur le plaisir et la magie plutôt que sur les prix ou les promotions, parce que dans la communication jouet, vendre du rêve fonctionne mieux que vendre du discount. La chute reprend le nom de la marque de façon naturelle pour ancrer l'association émotionnelle." data-cibles="Enfants 4-12 ans, influenceurs de l'achat|Parents 28-45 ans, décisionnaires|Grands-parents cherchant des idées cadeaux" data-objectifs="Faire connaître ou rappeler l'enseigne et son offre|Associer La Grande Récré au plaisir, à la magie et aux bons moments|Générer de la fréquentation en magasin et des achats" data-videos="Spot Radio grande recré.mp4">
+        <article class="panel creation-card clickable radio-card" data-title="Spot radio — Grande Récré" data-description="Brief : créer un spot radio pour La Grande Récré, chaîne de magasins de jouets. Par rapport au spot Nantes, le registre est complètement différent : on est dans le ludique, l'enthousiasme, le monde de l'enfance. La cible primaire, ce sont les enfants — mais la cible décisionnaire, c'est le parent. J'ai dû écrire un spot qui parle aux deux en même temps : assez fun pour que l'enfant accroche, assez clair pour que le parent retienne le message. Ce double ciblage, c'est le défi central de toute communication dans l'univers du jouet." data-strategie="La Grande Récré joue dans un marché très saisonnier (Noël, anniversaires) et très concurrentiel. Le spot devait donc être reconnaissable, positif et mémorable. J'ai utilisé un ton enlevé avec une voix enthousiaste qui correspond à l'univers de la marque — on doit presque voir des couleurs vives en écoutant. L'accroche est centrée sur le plaisir et la magie plutôt que sur les prix ou les promotions, parce que dans la communication jouet, vendre du rêve fonctionne mieux que vendre du discount. La chute reprend le nom de la marque de façon naturelle pour ancrer l'association émotionnelle." data-cibles="Enfants 4-12 ans, influenceurs de l'achat|Parents 28-45 ans, décisionnaires|Grands-parents cherchant des idées cadeaux" data-objectifs="Faire connaître ou rappeler l'enseigne et son offre|Associer La Grande Récré au plaisir, à la magie et aux bons moments|Générer de la fréquentation en magasin et des achats" data-videos="Spot Radio grande recré.mp4">
           <div class="creation-media">
+            <div class="radio-play-icon" aria-hidden="true">▶</div>
             <video class="inline-video" muted playsinline preload="metadata">
               <source src="Spot Radio grande recré.mp4" type="video/mp4">
             </video>

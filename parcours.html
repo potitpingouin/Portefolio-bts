@@ -180,6 +180,19 @@
       .timeline-item { grid-template-columns: 1fr; }
       .timeline-date { border-right: none; border-bottom: 1px solid var(--line); padding-right: 0; padding-bottom: 10px; }
     }
+    .eq-bars { display:flex; align-items:flex-end; gap:3px; height:18px; }
+    .eq-bar { width:3px; border-radius:2px; background:var(--accent); animation:eq-bounce 0.7s ease-in-out infinite alternate; }
+    .eq-bar:nth-child(1){animation-duration:0.65s;}
+    .eq-bar:nth-child(2){animation-duration:0.45s;animation-delay:0.12s;}
+    .eq-bar:nth-child(3){animation-duration:0.75s;animation-delay:0.06s;}
+    .eq-bar:nth-child(4){animation-duration:0.55s;animation-delay:0.19s;}
+    .eq-bar:nth-child(5){animation-duration:0.85s;animation-delay:0.09s;}
+    @keyframes eq-bounce { from{height:3px} to{height:18px} }
+    .wave-divider { width:100%; height:28px; margin:4px 0; opacity:0.2; display:block; }
+    .disco-album { display:flex; gap:16px; align-items:flex-start; }
+    .disco-cover { width:54px; height:54px; border-radius:10px; background:linear-gradient(135deg,rgba(215,181,109,0.3),rgba(200,139,255,0.2)); border:1px solid var(--line); flex-shrink:0; display:grid; place-items:center; font-size:1.4rem; }
+    .disco-meta { flex:1; }
+    .disco-year { font-size:0.72rem; font-weight:800; text-transform:uppercase; letter-spacing:0.12em; color:var(--accent); margin-bottom:3px; }
   </style>
 </head>
 <body>
@@ -187,6 +200,7 @@
   <main class="page">
     <div class="topbar">
       <a class="back" href="portfolio_bts_vinyle.html?tracklist=1">← Retour à la tracklist</a>
+      <div class="eq-bars" aria-hidden="true"><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span></div>
       <div class="track-badge">Track 02 — Parcours</div>
     </div>
 
@@ -210,16 +224,20 @@
       </article>
     </section>
 
+    <svg class="wave-divider" viewBox="0 0 1200 28" preserveAspectRatio="none" aria-hidden="true"><path d="M0,14 C100,2 200,26 300,14 C400,2 500,26 600,14 C700,2 800,26 900,14 C1000,2 1100,26 1200,14" stroke="var(--accent)" stroke-width="1.5" fill="none"/></svg>
+
     <!-- TIMELINE -->
     <section class="section panel">
-      <div class="eyebrow">Frise chronologique</div>
+      <div class="eyebrow">Discographie — Frise chronologique</div>
       <h2>Repères de parcours</h2>
       <div class="timeline" style="margin-top:18px;">
 
         <div class="timeline-item formation">
           <div class="timeline-date">
-            <strong>2024</strong>
-            <span>Le bac</span>
+            <div class="disco-album">
+              <div class="disco-cover">🎓</div>
+              <div class="disco-meta"><div class="disco-year">2024</div><strong>Le bac</strong></div>
+            </div>
           </div>
           <div class="timeline-content">
             <h3>Baccalauréat général — spécialités SES & Sciences de l'ingénieur</h3>
@@ -233,9 +251,10 @@
 
         <div class="timeline-item formation">
           <div class="timeline-date">
-            <strong>Sept. 2024</strong>
-            <span>Entrée en BTS</span>
-            <span class="lieu">Alema Business School</span>
+            <div class="disco-album">
+              <div class="disco-cover">🎙️</div>
+              <div class="disco-meta"><div class="disco-year">Sept. 2024</div><strong>Entrée en BTS</strong><br><span class="lieu">Alema Business School</span></div>
+            </div>
           </div>
           <div class="timeline-content">
             <h3>Début du BTS Communication à Alema Business School</h3>
@@ -249,9 +268,10 @@
 
         <div class="timeline-item stage">
           <div class="timeline-date">
-            <strong>Mai – Juil. 2025</strong>
-            <span>Stage 1</span>
-            <span class="lieu">Bulle de Jeux — Meaux</span>
+            <div class="disco-album">
+              <div class="disco-cover">🎮</div>
+              <div class="disco-meta"><div class="disco-year">Mai – Juil. 2025</div><strong>Stage 1</strong><br><span class="lieu">Bulle de Jeux — Meaux</span></div>
+            </div>
           </div>
           <div class="timeline-content">
             <h3>Stagiaire communication — Bulle de Jeux (librairie spécialisée)</h3>
@@ -273,9 +293,10 @@
 
         <div class="timeline-item projet">
           <div class="timeline-date">
-            <strong>2024 – 2025</strong>
-            <span>Projets phares</span>
-            <span class="lieu">Alema Business School</span>
+            <div class="disco-album">
+              <div class="disco-cover">🎬</div>
+              <div class="disco-meta"><div class="disco-year">2024 – 2025</div><strong>Projets phares</strong><br><span class="lieu">Alema Business School</span></div>
+            </div>
           </div>
           <div class="timeline-content">
             <h3>Escape game harcèlement & Air Alema</h3>
@@ -296,9 +317,10 @@
 
         <div class="timeline-item stage">
           <div class="timeline-date">
-            <strong>2e année</strong>
-            <span>Stage 2</span>
-            <span class="lieu">Wonderful Land — Trampoline Park</span>
+            <div class="disco-album">
+              <div class="disco-cover">🎪</div>
+              <div class="disco-meta"><div class="disco-year">2e année</div><strong>Stage 2</strong><br><span class="lieu">Wonderful Land</span></div>
+            </div>
           </div>
           <div class="timeline-content">
             <h3>Stagiaire communication — Wonderful Land (parc de loisirs)</h3>
@@ -320,8 +342,10 @@
 
         <div class="timeline-item formation">
           <div class="timeline-date">
-            <strong>Aujourd'hui</strong>
-            <span>& demain</span>
+            <div class="disco-album">
+              <div class="disco-cover">🎯</div>
+              <div class="disco-meta"><div class="disco-year">Aujourd'hui</div><strong>& demain</strong></div>
+            </div>
           </div>
           <div class="timeline-content">
             <h3>Cap sur le Bachelor Communication Événementielle</h3>
