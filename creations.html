@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mes créations — Portfolio BTS Communication</title>
+  <style>
+    :root {
+      --bg: #09090d;
+      --bg-2: #13131a;
+      --line: rgba(255,255,255,0.12);
+      --text: #f6f6f8;
+      --muted: #b8b8c2;
+      --accent: #d7b56d;
+      --accent-2: #c88bff;
+      --shadow: 0 24px 70px rgba(0,0,0,0.42);
+      --radius: 24px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+
+    body {
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top, rgba(200,139,255,0.10), transparent 28%),
+        radial-gradient(circle at 20% 20%, rgba(215,181,109,0.10), transparent 20%),
+        linear-gradient(180deg, #09090d, #13131a 50%, #0b0b0f 100%);
+    }
+
+    .noise {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.08;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.3) 0.8px, transparent 1px);
+      background-size: 10px 10px;
+      mix-blend-mode: soft-light;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 28px 22px 60px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text);
+      padding: 12px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+    }
+
+    .back:hover { background: rgba(255,255,255,0.08); }
+
+    .track-badge {
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      color: var(--accent);
+      background: rgba(255,255,255,0.04);
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+    }
+
+    .panel {
+      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 28px;
+    }
+
+    .hero {
+      margin-bottom: 28px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 14px;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-weight: 800;
+      font-size: 0.84rem;
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(2.4rem, 4vw, 4.2rem);
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: 1.6rem;
+    }
+
+    h3 {
+      margin: 0 0 6px;
+      font-size: 1rem;
+    }
+
+    p {
+      color: var(--muted);
+      line-height: 1.72;
+      margin: 0;
+    }
+
+    .tip {
+      margin-top: 18px;
+      padding: 16px 18px;
+      border-left: 3px solid var(--accent);
+      background: rgba(255,255,255,0.04);
+      border-radius: 14px;
+    }
+
+    .category {
+      margin-top: 34px;
+    }
+
+    .category-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .category-head p {
+      max-width: 760px;
+    }
+
+    .count {
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      color: var(--accent);
+      font-size: 0.82rem;
+      font-weight: 700;
+      white-space: nowrap;
+      background: rgba(255,255,255,0.04);
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .creation-card {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      padding: 0;
+    }
+
+    .creation-card.clickable {
+      cursor: pointer;
+    }
+
+    .creation-media {
+      position: relative;
+      aspect-ratio: 4 / 3;
+      background: rgba(255,255,255,0.04);
+      border-bottom: 1px solid var(--line);
+      overflow: hidden;
+    }
+
+    .creation-media img,
+    .creation-media video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 240ms ease;
+    }
+
+    .creation-card:hover .creation-media img,
+    .creation-card:hover .creation-media video {
+      transform: scale(1.03);
+    }
+
+    .stack-badge {
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      z-index: 2;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(7,7,10,0.8);
+      border: 1px solid rgba(255,255,255,0.14);
+      font-size: 0.78rem;
+      color: var(--text);
+      backdrop-filter: blur(8px);
+    }
+
+    .creation-body {
+      padding: 18px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .meta span {
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      font-size: 0.78rem;
+      color: var(--text);
+      background: rgba(255,255,255,0.04);
+    }
+
+    .creation-body p {
+      font-size: 0.94rem;
+      line-height: 1.65;
+    }
+
+    .audio-box {
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255,255,255,0.03);
+      margin-top: 6px;
+    }
+
+    .audio-box strong {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    audio, video.inline-video {
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    /* Storyboard & tableau synoptique */
+    .syno-section { margin-top: 26px; }
+    .syno-section .section-label { font-size:0.72rem; font-weight:800; text-transform:uppercase; letter-spacing:0.14em; color:var(--accent-2); margin-bottom:6px; }
+    .syno-section h3 { font-size:1.1rem; margin:0 0 16px; color:var(--text); }
+    .storyboard-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:28px; }
+    .sb-card { border:1px solid var(--line); border-radius:14px; overflow:hidden; background:rgba(255,255,255,0.03); }
+    .sb-frame { background:#111118; aspect-ratio:16/9; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:14px; gap:6px; border-bottom:1px solid var(--line); }
+    .sb-time { font-size:0.7rem; font-weight:700; color:var(--accent); letter-spacing:0.1em; text-transform:uppercase; }
+    .sb-action { font-size:0.82rem; color:var(--text); text-align:center; line-height:1.5; }
+    .sb-icon { font-size:2rem; margin-bottom:2px; }
+    .sb-caption { padding:10px 12px; }
+    .sb-caption .sb-voice { font-size:0.78rem; color:var(--muted); font-style:italic; line-height:1.5; }
+    .sb-caption .sb-type { font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--accent-2); margin-bottom:4px; }
+
+    .syno-table { width:100%; border-collapse:collapse; font-size:0.84rem; }
+    .syno-table th { background:rgba(255,255,255,0.07); color:var(--accent-2); text-transform:uppercase; letter-spacing:0.08em; font-size:0.73rem; padding:10px 12px; text-align:left; border-bottom:1px solid var(--line); }
+    .syno-table td { padding:10px 12px; border-bottom:1px solid rgba(255,255,255,0.06); color:var(--muted); vertical-align:top; }
+    .syno-table tr:last-child td { border-bottom:none; }
+    .syno-table td:first-child { color:var(--accent); font-weight:700; white-space:nowrap; }
+    .syno-table td:nth-child(2) { color:var(--accent-2); white-space:nowrap; font-weight:600; }
+    .syno-table em { color:var(--text); font-style:italic; }
+
+    @media(max-width:760px) { .storyboard-grid { grid-template-columns:1fr 1fr; } }
+
+    .bottom-nav {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 30px;
+    }
+
+    .next-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: #111;
+      padding: 14px 20px;
+      border-radius: 999px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #d7b56d, #f0d79e);
+      box-shadow: 0 14px 30px rgba(0,0,0,0.25);
+    }
+
+    /* lightbox scroll mode (Citeo) */
+    .lightbox.scroll-mode .lightbox-inner {
+      grid-template-columns: 1fr;
+    }
+    .lightbox.scroll-mode .lightbox-info {
+      display: none;
+    }
+    .lightbox.scroll-mode .lightbox-stage {
+      overflow-y: auto;
+      align-items: flex-start;
+      justify-content: flex-start;
+      flex-direction: column;
+      gap: 0;
+      padding: 32px 40px;
+    }
+    .lightbox.scroll-mode #lightboxContent {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 100%;
+    }
+    .lightbox.scroll-mode .lightbox-stage video {
+      width: 100%;
+      max-height: 55vh;
+      border-radius: 14px;
+      flex-shrink: 0;
+    }
+    .scroll-close-btn {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.08);
+      color: var(--text);
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      flex-shrink: 0;
+    }
+    .scroll-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      flex-shrink: 0;
+    }
+    .scroll-header h3 { margin: 0; font-size: 1.4rem; }
+    .scroll-header .scroll-eyebrow { font-size:0.72rem; font-weight:800; text-transform:uppercase; letter-spacing:0.14em; color:var(--accent-2); margin-bottom:4px; }
+    .scroll-section-title {
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      border-top: 1px solid var(--line);
+      padding-top: 20px;
+      margin-top: 4px;
+      width: 100%;
+      flex-shrink: 0;
+    }
+    /* Playlist mode */
+    .lightbox.playlist-mode .lightbox-inner { grid-template-columns: 1fr; }
+    .lightbox.playlist-mode .lightbox-info { display: none; }
+    .lightbox.playlist-mode .lightbox-stage { overflow-y: auto; align-items: flex-start; flex-direction: column; padding: 32px 40px; }
+    .lightbox.playlist-mode .lightbox-stage video { width: 100%; max-height: 55vh; border-radius: 14px; }
+    .lightbox.playlist-mode #lightboxContent { display: flex; flex-direction: column; gap: 20px; width: 100%; }
+    .playlist-select-wrap { width: 100%; flex-shrink: 0; }
+    .playlist-select-wrap label { display: block; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent-2); margin-bottom: 8px; }
+    .playlist-select { width: 100%; background: rgba(255,255,255,0.06); border: 1px solid var(--line); color: var(--text); font-size: 0.9rem; padding: 10px 14px; border-radius: 8px; cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; }
+    .playlist-select:focus { outline: none; border-color: var(--accent); }
+    .playlist-select option { background: #1a1a24; }
+
+    .scroll-strat {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.7;
+      border-left: 3px solid rgba(76,148,113,0.5);
+      padding-left: 14px;
+      width: 100%;
+      flex-shrink: 0;
+    }
+
+    /* lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(6,6,10,0.88);
+      backdrop-filter: blur(16px);
+      padding: 24px;
+    }
+
+    .lightbox.open {
+      display: flex;
+    }
+
+    .lightbox-inner {
+      width: min(1180px, 100%);
+      height: calc(100vh - 48px);
+      background: rgba(12,12,16,0.95);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      grid-template-rows: minmax(0, 1fr);
+    }
+
+    .lightbox-stage {
+      position: relative;
+      background: #0b0b10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 0;
+      overflow: hidden;
+      padding: 28px;
+    }
+
+    .lightbox-stage img,
+    .lightbox-stage video {
+      max-width: 100%;
+      max-height: 100%;
+      display: block;
+      object-fit: contain;
+      border-radius: 10px;
+    }
+
+    .lightbox-stage.zoom-small img,
+    .lightbox-stage.zoom-small video {
+      max-width: 68%;
+      max-height: 68%;
+    }
+
+    .lightbox-info {
+      padding: 22px;
+      border-left: 1px solid var(--line);
+      display: grid;
+      align-content: start;
+      gap: 12px;
+      overflow-y: auto;
+      min-height: 0;
+    }
+
+    .lightbox-top {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .lightbox-top h3 {
+      font-size: 1.2rem;
+      margin: 0;
+    }
+
+    .close-btn,
+    .nav-btn {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .close-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      font-size: 1rem;
+      flex: 0 0 auto;
+    }
+
+    .nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      z-index: 3;
+      backdrop-filter: blur(8px);
+    }
+
+    .nav-btn.prev { left: 14px; }
+    .nav-btn.next { right: 14px; }
+
+    .counter {
+      color: var(--accent);
+      font-size: 0.84rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .oral-badge {
+      position: absolute;
+      left: 12px;
+      top: 12px;
+      z-index: 3;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: #111;
+      letter-spacing: 0.07em;
+    }
+
+    .detail-block {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px 16px;
+      background: rgba(255,255,255,0.03);
+      display: grid;
+      gap: 8px;
+    }
+
+    .detail-block-title {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 800;
+      margin-bottom: 2px;
+    }
+
+    .detail-block-title.cible-color { color: var(--accent); }
+    .detail-block-title.obj-color { color: var(--accent-2); }
+
+    .detail-row {
+      display: grid;
+      grid-template-columns: 106px 1fr;
+      gap: 8px;
+      align-items: start;
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+
+    .detail-label {
+      font-weight: 700;
+      color: var(--text);
+      opacity: 0.6;
+    }
+
+    .detail-value { color: var(--muted); }
+
+    .strat-block {
+      border: 1px solid rgba(76,148,113,0.35);
+      border-radius: 14px;
+      padding: 14px 16px;
+      background: rgba(76,148,113,0.06);
+      display: none;
+      gap: 8px;
+      flex-direction: column;
+    }
+    .strat-block.visible { display: flex; }
+    .strat-block-title {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 800;
+      color: #4C9471;
+      margin-bottom: 2px;
+    }
+    .strat-block p {
+      margin: 0;
+      font-size: 0.84rem;
+      line-height: 1.65;
+      color: var(--muted);
+    }
+
+    @media (max-width: 1100px) {
+      .gallery {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .lightbox-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .lightbox-info {
+        border-left: 0;
+        border-top: 1px solid var(--line);
+      }
+    }
+
+    @media (max-width: 760px) {
+      .gallery {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar,
+      .category-head {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .lightbox {
+        padding: 12px;
+      }
+
+      .nav-btn {
+        width: 42px;
+        height: 42px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+
+  <main class="page">
+    <div class="topbar">
+      <a class="back" href="portfolio_bts_vinyle.html?tracklist=1">← Retour à la tracklist</a>
+      <div class="track-badge">Track 03 — Mes créations</div>
+    </div>
+
+    <section class="hero panel">
+      <div class="eyebrow">Portfolio créatif</div>
+      <h1>Mes créations</h1>
+      <p>
+        Cette page regroupe mes réalisations en quatre catégories : print, réseaux sociaux, digital et audiovisuel.
+        Quatre créations sont particulièrement importantes dans mon parcours — elles racontent une progression :
+        d'un premier essai hésitant jusqu'à la maîtrise complète d'un projet de A à Z.
+      </p>
+      <div class="tip">
+        <strong>Fil conducteur :</strong> Wemby → le départ · Netflix → la maîtrise des codes · Musée → aller au-delà du brief · Citéo → l'autonomie totale.
+      </div>
+    </section>
+
+    <section class="category">
+      <div class="category-head">
+        <div>
+          <div class="eyebrow">Catégorie 01</div>
+          <h2>Print</h2>
+          <p>Affiches, supports print, direction artistique — de la couverture magazine au flyer en passant par le menu et le ticket.</p>
+        </div>
+        <div class="count">9 créations</div>
+      </div>
+
+      <div class="gallery">
+        <article class="panel creation-card clickable" data-title="Concept Netflix" data-description="Brief : créer deux affiches pour une même marque en adoptant deux approches visuelles opposées — l’une excessive, l’autre minimaliste. Pour Netflix, la version excessive joue sur la saturation, la superposition d’éléments et l’impact immédiat, un visuel qui déborde et qui s’impose. La version minimaliste, elle, s’appuie sur l’identité sonore emblématique de la marque pour créer une affiche épurée où le vide fait tout le sens. Ce projet m’a appris qu’un même message peut s’exprimer de façons totalement opposées selon le registre visuel choisi — et que les deux peuvent être justes." data-strategie="L’effet recherché sur la cible : version excessive — provoquer une sensation de surcharge qui reflète l’abondance du catalogue Netflix. Le spectateur doit ressentir qu’il y a trop à regarder, et que c’est excitant. Version minimaliste — déclencher une reconnaissance instantanée : la cible voit une affiche quasi vide et comprend immédiatement que c’est Netflix grâce au seul symbole ‘ta-dum’. D’un point de vue créa, j’ai d’abord analysé les vraies campagnes Netflix pour identifier leurs invariants visuels — rouge, noir, typographie condensée, photos plein cadre — puis j’ai poussé chaque registre à l’extrême pour que le contraste soit maximal. Stratégiquement, les deux directions s’adressent au même public mais activent des leviers différents : l’impact visuel immédiat pour capter, la connivence de marque pour fidéliser. L’objectif était de prouver qu’une marque forte peut se décliner à l’infini sans perdre son identité." data-images="Netflix_max.jpg|Netflix_mini.jpg" data-cibles="Grand public abonné ou potentiellement abonné, 18-45 ans|18-30 ans urbains, digital natives, gros consommateurs de séries|Tous les consommateurs de streaming, même occasionnels" data-objectifs="Rappeler et renforcer l'identité de marque Netflix, ses codes visuels|Créer une émotion et un désir — par l'impact visuel ou l'épure minimaliste|Inciter à s'abonner, rester abonné ou regarder du contenu">
+          <div class="creation-media">
+            <span class="oral-badge">E6</span>
+            <span class="stack-badge">2 visuels</span>
+            <img src="Netflix_max.jpg" alt="Concept campagne Netflix">
+          </div>
+          <div class="creation-body">
+            <h3>Concept Netflix</h3>
+            <div class="meta"><span>Affiche print</span><span>Excessive vs Minimaliste</span><span>Concept campagne</span></div>
+            <p>Un brief, deux directions opposées : une affiche qui sature l’œil, une autre qui laisse parler le vide. Ce projet m’a appris à maîtriser des registres visuels radicalement différents.</p>
+          </div>
+        </article>
+
+        <article class="panel creation-card clickable" data-title="Basket Zone — Wemby" data-description="C’est ma toute première création en BTS Communication. Le brief : réaliser une couverture de magazine autour de Victor Wembanyama. Je ne suis pas forcément fier du résultat aujourd’hui — et c’est justement pour ça que cette création est importante dans mon portfolio. Elle représente le point de départ, le niveau 1. On y voit déjà un intérêt pour la mise en page et la hiérarchie visuelle, mais aussi les maladresses d’un étudiant qui débute. La montrer, c’est montrer d’où je viens, pour mieux mesurer le chemin parcouru." data-strategie="J’ai choisi Wembanyama comme sujet car c’était le sportif le plus médiatisé de 2023 auprès des jeunes — un choix de cible avant d’être un choix artistique. Pour la couverture, j’ai essayé d’appliquer les codes du magazine sportif : titre fort, hiérarchie visuelle, photo dominante. À ce stade je ne maîtrisais pas encore Canva, ni les notions de lisibilité et d’équilibre. C’est précisément pourquoi cette création est dans mon portfolio E6 : elle prouve que j’ai su analyser mes erreurs, comprendre ce qui ne fonctionnait pas, et progresser. Sans point de départ visible, la progression ne se mesure pas." data-images="Wemby_premiere_crea.jpg" data-zoom="small" data-cibles="Grand public amoureux de sport, 15-35 ans|Jeunes hommes 18-25 ans, passionnés de NBA|Lecteurs de presse sportive généraliste" data-objectifs="Informer sur Wembanyama, son actualité et sa montée en puissance|Créer de l'enthousiasme et de l'admiration autour du joueur|Inciter à acheter et lire le magazine">
+          <div class="creation-media">
+            <span class="oral-badge">E6</span>
+            <img src="Wemby_premiere_crea.jpg" alt="Magazine Wemby Basket Zone">
+          </div>
+          <div class="creation-body">
+            <h3>Basket Zone — Wemby</h3>
+            <div class="meta"><span>Éditorial</span><span>Couverture magazine</span><span>Première créa BTS</span></div>
+            <p>Ma toute première création en BTS. Ce qui compte ici, c’est moins le résultat que ce qu’il représente : le point de départ d’une vraie progression.</p>
+          </div>
+        </article>
+
+        <article class="panel creation-card clickable" data-title="Affiche Step One" data-description="Brief : créer une affiche publicitaire pour Step One, une marque de chaussures modulables — chaque pièce (lacets, languette, semelle, tige) se remplace séparément. Le slogan que j'ai trouvé : « Changez la pièce, pas la chaussure. » Il résume en une phrase le concept produit ET la promesse environnementale. L'affiche présente la sneaker en vue éclatée sur fond gris, avec les 4 modules et les tarifs correspondants. Ce projet m'a obligé à penser la composition au service du message : chaque élément visuel devait avoir une utilité." data-strategie="Le défi de cette affiche, c'était de rendre un concept technique — la modularité — immédiatement compréhensible sans texte d'explication. J'ai choisi la vue éclatée (les pièces séparées en suspension) parce que c'est le seul angle qui montre à la fois le produit final ET sa logique de construction. Le fond gris neutre évite toute distraction et met 100% de l'attention sur la sneaker et ses composants. Le slogan est venu en dernier, après la composition : j'ai cherché une phrase courte qui transforme une contrainte (réparer plutôt que jeter) en avantage concurrentiel — c'est ce que fait une bonne accroche publicitaire." data-cibles="Consommateurs de sneakers, 18-35 ans, sensibles à l'innovation|Jeunes adultes 20-30 ans, urban style, éco-conscients|Parents cherchant une alternative durable à la sneaker classique" data-objectifs="Faire comprendre immédiatement le concept de modularité|Créer de la désirabilité autour de la marque et du produit|Pousser à l'achat ou à la découverte de la gamme" data-images="STEP_ONE.jpg">
+          <div class="creation-media"><img src="STEP_ONE.jpg" alt="Affiche Step One — chaussure modulable"></div>
+          <div class="creation-body">
+            <h3>Affiche Step One</h3>
+            <div class="meta"><span>Affiche produit</span><span>Direction artistique</span><span>Concept modulable</span></div>
+            <p>Affiche pour une sneaker modulable : composition éclatée des pièces, slogan fort et présentation claire de l'offre tarifaire.</p>
+          </div>
+        </article>
+
+        <article class="panel creation-card clickable" data-title="Communiqué de presse — IKEA" data-description="Mission : rédiger un communiqué de presse pour IKEA selon les règles professionnelles du genre. C'est un exercice de rédaction exigeant parce qu'il n'y a pas de liberté artistique — il y a des codes très précis à respecter : l'accroche qui accroche, la hiérarchie de l'information (du plus important au moins important), les citations sourcées, les informations pratiques en bas, et les contacts presse. Ce projet m'a appris que communiquer vers les journalistes, ce n'est pas vendre — c'est informer de façon claire, neutre et structurée pour que le journaliste puisse reprendre l'info facilement." data-strategie="Le communiqué de presse s'adresse aux journalistes et aux rédactions, pas au grand public. Ça change tout : le ton doit être institutionnel, jamais commercial. J'ai structuré le document en entonnoir — l'information principale en premier, les détails et contextes ensuite, les citations pour humaniser, et les informations pratiques tout en bas pour faciliter le travail du journaliste. Le choix d'IKEA comme marque était stratégique : c'est une marque connue de tous, ce qui permettait d'écrire des informations crédibles et cohérentes avec l'identité de la marque sans avoir besoin d'un vrai brief client. J'ai respecté la mise en page standard du CP (logo, titre, chapeau, corps, citation, encadré pratique) pour montrer que je maîtrise le format." data-cibles="Journalistes et rédactions presse écrite, web et TV|Blogueurs et créateurs de contenu spécialisés déco/mode de vie|Influenceurs et prescripteurs dans le secteur de l'aménagement" data-objectifs="Informer les médias sur un événement ou une actualité IKEA|Obtenir des retombées presse et une couverture médiatique|Renforcer l'image de marque IKEA auprès des journalistes et relais d'opinion" data-images="ikea_cp_page1.jpg|ikea_cp_page2.jpg">
+          <div class="creation-media">
+            <span class="stack-badge">2 pages</span>
+            <img src="ikea_cp_page1.jpg" alt="Communiqué de presse IKEA page 1">
+          </div>
+          <div class="creation-body">
+            <h3>Communiqué de presse — IKEA</h3>
+            <div class="meta"><span>Rédactionnel</span><span>Communiqué de presse</span><span>BtoB / Médias</span></div>
+            <p>Communiqué de presse rédigé selon les codes professionnels du genre — structure, ton institutionnel et format journalistique maîtrisés.</p>
+          </div>
+        </article>
+
+        <article class="panel creation-card clickable" data-title="Affiche Nantes vélo" data-description="Brief : créer une affiche de communication publique pour promouvoir la pratique du vélo à Nantes. Ce n’est pas une pub classique — c’est de la communication institutionnelle au service d’un changement de comportement. L’enjeu : convaincre les Nantais de passer (ou rester) au vélo, sans culpabiliser ni moraliser. J’ai choisi un ton positif, un visuel accessible et une accroche qui met en avant les bénéfices concrets plutôt que les arguments écologiques abstraits — parce qu’on convainc mieux par le plaisir que par l’obligation." data-strategie="La communication sur les mobilités douces échoue souvent parce qu’elle culpabilise les gens ou leur donne des leçons. J’ai voulu prendre le contre-pied : une affiche qui donne envie, pas qui impose. Pour ça, j’ai misé sur un visuel dynamique et une composition claire qui parle à tout le monde, pas seulement aux cyclistes convaincus. Nantes est une ville qui investit dans les pistes cyclables — l’affiche devait refléter cette énergie urbaine positive. Le ton choisi est celui d’une invitation, pas d’une injonction : c’est subtil, mais ça change radicalement l’effet sur le lecteur." data-cibles="Habitants de Nantes, tous profils, 18-60 ans|Actifs 25-45 ans, trajets domicile-travail en voiture ou transports|Étudiants et jeunes actifs urbains" data-objectifs="Informer sur l’offre cyclable à Nantes et ses avantages|Donner envie de tester ou de reprendre le vélo au quotidien|Contribuer à changer le rapport à la mobilité douce en ville" data-images="Affiche_Nantes.jpg">
+          <div class="creation-media"><img src="Affiche_Nantes.jpg" alt="Affiche vélo Nantes"></div>
+          <div class="creation-body">
+            <h3>Affiche Nantes vélo</h3>
+            <div class="meta"><span>Affiche</span><span>Communication publique</span></div>
+            <p>Affiche de sensibilisation sur la mobilité douce et la pratique du vélo.</p>
+          </div>
+        </article>
+
+        <article class="panel creation-card clickable" data-title="Affiche Jo Malone London" data-description="Brief : créer une affiche publicitaire pour Jo Malone London — le parfum Wood Sage & Sea Salt Cologne. Jo Malone, c'est l'une des maisons de luxe les plus exigeantes en matière d'image : tout doit respirer l'élégance, la rareté et la subtilité. J'ai choisi de composer l'affiche autour du flacon, entouré des ingrédients naturels qui composent le parfum — sauge, agrumes, fleurs, papillon — sur fond noir absolu. L'objectif était de faire ressentir le parfum avant même qu'on le lise. Chaque élément graphique a une raison d'être dans la composition." data-strategie="Le luxe ne crie pas. Il chuchote. C'est le principe que j'ai appliqué à cette affiche : pas de texte envahissant, pas d'effets visuels agressifs — juste le flacon, les ingrédients et le vide qui les met en valeur. J'ai choisi le fond noir parce que c'est le code couleur du luxe en parfumerie — il donne de la profondeur et fait ressortir les éléments naturels avec une délicatesse qui correspond à l'univers de la marque. La hiérarchie typographique est minimaliste : le nom de la fragrance, la maison, le volume — rien de plus. Ce projet m'a appris que dans le luxe, ce qu'on enlève compte autant que ce qu'on garde." data-cibles="Femmes et hommes 28-55 ans, CSP+, sensibles au luxe et à la parfumerie|30-45 ans, urbains, clients de niche ou de maisons de parfumerie|Clientèle internationale habituée aux codes de la beauté haut de gamme" data-objectifs="Renforcer l'image de luxe et d'élégance de la maison Jo Malone|Créer de la désirabilité autour du flacon et de la fragrance|Inciter à découvrir ou offrir le parfum Wood Sage & Sea Salt" data-images="jo malone.png">
+          <div class="creation-media"><img src="jo malone.png" alt="Affiche Jo Malone London Wood Sage & Sea Salt"></div>
+          <div class="creation-body">
+            <h3>Affiche Jo Malone London</h3>
+            <div class="meta"><span>Affiche luxe</span><span>Direction artistique</span><span>Parfumerie</span></div>
+            <p>Composition sur fond noir autour du flacon Wood Sage & Sea Salt — mise en scène des ingrédients naturels dans un univers luxe et minimaliste.</p>
+          </div>
+        </article>
+
+        <article class="panel creation-card clickable" data-title="Flyer Kab House" data-description="Brief : créer un flyer pour l’ouverture de Kab House, un restaurant à l’univers racing et street food. Le flyer devait donner envie de venir, communiquer l’offre du soir (menu, animation, ambiance) et pousser à l’action — réserver ou se déplacer. J’ai opté pour un format recto-verso : le recto attire l’œil et crée le désir, le verso informe et convainc. C’est un classique du flyer événementiel, et ça reste efficace parce que ça respecte la logique de lecture d’une cible qui reçoit un imprimé dans la rue ou en caisse." data-strategie="Un flyer, c’est un support qui a 3 secondes pour convaincre. J’ai construit le recto autour d’un visuel fort et d’une accroche courte qui capte immédiatement l’attention — l’univers racing de Kab House s’y prête bien avec les codes visuels de la vitesse et de l’adrénaline. Le verso est plus informatif : offre du soir, date, adresse, appel à l’action. J’ai maintenu la cohérence graphique des deux faces (même typo, même palette) pour que le flyer soit reconnaissable et professionnel, et que le lecteur comprenne d’un coup d’œil qu’il s’agit du même événement." data-cibles="Passants et habitants du quartier, 18-35 ans|Jeunes adultes fans de street food et d’ambiances originales|Groupes d’amis cherchant une sortie atypique" data-objectifs="Faire connaître l’ouverture et générer de la fréquentation|Créer de la curiosité et de l’envie autour de l’univers Kab House|Inciter à venir le soir de l’ouverture ou à revenir" data-images="Flyer_KabHouse_recto.jpg|Flyer_KabHouse_verso.jpg">
+          <div class="creation-media">
+            <span class="stack-badge">Recto / verso</span>
+            <img src="Flyer_KabHouse_recto.jpg" alt="Flyer Kab House recto">
+          </div>
+          <div class="creation-body">
+            <h3>Flyer Kab House</h3>
+            <div class="meta"><span>Flyer</span><span>Promotion</span></div>
+            <p>Flyer promotionnel conçu pour soutenir l’ouverture et valoriser l’offre commerciale.</p>
+          </div>
+        </article>
+
+        <article class="panel creation-card clickable" data-title="Menu Eat & Race" data-description="Brief : concevoir le menu d’Eat & Race, un restaurant à l’univers course automobile. Un menu, ce n’est pas juste une liste de plats — c’est un support de communication qui prolonge l’expérience de la marque. Chez Eat & Race, l’ambiance racing devait se ressentir dès qu’on tient la carte en main. J’ai travaillé la hiérarchie de l’information (catégories, noms de plats, descriptions, prix), le choix typographique cohérent avec l’univers du circuit, et l’équilibre entre lisibilité et identité visuelle forte." data-strategie="Le piège du menu thématique, c’est de sacrifier la lisibilité sur l’autel de l’esthétique. Un client qui ne trouve pas son plat en 30 secondes, c’est une mauvaise expérience. J’ai donc construit une grille claire avant de poser l’habillage visuel. La structure : entrées, plats, desserts — chaque section identifiable en un coup d’œil. L’univers racing se traduit dans les détails : la typographie angulaire, les contrastes forts, les éléments graphiques qui évoquent la piste sans envahir le contenu. Ce projet m’a montré qu’un bon support print, c’est d’abord un outil fonctionnel — l’esthétique vient après." data-cibles="Clients du restaurant, tous âges|Familles, couples et groupes d’amis attirés par le concept|Fans d’automobile et de sport mécanique" data-objectifs="Permettre aux clients de choisir facilement leur repas|Renforcer l’immersion dans l’univers Eat & Race dès la table|Valoriser l’offre et donner envie de commander" data-images="Menu_EAT_and_race.jpg">
+          <div class="creation-media"><img src="Menu_EAT_and_race.jpg" alt="Menu Eat & Race"></div>
+          <div class="creation-body">
+            <h3>Menu Eat & Race</h3>
+            <div class="meta"><span>Menu</span><span>Restauration</span></div>
+            <p>Support commercial dans un univers visuel racing.</p>
+          </div>
+        </article>
+
+        <article class="panel creation-card clickable" data-title="Projet musée — Ticket d’entrée" data-description="Ce ticket d’entrée fait partie du projet d’exposition « Éclats du Vrai » — une exposition sur l’impressionnisme et le réalisme que j’ai entièrement conçue (voir aussi : Musée interactif). Dès le départ, j’avais décidé que l’expérience devait commencer avant d’entrer dans l’expo. Le ticket n’est pas un détail administratif — c’est le premier objet physique que le visiteur touche. Il doit porter l’identité visuelle du projet, créer une attente, et donner envie d’entrer. J’ai décliné les codes graphiques de l’exposition (palette, typographie, nom de l’événement) sur ce format contraint pour que tout forme un système cohérent." data-strategie="La décision de créer un ticket physique était stratégique, pas décorative. En événementiel, les objets à emporter prolongent l’expérience après la sortie — ils font parler du projet. Pour un contexte scolaire, c’est aussi un signal fort : ça montre qu’on a pensé l’événement dans sa globalité, pas juste la présentation Powerpoint. Sur le plan graphique, la contrainte de format (petit, horizontal) oblige à faire des choix clairs : qu’est-ce qui doit absolument apparaître ? Nom de l’expo, date, détail visuel identifiant. J’ai traité ce ticket comme une vraie déclinaison de charte graphique, pas comme un imprimé utilitaire." data-cibles="Participants à l’exposition — camarades étudiants BTS, 18-22 ans|Enseignants et jury présents le jour de la présentation|Public jeune peu familier avec l’art classique" data-objectifs="Créer une immersion dès l’accueil, avant d’entrer dans l’exposition|Renforcer la crédibilité et le sérieux du projet|Laisser un souvenir tangible de l’événement" data-images="Ticket_Musée.jpg">
+          <div class="creation-media"><img src="Ticket_Musée.jpg" alt="Ticket exposition Éclats du Vrai"></div>
+          <div class="creation-body">
+            <h3>Projet musée — Ticket d’entrée</h3>
+            <div class="meta"><span>Billetterie</span><span>Support print</span></div>
+            <p>Ticket d’entrée pensé comme une déclinaison du projet d’exposition.</p>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <section class="category">
+      <div class="category-head">
+        <div>
+          <div class="eyebrow">Catégorie 02</div>
+          <h2>Contenus digitaux</h2>
+          <p>Interfaces, newsletters, projets web et contenus digitaux pensés pour l’expérience utilisateur et la diffusion en ligne.</p>
+        </div>
+        <div class="count">3 créations</div>
+      </div>
+
+      <div class="gallery">
+        <article class="panel creation-card clickable" data-title="Application Kab House" data-description="Prototype d’interface mobile pensé pour faciliter l’accès au menu, aux desserts, aux boissons et aux événements. Les deux écrans sont présentés ensemble comme une seule création." data-strategie="L’objectif de ce projet était de trouver un vrai client avec un vrai besoin — pas un brief inventé. Kab House avait un problème concret : les clients ne savaient pas ce qu’ils allaient manger avant de venir, ce qui freinait la décision de venue. J’ai choisi de répondre par une application et pas une affiche ou un post Instagram parce que le besoin était fonctionnel et récurrent : accéder au menu, aux événements et aux réservations à tout moment. Une affiche informe une fois, une app accompagne le client avant, pendant et après sa visite. Le design sombre et racing n’est pas un choix esthétique gratuit — c’est une décision stratégique pour que l’outil soit cohérent avec l’univers de la marque et crédible aux yeux d’une cible 18-35 ans connectée, habituée aux apps food type UberEats." data-images="App_kab.jpg|App_kabh.jpg" data-cibles="Clientèle du restaurant, 18-35 ans|18-28 ans hyper connectés, habitués aux apps de restauration|Clients potentiels découvrant Kab House pour la première fois" data-objectifs="Faire connaître l'offre complète — menu, événements, ambiance|Créer une expérience de navigation agréable qui donne envie de venir|Inciter à venir, réserver ou commander depuis l'app">
+          <div class="creation-media">
+            <span class="oral-badge">E6</span>
+            <span class="stack-badge">2 écrans</span>
+            <img src="App_kab.jpg" alt="Application Kab House écran menu latéral">
+          </div>
+          <div class="creation-body">
+            <h3>Application Kab House</h3>
+            <div class="meta"><span>UI</span><span>Mobile</span></div>
+            <p>Prototype mobile regroupé en une seule création avec deux vues d’interface.</p>
+          </div>
+        </article>
+
+        <article class="panel creation-card clickable" data-title="Musée interactif — Lumière & Vérité" data-description="Mission : faire découvrir un mouvement artistique de façon interactive et mémorable. J’ai choisi l’impressionnisme et le réalisme. Plutôt que de faire un diaporama classique, j’ai décidé de coder entièrement un musée interactif sous VS Code : une carte de l’exposition où chaque point, au survol, fait apparaître un artiste et ses œuvres. J’ai ensuite créé un Kahoot pour vérifier que les participants avaient bien suivi — avec des bonbons en récompense pour les motiver. Ce projet montre que quand on me laisse carte blanche, je cherche toujours à aller au-delà du brief attendu, en combinant compétences techniques, pédagogie et sens de l’expérience utilisateur." data-strategie="Le contexte : l’objectif était de faire apprendre un mouvement artistique à nos camarades étudiants en BTS — pas à des experts, à des gens sans culture artistique particulière. L’enjeu était pédagogique avant d’être créatif : comment rendre l’art accessible et mémorable. J’ai utilisé l’IA (ChatGPT) pour structurer les informations sur les artistes et les œuvres, puis j’ai tout développé moi-même sous VS Code. J’ai choisi l’impressionnisme et le réalisme car ce sont deux mouvements opposés — les mettre en miroir rend les différences immédiatement lisibles. Le ticket d’entrée n’était pas une déclinaison décorative : c’était une décision délibérée pour favoriser l’expérience immersive. Donner un objet physique aux participants crée un sentiment d’appartenance à l’exposition — une technique de l’événementiel transposée en contexte scolaire. Le Kahoot avec bonbons complète le dispositif en transformant la vérification des acquis en moment de compétition positive." data-images="musee.jpg" data-cibles="Public jeune 18-25 ans, non-expert en histoire de l'art|Étudiants en BTS, habitués aux formats courts et aux expériences numériques|Enseignants et médiateurs culturels cherchant des outils pédagogiques" data-objectifs="Faire découvrir et retenir les infos clés sur l'impressionnisme et le réalisme|Susciter la curiosité, rendre l'art désirable, casser l'image ennuyeuse|Faire participer activement — explorer la carte, répondre au Kahoot">
+          <div class="creation-media">
+            <span class="oral-badge">E6</span>
+            <img src="musee.jpg" alt="Carte interactive du musée Lumière et Vérité">
+          </div>
+          <div class="creation-body">
+            <h3>Musée interactif — Lumière & Vérité</h3>
+            <div class="meta"><span>Code (VS Code)</span><span>Expérience interactive</span><span>Impressionnisme & Réalisme</span></div>
+            <p>J’ai codé entièrement un musée interactif sous VS Code : chaque point de la carte révèle un artiste et ses œuvres. Avec un Kahoot et des bonbons à la clé pour tester les connaissances.</p>
+          </div>
+        </article>
+
+        <article class="panel creation-card clickable" data-title="Newsletter Alema" data-description="Mission : créer une newsletter récapitulative pour la vie de la classe à l'Alema Business School. Ce projet m'a mis face à une contrainte réelle : produire un contenu utile et lisible sur un format email, pour une cible interne (les étudiants et l'équipe pédagogique). J'ai structuré la newsletter autour de plusieurs rubriques — actu de la classe, agenda, infos pratiques — avec une mise en page pensée pour la lecture sur mobile et desktop. Trois captures sont présentées pour montrer la structure complète du template." data-strategie="Une newsletter interne, ça marche si et seulement si les gens l'ouvrent et la lisent jusqu'au bout. Pour ça, j'ai appliqué les règles de base de l'email marketing : objet percutant, découpage en blocs courts, visuel d'accroche, CTA clair. J'ai choisi une mise en page aérée plutôt qu'un mur de texte, parce que le premier réflexe d'un lecteur qui reçoit un email long, c'est de le fermer. La cohérence graphique avec l'identité Alema était aussi un enjeu — ça valide l'outil et lui donne de la légitimité auprès des destinataires." data-cibles="Étudiants de la promotion BTS Communication Alema|Équipe pédagogique et administration de l'école|Anciens étudiants et partenaires de l'école" data-objectifs="Informer sur l'actualité de la classe et les événements à venir|Créer du lien et renforcer la cohésion dans la promotion|Valoriser les projets et réussites des étudiants" data-images="newsletter.jpg|newsletter1.jpg|newsletter2.jpg">
+          <div class="creation-media">
+            <span class="stack-badge">3 visuels</span>
+            <img src="newsletter.jpg" alt="Newsletter Alema Business School">
+          </div>
+          <div class="creation-body">
+            <h3>Newsletter Alema</h3>
+            <div class="meta"><span>Emailing</span><span>Rédaction</span></div>
+            <p>Newsletter regroupant trois captures pour montrer la structure complète du contenu.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="category">
+      <div class="category-head">
+        <div>
+          <div class="eyebrow">Catégorie 03</div>
+          <h2>Audiovisuel</h2>
+          <p>Contenus audio et vidéo, spots radio et vidéos conçus pour transmettre un message de manière plus vivante.</p>
+        </div>
+        <div class="count">5 créations</div>
+      </div>
+
+      <div class="gallery">
+        <article class="panel creation-card clickable" data-title="Spot radio — Nantes" data-description="Brief : créer un spot radio pour promouvoir Nantes comme destination ou comme territoire. La radio est un média particulier : il n’y a pas d’image, pas de visuel — juste la voix, le rythme et les mots. Tout repose sur l’écriture et la diction. J’ai travaillé l’accroche d’ouverture pour capter l’attention dans les 3 premières secondes (on change de station très vite), puis construit un message court, rythmé, avec une chute mémorable. Ce projet m’a appris à penser la communication en format sonore — un exercice rare et formateur." data-strategie="En radio, on ne retient pas tout — on retient une phrase, une émotion, un son. J’ai donc construit le script en partant de la fin : quelle est la phrase que je veux que l’auditeur retienne ? Une fois cette accroche finale trouvée, j’ai construit le spot pour y amener naturellement. Le ton choisi est positif et ancré dans le réel — pas de superlatifs vides, mais des images concrètes qui font visualiser Nantes. Le rythme de lecture a été travaillé pour tenir dans le format (30 secondes), avec des pauses calculées pour ne pas paraître précipité." data-cibles="Auditeurs de radio locale ou nationale, 25-50 ans|Touristes potentiels et familles en recherche de destination|Nantais et habitants de la région Loire-Atlantique" data-objectifs="Valoriser Nantes comme destination attractive et dynamique|Créer une émotion positive associée à la ville|Inciter à découvrir ou revisiter Nantes" data-videos="Spot Radio Nantes.mp4">
+          <div class="creation-media">
+            <video class="inline-video" muted playsinline preload="metadata">
+              <source src="Spot Radio Nantes.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="creation-body">
+            <h3>Spot radio — Nantes</h3>
+            <div class="meta"><span>Audio</span><span>Radio</span></div>
+            <p>Spot radio travaillé autour de la voix, du rythme et d’un message direct.</p>
+            <div class="audio-box">
+              <strong>Lecture intégrée</strong>
+              <video class="inline-video" controls preload="metadata">
+                <source src="Spot Radio Nantes.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel creation-card clickable" data-title="Spot radio — Grande Récré" data-description="Brief : créer un spot radio pour La Grande Récré, chaîne de magasins de jouets. Par rapport au spot Nantes, le registre est complètement différent : on est dans le ludique, l'enthousiasme, le monde de l'enfance. La cible primaire, ce sont les enfants — mais la cible décisionnaire, c'est le parent. J'ai dû écrire un spot qui parle aux deux en même temps : assez fun pour que l'enfant accroche, assez clair pour que le parent retienne le message. Ce double ciblage, c'est le défi central de toute communication dans l'univers du jouet." data-strategie="La Grande Récré joue dans un marché très saisonnier (Noël, anniversaires) et très concurrentiel. Le spot devait donc être reconnaissable, positif et mémorable. J'ai utilisé un ton enlevé avec une voix enthousiaste qui correspond à l'univers de la marque — on doit presque voir des couleurs vives en écoutant. L'accroche est centrée sur le plaisir et la magie plutôt que sur les prix ou les promotions, parce que dans la communication jouet, vendre du rêve fonctionne mieux que vendre du discount. La chute reprend le nom de la marque de façon naturelle pour ancrer l'association émotionnelle." data-cibles="Enfants 4-12 ans, influenceurs de l'achat|Parents 28-45 ans, décisionnaires|Grands-parents cherchant des idées cadeaux" data-objectifs="Faire connaître ou rappeler l'enseigne et son offre|Associer La Grande Récré au plaisir, à la magie et aux bons moments|Générer de la fréquentation en magasin et des achats" data-videos="Spot Radio grande recré.mp4">
+          <div class="creation-media">
+            <video class="inline-video" muted playsinline preload="metadata">
+              <source src="Spot Radio grande recré.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="creation-body">
+            <h3>Spot radio — Grande Récré</h3>
+            <div class="meta"><span>Audio</span><span>Radio</span></div>
+            <p>Spot radio autour d’un ton plus ludique et d’une promesse plus publicitaire.</p>
+            <div class="audio-box">
+              <strong>Lecture intégrée</strong>
+              <video class="inline-video" controls preload="metadata">
+                <source src="Spot Radio grande recré.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel creation-card clickable" data-scroll-mode="true" data-title="Vidéo Citeo" data-description="Brief : créer une vidéo de 30 secondes maximum pour donner envie aux jeunes de faire le tri, en utilisant les codes du hip-hop. J'ai tout fait de A à Z : écriture du script, tournage, direction artistique, montage. La contrainte des 30 secondes était un vrai défi — chaque seconde devait être utile, chaque plan devait compter. Adopter les codes hip-hop pour parler de recyclage, c'était aussi un vrai choix de communication : toucher une cible jeune avec ses propres codes plutôt qu'un discours institutionnel. C'est le projet dont je suis le plus fier car il prouve que je maîtrise l'ensemble de la chaîne de production audiovisuelle, seul, avec une intention créative forte et une cible clairement identifiée." data-strategie="Le principal frein au tri chez les 15-25 ans, ce n'est pas le manque d'information — c'est l'image ennuyeuse et culpabilisante du sujet. J'ai choisi les codes hip-hop pour neutraliser ce frein : si le message arrive dans un format que la cible apprécie, la résistance tombe. Même sans storyboard dessiné formellement, j'ai construit un tableau synoptique plan par plan avant le tournage : chaque séquence était décrite avec le cadrage prévu, les paroles associées, la durée estimée et les indications de jeu. Ce document listait tous les plans, les temps, les dialogues et les intentions techniques — indispensable avec 30 secondes à remplir, on ne peut pas improviser sur le plateau quand chaque seconde compte. En production, ça m'a permis de tourner efficacement et de savoir exactement ce qu'il me manquait entre chaque prise. J'ai d'abord écrit les paroles, puis découpé en plans pour que l'image illustre les mots sans les répéter — le montage final a suivi ce découpage à 90%, avec des ajustements de rythme." data-videos="Video citeo Lahna Quentin.mp4" data-cibles="Jeunes 15-25 ans, peu sensibilisés au tri sélectif|15-20 ans, lycéens et étudiants, consommateurs de culture hip-hop|Prescripteurs — enseignants, éducateurs, parents" data-objectifs="Informer sur les bons gestes du tri de façon simple et mémorable|Changer l'image du tri, le rendre cool et accessible|Inciter à trier ses déchets au quotidien">
+          <div class="creation-media">
+            <span class="oral-badge">E6</span>
+            <video class="inline-video" muted playsinline preload="metadata">
+              <source src="Video citeo Lahna Quentin.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="creation-body">
+            <h3>Vidéo Citeo</h3>
+            <div class="meta"><span>Vidéo</span><span>Script · Tournage · Montage</span><span>Codes hip-hop</span></div>
+            <p>30 secondes pour donner envie aux jeunes de faire le tri, en utilisant les codes hip-hop. Script, tournage, montage : tout de A à Z. Mon projet audiovisuel le plus abouti.</p>
+            <p style="margin-top:8px; font-size:0.82rem; color:var(--accent);">↗ Cliquer pour voir la vidéo, le storyboard et le tableau synoptique</p>
+          </div>
+        </article>
+
+        <article class="panel creation-card clickable" data-title="Cuisine et vous" data-description="Série de 4 vidéos réalisées pour Cuisine et vous, une émission culinaire. Chaque épisode présente une recette ou un moment de cuisine filmé avec soin — cadrage, lumière, montage. Un exercice complet de production vidéo : de la préparation du tournage à la livraison du fichier final, en passant par la direction artistique et le rythme au montage." data-strategie="L'enjeu de ce type de contenu c'est de rendre la cuisine accessible et appétissante à l'image. J'ai travaillé les angles de prise de vue pour valoriser les gestes et les textures, et le rythme du montage pour maintenir l'attention. 4 vidéos livrées pour couvrir autant de recettes ou de formats différents — un vrai exercice de cohérence visuelle sur une série." data-videos="Cuisine et vous 1.mp4|Cuisine et vous 2.mp4|Cuisine et vous 3.mp4|Cuisine et vous 4.mp4" data-video-labels="Épisode 1|Épisode 2|Épisode 3|Épisode 4" data-playlist-mode="true">
+          <div class="creation-media">
+            <video class="inline-video" muted playsinline preload="metadata">
+              <source src="Cuisine et vous 1.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="creation-body">
+            <h3>Cuisine et vous</h3>
+            <div class="meta"><span>Vidéo</span><span>Tournage · Montage</span><span>4 épisodes</span></div>
+            <p>Série de 4 vidéos réalisées pour une émission culinaire — cadrage, lumière et montage travaillés pour valoriser chaque recette.</p>
+          </div>
+        </article>
+
+        <article class="panel creation-card clickable" data-title="Pub Accro" data-description="Spot publicitaire réalisé intégralement de A à Z pour la marque Accro — écriture du script, organisation du tournage, direction artistique et montage final. Une production complète qui démontre la maîtrise de l'ensemble de la chaîne vidéo : de l'idée à l'image livrée." data-strategie="J'ai voulu construire un spot qui soit immédiatement reconnaissable à l'univers de la marque. Le travail a commencé par l'écriture d'un script court et efficace, puis par une réflexion sur les plans à tourner et le rythme voulu au montage. Le tournage a été organisé avec des contraintes de temps serrées — chaque plan devait être utile. Le montage final a mis l'accent sur la dynamique et la cohérence visuelle pour livrer un format court et impactant." data-videos="Pub Accro Quentin.mp4">
+          <div class="creation-media">
+            <video class="inline-video" muted playsinline preload="metadata">
+              <source src="Pub Accro Quentin.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="creation-body">
+            <h3>Pub Accro</h3>
+            <div class="meta"><span>Vidéo</span><span>Spot publicitaire</span><span>Script · Tournage · Montage</span></div>
+            <p>Spot publicitaire réalisé intégralement — de l'écriture du script au montage final. Une production A à Z pour la marque Accro.</p>
+            <div class="audio-box">
+              <strong>Lecture intégrée</strong>
+              <video class="inline-video" controls preload="metadata">
+                <source src="Pub Accro Quentin.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <div class="bottom-nav">
+      <a class="next-btn" href="fiches.html">Page suivante →</a>
+    </div>
+  </main>
+
+  <div class="lightbox" id="lightbox">
+    <div class="lightbox-inner">
+      <div class="lightbox-stage">
+        <button class="nav-btn prev" id="prevBtn" type="button" aria-label="Précédent">←</button>
+        <div id="lightboxContent"></div>
+        <button class="nav-btn next" id="nextBtn" type="button" aria-label="Suivant">→</button>
+      </div>
+      <div class="lightbox-info">
+        <div class="lightbox-top">
+          <div>
+            <div class="counter" id="lightboxCounter">1 / 1</div>
+            <h3 id="lightboxTitle">Titre</h3>
+          </div>
+          <button class="close-btn" id="closeLightbox" type="button" aria-label="Fermer">✕</button>
+        </div>
+        <p id="lightboxDescription"></p>
+        <div id="lightboxStrategie" class="strat-block">
+          <div class="strat-block-title">Stratégie & choix créatifs</div>
+          <p id="strateText"></p>
+        </div>
+        <div id="lightboxCibles" class="detail-block" style="display:none">
+          <div class="detail-block-title cible-color">Cibles</div>
+          <div class="detail-row">
+            <span class="detail-label">Principale</span>
+            <span class="detail-value" id="cibPrincipale"></span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Cœur de cible</span>
+            <span class="detail-value" id="cibCoeur"></span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Secondaire</span>
+            <span class="detail-value" id="cibSecondaire"></span>
+          </div>
+        </div>
+        <div id="lightboxObjectifs" class="detail-block" style="display:none">
+          <div class="detail-block-title obj-color">Objectifs</div>
+          <div class="detail-row">
+            <span class="detail-label">Cognitif</span>
+            <span class="detail-value" id="objCognitif"></span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Affectif</span>
+            <span class="detail-value" id="objAffectif"></span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Conatif</span>
+            <span class="detail-value" id="objConatif"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const cards = document.querySelectorAll('.creation-card.clickable');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxContent = document.getElementById('lightboxContent');
+    const lightboxTitle = document.getElementById('lightboxTitle');
+    const lightboxDescription = document.getElementById('lightboxDescription');
+    const lightboxCounter = document.getElementById('lightboxCounter');
+    const closeLightbox = document.getElementById('closeLightbox');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    let currentMedia = [];
+    let currentIndex = 0;
+
+    function renderMedia() {
+      lightboxContent.innerHTML = '';
+      const src = currentMedia[currentIndex];
+      const isVideo = /\.(mp4|webm|ogg)$/i.test(src);
+
+      if (isVideo) {
+        const video = document.createElement('video');
+        video.controls = true;
+        video.autoplay = true;
+        video.src = src;
+        lightboxContent.appendChild(video);
+      } else {
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = lightboxTitle.textContent;
+        lightboxContent.appendChild(img);
+      }
+
+      lightboxCounter.textContent = `${currentIndex + 1} / ${currentMedia.length}`;
+      prevBtn.style.display = currentMedia.length > 1 ? 'inline-flex' : 'none';
+      nextBtn.style.display = currentMedia.length > 1 ? 'inline-flex' : 'none';
+    }
+
+    function openLightbox(card) {
+      const title = card.dataset.title || 'Création';
+      const description = card.dataset.description || '';
+      const images = card.dataset.images ? card.dataset.images.split('|') : [];
+      const videos = card.dataset.videos ? card.dataset.videos.split('|') : [];
+      const cibles = card.dataset.cibles ? card.dataset.cibles.split('|') : null;
+      const objectifs = card.dataset.objectifs ? card.dataset.objectifs.split('|') : null;
+      const strategie = card.dataset.strategie || null;
+      const stage = document.querySelector('.lightbox-stage');
+
+      // MODE SCROLL (Citeo) — colonne unique scrollable
+      if (card.dataset.scrollMode) {
+        lightbox.classList.add('scroll-mode');
+        lightboxContent.innerHTML = '';
+        prevBtn.style.display = 'none';
+        nextBtn.style.display = 'none';
+
+        // Header
+        const header = document.createElement('div');
+        header.className = 'scroll-header';
+        header.innerHTML = `<div><div class="scroll-eyebrow">Vidéo Citeo — Audiovisuel</div><h3>${title}</h3></div>
+          <button class="scroll-close-btn" id="scrollCloseBtn">✕</button>`;
+        lightboxContent.appendChild(header);
+
+        // Description
+        const desc = document.createElement('p');
+        desc.style.cssText = 'color:var(--muted);font-size:0.88rem;line-height:1.7;width:100%;flex-shrink:0;';
+        desc.textContent = description;
+        lightboxContent.appendChild(desc);
+
+        // Vidéo
+        const videoTitle = document.createElement('div');
+        videoTitle.className = 'scroll-section-title';
+        videoTitle.textContent = 'Vidéo';
+        lightboxContent.appendChild(videoTitle);
+        const video = document.createElement('video');
+        video.controls = true;
+        video.src = videos[0];
+        lightboxContent.appendChild(video);
+
+        // Stratégie
+        if (strategie) {
+          const stratTitle = document.createElement('div');
+          stratTitle.className = 'scroll-section-title';
+          stratTitle.textContent = 'Stratégie & choix créatifs';
+          lightboxContent.appendChild(stratTitle);
+          const stratText = document.createElement('p');
+          stratText.className = 'scroll-strat';
+          stratText.textContent = strategie;
+          lightboxContent.appendChild(stratText);
+        }
+
+        // Tableau synoptique
+        const tableTitle = document.createElement('div');
+        tableTitle.className = 'scroll-section-title';
+        tableTitle.textContent = 'Tableau synoptique';
+        lightboxContent.appendChild(tableTitle);
+        const tableWrap = document.createElement('div');
+        tableWrap.style.cssText = 'width:100%;flex-shrink:0;overflow-x:auto;';
+        tableWrap.innerHTML = `<table class="syno-table">
+          <thead><tr><th>N° Plan</th><th>Timing</th><th>Image / Action</th><th>Paroles / Voix</th><th>Type de plan</th><th>Indications techniques</th></tr></thead>
+          <tbody>
+            <tr><td>Plan 1</td><td>00:00–00:04</td><td>Personne arrive devant les poubelles, hésite à jeter n'importe où</td><td><em>« Frérot, tu vas vraiment faire ça ? »</em> — voix off</td><td>Plan large</td><td>Ambiance urbaine, rythme posé</td></tr>
+            <tr><td>Plan 2</td><td>00:04–00:12</td><td>La personne s'arrête net, cherche d'où vient la voix</td><td><em>« Tu jettes au hasard ? Non, ça c'est pas clean. Chaque geste compte, chaque tri décide. »</em> — voix rap</td><td>Plan moyen</td><td>Séquence la plus longue (8s), cut sur le beat</td></tr>
+            <tr><td>Plan 3</td><td>00:12–00:14</td><td>Gros plan main — canette dans la poubelle jaune</td><td><em>« Jaune pour les emballages »</em> — voix chantée</td><td>Gros plan</td><td>Couleur jaune mis en valeur, cut sur « jaune »</td></tr>
+            <tr><td>Plan 4</td><td>00:14–00:16</td><td>La personne lève les bras en victoire</td><td><em>« On ne lâche rien, on avance, on agit. On trie »</em> — voix chantée</td><td>Plan moyen</td><td>Énergie positive, mouvement vers le haut</td></tr>
+            <tr><td>Plan 5</td><td>00:16–00:18</td><td>Insert graphique — « ON NE LÂCHE RIEN ! » en gros, lettres colorées</td><td><em>« systématiquement »</em> — voix chantée</td><td>Insert texte</td><td>Motion design, typo bold, couleurs vives</td></tr>
+            <tr><td>Plan 6</td><td>00:18–00:20</td><td>Logo CITEO centré sur fond noir</td><td>Silence / fade out</td><td>Plan logo</td><td>Fade in logo, 2s de respiration</td></tr>
+          </tbody></table>`;
+        lightboxContent.appendChild(tableWrap);
+
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        stage.scrollTop = 0;
+
+        document.getElementById('scrollCloseBtn').addEventListener('click', closeBox);
+        return;
+      }
+
+      // MODE PLAYLIST (plusieurs vidéos avec menu déroulant)
+      if (card.dataset.playlistMode) {
+        lightbox.classList.add('playlist-mode');
+        lightboxContent.innerHTML = '';
+        prevBtn.style.display = 'none';
+        nextBtn.style.display = 'none';
+
+        const header = document.createElement('div');
+        header.className = 'scroll-header';
+        header.innerHTML = `<div><div class="scroll-eyebrow">Audiovisuel — Playlist</div><h3>${title}</h3></div>
+          <button class="scroll-close-btn" id="playlistCloseBtn">✕</button>`;
+        lightboxContent.appendChild(header);
+
+        const desc = document.createElement('p');
+        desc.style.cssText = 'color:var(--muted);font-size:0.88rem;line-height:1.7;width:100%;flex-shrink:0;';
+        desc.textContent = description;
+        lightboxContent.appendChild(desc);
+
+        const labels = card.dataset.videoLabels ? card.dataset.videoLabels.split('|') : videos.map((_, i) => `Épisode ${i + 1}`);
+
+        const selectWrap = document.createElement('div');
+        selectWrap.className = 'playlist-select-wrap';
+        selectWrap.innerHTML = `<label>Choisir une vidéo</label>`;
+        const select = document.createElement('select');
+        select.className = 'playlist-select';
+        labels.forEach((label, i) => {
+          const opt = document.createElement('option');
+          opt.value = videos[i];
+          opt.textContent = label;
+          select.appendChild(opt);
+        });
+        selectWrap.appendChild(select);
+        lightboxContent.appendChild(selectWrap);
+
+        const videoEl = document.createElement('video');
+        videoEl.controls = true;
+        videoEl.src = videos[0];
+        videoEl.style.cssText = 'width:100%;max-height:55vh;border-radius:14px;flex-shrink:0;';
+        lightboxContent.appendChild(videoEl);
+
+        select.addEventListener('change', () => {
+          videoEl.src = select.value;
+          videoEl.play();
+        });
+
+        if (strategie) {
+          const stratTitle = document.createElement('div');
+          stratTitle.className = 'scroll-section-title';
+          stratTitle.textContent = 'Stratégie & choix créatifs';
+          lightboxContent.appendChild(stratTitle);
+          const stratText = document.createElement('p');
+          stratText.className = 'scroll-strat';
+          stratText.textContent = strategie;
+          lightboxContent.appendChild(stratText);
+        }
+
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        stage.scrollTop = 0;
+        document.getElementById('playlistCloseBtn').addEventListener('click', closeBox);
+        return;
+      }
+
+      // MODE NORMAL
+      currentMedia = [...images, ...videos];
+      currentIndex = 0;
+
+      lightboxTitle.textContent = title;
+      lightboxDescription.textContent = description;
+
+      const strateBlock = document.getElementById('lightboxStrategie');
+      const strateText = document.getElementById('strateText');
+      if (strategie) {
+        strateText.textContent = strategie;
+        strateBlock.classList.add('visible');
+      } else {
+        strateBlock.classList.remove('visible');
+      }
+
+      const ciblesBlock = document.getElementById('lightboxCibles');
+      const objectifsBlock = document.getElementById('lightboxObjectifs');
+
+      if (cibles && cibles.length === 3) {
+        document.getElementById('cibPrincipale').textContent = cibles[0];
+        document.getElementById('cibCoeur').textContent = cibles[1];
+        document.getElementById('cibSecondaire').textContent = cibles[2];
+        ciblesBlock.style.display = 'grid';
+      } else {
+        ciblesBlock.style.display = 'none';
+      }
+
+      if (objectifs && objectifs.length === 3) {
+        document.getElementById('objCognitif').textContent = objectifs[0];
+        document.getElementById('objAffectif').textContent = objectifs[1];
+        document.getElementById('objConatif').textContent = objectifs[2];
+        objectifsBlock.style.display = 'grid';
+      } else {
+        objectifsBlock.style.display = 'none';
+      }
+
+      if (card.dataset.zoom === 'small') {
+        stage.classList.add('zoom-small');
+      } else {
+        stage.classList.remove('zoom-small');
+      }
+
+      renderMedia();
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeBox() {
+      lightbox.classList.remove('open');
+      lightbox.classList.remove('scroll-mode');
+      lightbox.classList.remove('playlist-mode');
+      lightboxContent.innerHTML = '';
+      document.body.style.overflow = '';
+      document.querySelector('.lightbox-stage').classList.remove('zoom-small');
+    }
+
+    function showNext() {
+      if (!currentMedia.length) return;
+      currentIndex = (currentIndex + 1) % currentMedia.length;
+      renderMedia();
+    }
+
+    function showPrev() {
+      if (!currentMedia.length) return;
+      currentIndex = (currentIndex - 1 + currentMedia.length) % currentMedia.length;
+      renderMedia();
+    }
+
+    cards.forEach(card => {
+      card.addEventListener('click', (event) => {
+        const target = event.target;
+        if (target.closest('video') || target.closest('audio') || target.closest('button') || target.closest('a')) {
+          return;
+        }
+        openLightbox(card);
+      });
+    });
+
+    closeLightbox.addEventListener('click', closeBox);
+    nextBtn.addEventListener('click', showNext);
+    prevBtn.addEventListener('click', showPrev);
+
+    lightbox.addEventListener('click', (event) => {
+      if (event.target === lightbox) {
+        closeBox();
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (!lightbox.classList.contains('open')) return;
+      if (event.key === 'Escape') closeBox();
+      if (event.key === 'ArrowRight') showNext();
+      if (event.key === 'ArrowLeft') showPrev();
+    });
+  </script>
+</body>
+</html>

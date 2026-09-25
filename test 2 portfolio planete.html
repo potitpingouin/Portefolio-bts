@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Portfolio BTS Communication - Espace</title>
+
+<style>
+:root{
+  --bg:#050816;
+  --text:#ffffff;
+  --muted:rgba(255,255,255,0.75);
+  --line:rgba(255,255,255,.10);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:system-ui,Segoe UI,Roboto,Arial;
+  background:var(--bg);
+  color:var(--text);
+  overflow:hidden;
+}
+
+/* ===== Fond étoilé animé ===== */
+body::before, body::after{
+  content:"";
+  position:fixed;
+  inset:-20%;
+  pointer-events:none;
+  background:
+    radial-gradient(2px 2px at 20% 30%, #fff 50%, transparent 52%),
+    radial-gradient(2px 2px at 70% 60%, #fff 50%, transparent 52%),
+    radial-gradient(2px 2px at 40% 80%, #fff 50%, transparent 52%);
+  opacity:.6;
+}
+
+body::before{ animation: drift1 40s linear infinite; }
+body::after{ animation: drift2 60s linear infinite; }
+
+@keyframes drift1{
+  from{transform:translate(0,0)}
+  to{transform:translate(-5%,5%)}
+}
+@keyframes drift2{
+  from{transform:translate(0,0)}
+  to{transform:translate(5%,-5%)}
+}
+
+/* ===== Header ===== */
+header{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  padding:20px;
+  display:flex;
+  justify-content:space-between;
+  z-index:10;
+}
+.title{font-weight:bold}
+.hint{color:var(--muted)}
+
+/* ===== Scene (dézoom global) ===== */
+.scene{
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transform:scale(0.75);
+  transform-origin:center;
+  position:relative;
+}
+
+/* ===== Orbites visuelles ===== */
+.orbit{
+  position:absolute;
+  border:1px solid var(--line);
+  border-radius:50%;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+}
+
+.o1{width:220px;height:220px}
+.o2{width:320px;height:320px}
+.o3{width:430px;height:430px}
+.o4{width:540px;height:540px}
+.o5{width:680px;height:680px}
+.o6{width:820px;height:820px}
+.o7{width:950px;height:950px}
+.o8{width:1100px;height:1100px}
+
+/* ===== Animation orbitale propre ===== */
+.orbit-wrap{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+}
+
+.orbit-anim{
+  position:absolute;
+  left:0;
+  top:0;
+  width:var(--size);
+  height:var(--size);
+  margin-left:calc(var(--size)/-2);
+  margin-top:calc(var(--size)/-2);
+  animation:spin var(--dur) linear infinite;
+}
+
+@keyframes spin{
+  from{transform:rotate(0deg)}
+  to{transform:rotate(360deg)}
+}
+
+.rev .orbit-anim{ animation-direction:reverse }
+
+/* tailles + vitesses */
+.w1{--size:220px;--dur:10s}
+.w2{--size:320px;--dur:14s}
+.w3{--size:430px;--dur:18s}
+.w4{--size:540px;--dur:24s}
+.w5{--size:680px;--dur:30s}
+.w6{--size:820px;--dur:38s}
+.w7{--size:950px;--dur:46s}
+.w8{--size:1100px;--dur:56s}
+
+/* ===== Planètes ===== */
+.planet{
+  position:absolute;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  cursor:pointer;
+  transition:.2s;
+}
+.planet:hover{ transform:translate(-50%,-50%) scale(1.1); }
+
+.sun{
+  width:120px;height:120px;
+  background:radial-gradient(circle,#fff6b0,#ffcc2e,#ff7b00);
+  left:50%;top:50%;
+  transform:translate(-50%,-50%);
+  animation:pulse 3s ease-in-out infinite;
+}
+@keyframes pulse{
+  0%,100%{transform:translate(-50%,-50%) scale(1)}
+  50%{transform:translate(-50%,-50%) scale(1.05)}
+}
+
+.mercury{width:30px;height:30px;background:gray}
+.venus{width:40px;height:40px;background:orange}
+.earth{width:45px;height:45px;background:royalblue}
+.mars{width:35px;height:35px;background:#e85c4a}
+.jupiter{width:70px;height:70px;background:#d2a46f}
+.saturn{width:65px;height:65px;background:#f2d27a}
+.uranus{width:50px;height:50px;background:#7be0d1}
+.neptune{width:50px;height:50px;background:#5c7dff}
+
+/* ===== Panneaux ===== */
+.panel{
+  position:fixed;
+  inset:0;
+  display:none;
+  background:rgba(0,0,0,.85);
+  backdrop-filter:blur(10px);
+  padding:100px 20px;
+}
+.panel:target{display:block}
+
+.card{
+  max-width:900px;
+  margin:auto;
+  background:rgba(255,255,255,.08);
+  padding:20px;
+  border-radius:20px;
+  animation:fadeIn .3s ease-out;
+}
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.close{display:inline-block;margin-top:20px}
+
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="title">Portfolio – BTS Communication (Thème Espace)</div>
+  <div class="hint">Clique sur une planète pour ouvrir une section</div>
+</header>
+
+<div class="scene">
+
+  <!-- Orbites -->
+  <div class="orbit o1"></div>
+  <div class="orbit o2"></div>
+  <div class="orbit o3"></div>
+  <div class="orbit o4"></div>
+  <div class="orbit o5"></div>
+  <div class="orbit o6"></div>
+  <div class="orbit o7"></div>
+  <div class="orbit o8"></div>
+
+  <!-- Soleil -->
+  <a href="#sun" class="planet sun"></a>
+
+  <!-- Planètes -->
+  <div class="orbit-wrap w1"><div class="orbit-anim"><a href="#mercury" class="planet mercury" style="left:50%;top:0%"></a></div></div>
+  <div class="orbit-wrap w2 rev"><div class="orbit-anim"><a href="#venus" class="planet venus" style="left:50%;top:0%"></a></div></div>
+  <div class="orbit-wrap w3"><div class="orbit-anim"><a href="#earth" class="planet earth" style="left:50%;top:0%"></a></div></div>
+  <div class="orbit-wrap w4 rev"><div class="orbit-anim"><a href="#mars" class="planet mars" style="left:50%;top:0%"></a></div></div>
+  <div class="orbit-wrap w5"><div class="orbit-anim"><a href="#jupiter" class="planet jupiter" style="left:50%;top:0%"></a></div></div>
+  <div class="orbit-wrap w6 rev"><div class="orbit-anim"><a href="#saturn" class="planet saturn" style="left:50%;top:0%"></a></div></div>
+  <div class="orbit-wrap w7"><div class="orbit-anim"><a href="#uranus" class="planet uranus" style="left:50%;top:0%"></a></div></div>
+  <div class="orbit-wrap w8 rev"><div class="orbit-anim"><a href="#neptune" class="planet neptune" style="left:50%;top:0%"></a></div></div>
+
+</div>
+
+<!-- PANNEAUX -->
+<section id="sun" class="panel">
+  <div class="card">
+    <h2>☀️ À propos de moi</h2>
+    <p>Ton texte ici.</p>
+    <a href="#" class="close">Retour</a>
+  </div>
+</section>
+
+<section id="mercury" class="panel">
+  <div class="card">
+    <h2>Mercure</h2>
+    <p>Ton texte ici.</p>
+    <a href="#" class="close">Retour</a>
+  </div>
+</section>
+
+<!-- Tu peux copier le même modèle pour les autres planètes -->
+
+</body>
+</html>

@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Parcours — Portfolio BTS Communication</title>
+  <style>
+    :root {
+      --bg: #09090d;
+      --line: rgba(255,255,255,0.12);
+      --text: #f6f6f8;
+      --muted: #b8b8c2;
+      --accent: #d7b56d;
+      --accent-2: #c88bff;
+      --green: #4C9471;
+      --shadow: 0 24px 70px rgba(0,0,0,0.42);
+      --radius: 24px;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top, rgba(200,139,255,0.10), transparent 28%),
+        radial-gradient(circle at 20% 20%, rgba(215,181,109,0.10), transparent 20%),
+        linear-gradient(180deg, #09090d, #13131a 50%, #0b0b0f 100%);
+    }
+    .noise {
+      position: fixed; inset: 0; pointer-events: none; opacity: 0.08;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.3) 0.8px, transparent 1px);
+      background-size: 10px 10px; mix-blend-mode: soft-light;
+    }
+    .page { position: relative; z-index: 1; max-width: 1220px; margin: 0 auto; padding: 28px 22px 60px; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 28px; }
+    .back {
+      display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text);
+      padding: 12px 16px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,0.04);
+    }
+    .back:hover { background: rgba(255,255,255,0.08); }
+    .track-badge {
+      padding: 10px 14px; border-radius: 999px; border: 1px solid var(--line); color: var(--accent);
+      background: rgba(255,255,255,0.04); font-weight: 800; letter-spacing: 0.08em; font-size: 0.82rem; text-transform: uppercase;
+    }
+    .panel {
+      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03));
+      border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 28px;
+    }
+    .eyebrow {
+      display: inline-block; margin-bottom: 14px; color: var(--accent); text-transform: uppercase;
+      letter-spacing: 0.14em; font-weight: 800; font-size: 0.84rem;
+    }
+    h1 { margin: 0 0 14px; font-size: clamp(2.4rem, 4vw, 4.2rem); line-height: 0.95; letter-spacing: -0.04em; }
+    h2 { margin: 0 0 12px; font-size: 1.4rem; }
+    h3 { margin: 0 0 8px; font-size: 1.05rem; }
+    p { color: var(--muted); line-height: 1.75; margin: 0; }
+
+    .hero { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 18px; margin-bottom: 22px; }
+
+    .mini-vinyl { position: relative; min-height: 300px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .mini-record {
+      position: absolute; width: 58%; aspect-ratio: 1/1; border-radius: 50%; right: 8%;
+      background: radial-gradient(circle at center, #0a0a0a 0 7%, #1a1a1f 7% 11%, #09090b 11% 14%, transparent 14%),
+        repeating-radial-gradient(circle at center, #0b0b0d 0 10px, #17171c 10px 12px, #09090b 12px 15px);
+      box-shadow: var(--shadow);
+    }
+    .mini-cover {
+      position: relative; width: 64%; aspect-ratio: 1/1; border-radius: 22px; z-index: 2;
+      background: linear-gradient(135deg, rgba(215,181,109,0.22), rgba(200,139,255,0.15)), rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.10); display: grid; place-items: center;
+    }
+    .mini-cover span { font-size: 1.4rem; font-weight: 900; letter-spacing: 0.18em; }
+
+    .section { margin-top: 22px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 18px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 18px; }
+
+    /* Timeline */
+    .timeline { display: grid; gap: 16px; }
+    .timeline-item {
+      display: grid; grid-template-columns: 170px 1fr; gap: 18px;
+      border: 1px solid var(--line); border-radius: 18px; padding: 20px;
+      background: rgba(255,255,255,0.03); transition: transform 240ms ease, border-color 240ms ease;
+    }
+    .timeline-item:hover { transform: translateX(4px); border-color: rgba(215,181,109,0.4); }
+    .timeline-item.stage { border-left: 3px solid var(--green); }
+    .timeline-item.projet { border-left: 3px solid var(--accent-2); }
+    .timeline-item.formation { border-left: 3px solid var(--accent); }
+    .timeline-date {
+      display: flex; flex-direction: column; gap: 4px;
+      padding-right: 18px; border-right: 1px solid var(--line);
+    }
+    .timeline-date strong { color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.8rem; }
+    .timeline-date span { color: var(--text); font-weight: 700; font-size: 1.05rem; line-height: 1.3; }
+    .timeline-date .lieu { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+    .timeline-content h3 { color: var(--text); margin-bottom: 6px; }
+    .timeline-content p { font-size: 0.92rem; }
+
+    .actions { margin-top: 10px; padding: 0; list-style: none; display: grid; gap: 4px; }
+    .actions li {
+      font-size: 0.86rem; color: var(--muted); padding-left: 14px; position: relative; line-height: 1.5;
+    }
+    .actions li::before { content: "→"; position: absolute; left: 0; color: var(--accent); font-size: 0.78rem; }
+
+    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .timeline-tag {
+      display: inline-block; padding: 4px 10px; border-radius: 999px;
+      background: rgba(215,181,109,0.12); border: 1px solid rgba(215,181,109,0.3);
+      color: var(--accent); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em;
+    }
+    .timeline-tag.green {
+      background: rgba(76,148,113,0.12); border-color: rgba(76,148,113,0.35); color: var(--green);
+    }
+    .timeline-tag.purple {
+      background: rgba(200,139,255,0.10); border-color: rgba(200,139,255,0.3); color: var(--accent-2);
+    }
+    .tool-tag {
+      display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 999px;
+      border: 1px solid var(--line); background: rgba(255,255,255,0.04);
+      font-size: 0.75rem; color: var(--muted);
+    }
+
+    /* Logiciels */
+    .logiciels-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; margin-top: 14px; }
+    .logiciel-card {
+      padding: 20px; border-radius: 18px; border: 1px solid var(--line);
+      background: rgba(255,255,255,0.03); display: grid; gap: 8px;
+    }
+    .logiciel-card .logi-name {
+      font-size: 1rem; font-weight: 800; color: var(--text); margin-bottom: 2px;
+    }
+    .logiciel-card .logi-tag {
+      display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 0.72rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px;
+    }
+    .logiciel-card p { font-size: 0.86rem; }
+    .logi-canva { border-top: 3px solid #8B5CF6; }
+    .logi-capcut { border-top: 3px solid #00C2FF; }
+    .logi-gform { border-top: 3px solid #4285F4; }
+    .logi-excel { border-top: 3px solid #217346; }
+    .logi-ppt { border-top: 3px solid #D04A02; }
+    .logi-chatgpt { border-top: 3px solid #10A37F; }
+
+    /* Projets phares */
+    .projets-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; margin-top: 14px; }
+    .projet-card {
+      padding: 20px; border-radius: 18px; border: 1px solid var(--line);
+      background: rgba(255,255,255,0.03); position: relative; overflow: hidden;
+    }
+    .projet-card::before {
+      content: ""; position: absolute; inset: 0 auto auto 0;
+      width: 100%; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    }
+    .projet-card .num { font-size: 0.78rem; font-weight: 800; color: var(--accent-2); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+    .projet-card h3 { font-size: 0.95rem; color: var(--text); margin: 0 0 6px; }
+    .projet-card p { font-size: 0.84rem; }
+
+    /* Compétences */
+    .skills { display: flex; flex-wrap: wrap; gap: 10px; }
+    .skill { padding: 9px 14px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,0.04); font-size: 0.9rem; }
+
+    .quote {
+      padding: 16px 18px; border-left: 3px solid var(--accent); background: rgba(255,255,255,0.04); border-radius: 14px;
+      color: var(--text); line-height: 1.7;
+    }
+    .bottom-nav { margin-top: 32px; display: flex; justify-content: space-between; }
+    .next-btn, .ghost-btn {
+      display: inline-flex; align-items: center; gap: 10px; text-decoration: none;
+      padding: 14px 22px; border-radius: 999px; font-weight: 700;
+    }
+    .next-btn { color: #111; background: linear-gradient(135deg, #d7b56d, #f0d79e); box-shadow: 0 14px 30px rgba(0,0,0,0.25); }
+    .ghost-btn { color: var(--text); border: 1px solid var(--line); background: rgba(255,255,255,0.04); }
+    .ghost-btn:hover, .next-btn:hover { opacity: 0.88; }
+
+    @media (max-width: 1000px) {
+      .hero, .grid-2, .grid-3, .logiciels-grid, .projets-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 700px) {
+      .hero, .grid-2, .grid-3, .logiciels-grid, .projets-grid { grid-template-columns: 1fr; }
+      .timeline-item { grid-template-columns: 1fr; }
+      .timeline-date { border-right: none; border-bottom: 1px solid var(--line); padding-right: 0; padding-bottom: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <main class="page">
+    <div class="topbar">
+      <a class="back" href="portfolio_bts_vinyle.html?tracklist=1">← Retour à la tracklist</a>
+      <div class="track-badge">Track 02 — Parcours</div>
+    </div>
+
+    <!-- HERO -->
+    <section class="hero">
+      <article class="panel">
+        <div class="eyebrow">Parcours</div>
+        <h1>Mon évolution</h1>
+        <p>
+          Entré en BTS Communication avec un bac général scientifique et aucune base créative,
+          j'ai progressivement découvert la communication sous toutes ses formes : graphisme, stratégie, événementiel, digital.
+          Deux stages et plusieurs projets marquants plus tard, je sais aujourd'hui où je veux aller.
+        </p>
+        <p style="margin-top:12px;">
+          Ce parcours, c'est celui d'un étudiant qui s'est construit en faisant — en plantant, en recommençant, et en trouvant progressivement sa voie dans l'événementiel.
+        </p>
+      </article>
+      <article class="panel mini-vinyl">
+        <div class="mini-record" aria-hidden="true"></div>
+        <div class="mini-cover"><span>TRACK 02</span></div>
+      </article>
+    </section>
+
+    <!-- TIMELINE -->
+    <section class="section panel">
+      <div class="eyebrow">Frise chronologique</div>
+      <h2>Repères de parcours</h2>
+      <div class="timeline" style="margin-top:18px;">
+
+        <div class="timeline-item formation">
+          <div class="timeline-date">
+            <strong>2024</strong>
+            <span>Le bac</span>
+          </div>
+          <div class="timeline-content">
+            <h3>Baccalauréat général — spécialités SES & Sciences de l'ingénieur</h3>
+            <p>Profil analytique et rigoureux, sans formation créative. Ces bases servent encore aujourd'hui pour structurer une démarche de communication et argumenter des choix stratégiques.</p>
+            <div class="tag-row">
+              <span class="timeline-tag">Lycée</span>
+              <span class="timeline-tag">Bac général</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item formation">
+          <div class="timeline-date">
+            <strong>Sept. 2024</strong>
+            <span>Entrée en BTS</span>
+            <span class="lieu">Alema Business School</span>
+          </div>
+          <div class="timeline-content">
+            <h3>Début du BTS Communication à Alema Business School</h3>
+            <p>Découverte d'un univers entièrement nouveau : création graphique, stratégie de communication, gestion de projet, digital. Très vite, les projets de groupe et la dimension créative du métier m'ont accroché.</p>
+            <div class="tag-row">
+              <span class="timeline-tag">Formation</span>
+              <span class="timeline-tag">BTS Communication</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item stage">
+          <div class="timeline-date">
+            <strong>Mai – Juil. 2025</strong>
+            <span>Stage 1</span>
+            <span class="lieu">Bulle de Jeux — Meaux</span>
+          </div>
+          <div class="timeline-content">
+            <h3>Stagiaire communication — Bulle de Jeux (librairie spécialisée)</h3>
+            <p>Première expérience professionnelle dans une librairie spécialisée : mangas, BD, jeux de société et cartes à collectionner (TCG). En charge de la communication digitale du magasin.</p>
+            <ul class="actions">
+              <li>Création de posts Instagram pour valoriser les nouveautés jeux et mangas</li>
+              <li>Conception d'affiches promotionnelles pour les avant-premières d'extensions TCG (Lorcana, Star Wars Unlimited, Magic)</li>
+              <li>Rédaction des légendes Instagram adaptées au ton de la communauté gaming</li>
+              <li>Aide à la préparation logistique des soirées événementielles en boutique</li>
+              <li>Mise en avant d'offres promotionnelles éditeurs (Pika Edition, Mangetsu, J.L. Istin)</li>
+            </ul>
+            <div class="tag-row">
+              <span class="timeline-tag green">Communication digitale</span>
+              <span class="timeline-tag green">Instagram</span>
+              <span class="tool-tag">Canva</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item projet">
+          <div class="timeline-date">
+            <strong>2024 – 2025</strong>
+            <span>Projets phares</span>
+            <span class="lieu">Alema Business School</span>
+          </div>
+          <div class="timeline-content">
+            <h3>Escape game harcèlement & Air Alema</h3>
+            <p>Deux projets collectifs marquants qui ont confirmé mon intérêt pour l'événementiel et la communication de projet.</p>
+            <ul class="actions">
+              <li>Escape game de sensibilisation au harcèlement : scénario, supports visuels, logistique, débrief — 63 retours Google Form (92% participation)</li>
+              <li>Air Alema : conception d'un événement BtoB pour promouvoir l'ouverture du BTS Tourisme — veille créative, affiches Canva, contact prestataires restaurateurs, présentation devant jury</li>
+            </ul>
+            <div class="tag-row">
+              <span class="timeline-tag purple">Événementiel</span>
+              <span class="timeline-tag purple">BtoB</span>
+              <span class="tool-tag">Canva</span>
+              <span class="tool-tag">Google Form</span>
+              <span class="tool-tag">Excel</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item stage">
+          <div class="timeline-date">
+            <strong>2e année</strong>
+            <span>Stage 2</span>
+            <span class="lieu">Wonderful Land — Trampoline Park</span>
+          </div>
+          <div class="timeline-content">
+            <h3>Stagiaire communication — Wonderful Land (parc de loisirs)</h3>
+            <p>Deuxième expérience professionnelle dans un parc de loisirs / trampoline park. Communication digitale orientée réseaux sociaux et mise en valeur de l'expérience client.</p>
+            <ul class="actions">
+              <li>Tournage de vidéos et de stories pour les réseaux sociaux du parc</li>
+              <li>Création de posts et visuels promotionnels pour animer la communication en ligne</li>
+              <li>Montage vidéo pour les publications Instagram et les stories</li>
+              <li>Contribution à la mise en valeur de l'ambiance et des activités du parc</li>
+            </ul>
+            <div class="tag-row">
+              <span class="timeline-tag green">Réseaux sociaux</span>
+              <span class="timeline-tag green">Vidéo</span>
+              <span class="tool-tag">Canva</span>
+              <span class="tool-tag">CapCut</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item formation">
+          <div class="timeline-date">
+            <strong>Aujourd'hui</strong>
+            <span>& demain</span>
+          </div>
+          <div class="timeline-content">
+            <h3>Cap sur le Bachelor Communication Événementielle</h3>
+            <p>Poursuite d'études en Bachelor Communication Événementielle à Alema, idéalement en alternance. L'objectif : approfondir la conception d'événements et acquérir une vraie expérience terrain dans un contexte professionnel.</p>
+            <div class="tag-row">
+              <span class="timeline-tag">Projet pro</span>
+              <span class="timeline-tag">Bachelor</span>
+              <span class="timeline-tag">Alternance</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- PROJETS PHARES -->
+    <section class="section panel">
+      <div class="eyebrow">Projets marquants</div>
+      <h2>Ce que j'ai conçu durant la formation</h2>
+      <div class="projets-grid">
+        <div class="projet-card">
+          <div class="num">Projet 01</div>
+          <h3>Escape game — sensibilisation au harcèlement</h3>
+          <p>Projet événementiel collectif autour de la Journée nationale contre le harcèlement. Scénario, supports visuels, organisation logistique, débrief. 63 retours Google Form — 92% de participation.</p>
+        </div>
+        <div class="projet-card">
+          <div class="num">Projet 02</div>
+          <h3>Air Alema — événement de promotion BtoB</h3>
+          <p>Conception d'un événement destiné à promouvoir l'ouverture du BTS Tourisme auprès d'élus et d'acteurs institutionnels. Veille, affiches, contact prestataires, présentation devant jury.</p>
+        </div>
+        <div class="projet-card">
+          <div class="num">Projet 03</div>
+          <h3>Communication digitale Bulle de Jeux</h3>
+          <p>9 posts Instagram créés et publiés durant le stage. Meilleur engagement : 55 likes. Affiches d'avant-premières TCG, offres promotionnelles éditeurs, présentation des nouveautés rayon.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOGICIELS -->
+    <section class="section panel">
+      <div class="eyebrow">Logiciels & outils</div>
+      <h2>Les outils que je maîtrise</h2>
+      <div class="logiciels-grid">
+        <div class="logiciel-card logi-canva">
+          <div class="logi-name">Canva</div>
+          <p>Outil principal de création visuelle. Utilisé sur l'ensemble des projets BTS et des deux stages : affiches, posts Instagram, supports événementiels, présentations. Maîtrise des formats, des exports et des principes de mise en page.</p>
+        </div>
+        <div class="logiciel-card logi-capcut">
+          <div class="logi-name">CapCut</div>
+          <p>Montage vidéo pour les stories et publications vidéo. Utilisé lors du stage Wonderful Land pour monter des séquences filmées en boutique/parc et lors du projet harcèlement pour la vidéo d'introduction.</p>
+        </div>
+        <div class="logiciel-card logi-gform">
+          <div class="logi-name">Google Forms</div>
+          <p>Création et diffusion de questionnaires d'évaluation. Utilisé pour mesurer l'impact de l'escape game harcèlement : 63 réponses collectées, taux de participation de 92%.</p>
+        </div>
+        <div class="logiciel-card logi-excel">
+          <div class="logi-name">Excel</div>
+          <p>Organisation logistique et gestion de planning. Utilisé pour le planning de rotation des classes lors de l'escape game (passages par classes) et pour le suivi des prestataires sur Air Alema.</p>
+        </div>
+        <div class="logiciel-card logi-ppt">
+          <div class="logi-name">PowerPoint</div>
+          <p>Création de diaporamas pour l'animation et le débrief. Utilisé lors de l'escape game harcèlement : diaporama d'indices pour guider les participants (10 slides) et diaporama de débrief final (11 slides).</p>
+        </div>
+        <div class="logiciel-card logi-chatgpt">
+          <div class="logi-name">ChatGPT</div>
+          <p>Aide à la rédaction et au brainstorming créatif. Utilisé sur plusieurs projets pour structurer des scripts, affiner des légendes Instagram et explorer des directions créatives lors des phases d'idéation.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPÉTENCES + BTS -->
+    <section class="section grid-2">
+      <article class="panel">
+        <div class="eyebrow">Compétences développées</div>
+        <h2>Savoir-faire acquis</h2>
+        <div class="skills">
+          <span class="skill">Création visuelle</span>
+          <span class="skill">Communication digitale</span>
+          <span class="skill">Gestion de projet</span>
+          <span class="skill">Organisation logistique</span>
+          <span class="skill">Travail en équipe</span>
+          <span class="skill">Événementiel</span>
+          <span class="skill">Stratégie de communication</span>
+          <span class="skill">Montage vidéo</span>
+          <span class="skill">Animation de réseaux sociaux</span>
+          <span class="skill">Relation prestataires</span>
+        </div>
+      </article>
+      <article class="panel">
+        <div class="eyebrow">Ce que le BTS m'a apporté</div>
+        <h2>Ma progression</h2>
+        <p>
+          Entré sans aucune base créative, le BTS m'a permis de développer une vraie méthodologie : analyser une situation, identifier une cible, définir des objectifs et concevoir des supports cohérents.
+        </p>
+        <p style="margin-top:12px;">
+          Au fil des projets, j'ai trouvé ma spécialité : l'événementiel. C'est là que tout converge pour moi — la stratégie, la création, la logistique et le contact humain. C'est la direction que je me suis fixée pour la suite.
+        </p>
+      </article>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div class="eyebrow">Bilan</div>
+        <h2>Apports &amp; compétences</h2>
+      </div>
+      <div class="quote">
+        <strong>Savoir-faire technique :</strong> maîtrise de Canva, CapCut, VS Code, Google Forms, Excel — capable de produire seul des supports print, digitaux et audiovisuels de A à Z.<br><br>
+        <strong>Savoir-faire stratégique :</strong> définir une cible, choisir un canal adapté, construire un message cohérent avec l'univers de marque et mesurer l'impact via des KPI concrets.<br><br>
+        <strong>Savoir-être :</strong> autonomie, prise d'initiative (musée interactif, Citeo), capacité à aller au-delà du brief attendu et à travailler en contexte réel avec de vrais clients.
+      </div>
+    </section>
+
+    <div class="bottom-nav">
+      <a class="ghost-btn" href="portfolio_bts_vinyle.html?tracklist=1">← Retour à la tracklist</a>
+      <a class="next-btn" href="creations.html">Page suivante →</a>
+    </div>
+  </main>
+</body>
+</html>

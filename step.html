@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fiche — STEP.ONE</title>
+  <style>
+    :root {
+      --bg: #09090d;
+      --bg-2: #13131a;
+      --line: rgba(255,255,255,0.12);
+      --text: #f6f6f8;
+      --muted: #b8b8c2;
+      --accent: #4C9471;
+      --accent-2: #d7b56d;
+      --danger: #d85b68;
+      --shadow: 0 24px 70px rgba(0,0,0,0.42);
+      --radius: 24px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+
+    body {
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top, rgba(76,148,113,0.12), transparent 25%),
+        radial-gradient(circle at 80% 10%, rgba(215,181,109,0.08), transparent 22%),
+        linear-gradient(180deg, #09090d, #13131a 55%, #0b0b0f 100%);
+    }
+
+    .noise {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.07;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.3) 0.8px, transparent 1px);
+      background-size: 10px 10px;
+      mix-blend-mode: soft-light;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 28px 22px 60px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text);
+      padding: 12px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+    }
+
+    .back:hover { background: rgba(255,255,255,0.08); }
+
+    .track-badge {
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      color: var(--accent-2);
+      background: rgba(255,255,255,0.04);
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+    }
+
+    .panel {
+      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 28px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 14px;
+      color: var(--accent-2);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-weight: 800;
+      font-size: 0.84rem;
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(2.4rem, 4vw, 4.2rem);
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: 1.5rem;
+    }
+
+    h3 {
+      margin: 0 0 10px;
+      font-size: 1rem;
+    }
+
+    p {
+      color: var(--muted);
+      line-height: 1.72;
+      margin: 0;
+    }
+
+    .hero-lead {
+      display: grid;
+      gap: 16px;
+      align-content: start;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .stat {
+      padding: 16px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.03);
+    }
+
+    .stat strong {
+      display: block;
+      color: var(--text);
+      font-size: 1.1rem;
+      margin-bottom: 6px;
+    }
+
+    .hero-visual {
+      position: relative;
+      min-height: 420px;
+      overflow: hidden;
+      padding: 0;
+    }
+
+    .hero-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: auto 18px 18px 18px;
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: rgba(7,7,10,0.68);
+      border: 1px solid rgba(255,255,255,0.12);
+      backdrop-filter: blur(10px);
+    }
+
+    .section {
+      margin-top: 26px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .mini-card {
+      padding: 22px;
+      border-radius: 22px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.025));
+      box-shadow: var(--shadow);
+    }
+
+    .objective {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .objective::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto auto 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    }
+
+    ul.clean {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .card-click {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      padding: 0;
+      cursor: pointer;
+    }
+
+    .media {
+      position: relative;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,0.03);
+    }
+
+    .media img,
+    .media video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 220ms ease;
+    }
+
+    .card-click:hover .media img,
+    .card-click:hover .media video {
+      transform: scale(1.03);
+    }
+
+    .badge {
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      z-index: 2;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(7,7,10,0.8);
+      border: 1px solid rgba(255,255,255,0.14);
+      font-size: 0.78rem;
+      color: var(--text);
+      backdrop-filter: blur(8px);
+    }
+
+    .body {
+      padding: 18px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .meta span {
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      font-size: 0.78rem;
+      color: var(--text);
+      background: rgba(255,255,255,0.04);
+    }
+
+    .timeline {
+      display: grid;
+      gap: 14px;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 16px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      background: rgba(255,255,255,0.03);
+    }
+
+    .timeline-item strong {
+      color: var(--accent-2);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.82rem;
+    }
+
+    .quote-box {
+      padding: 18px;
+      border-left: 3px solid var(--danger);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .bottom-nav {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+
+    .next-btn, .ghost-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      padding: 14px 20px;
+      border-radius: 999px;
+      font-weight: 800;
+    }
+
+    .next-btn {
+      color: #111;
+      background: linear-gradient(135deg, #d7b56d, #f0d79e);
+      box-shadow: 0 14px 30px rgba(0,0,0,0.25);
+    }
+
+    .ghost-btn {
+      color: var(--text);
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(6,6,10,0.88);
+      backdrop-filter: blur(16px);
+      padding: 24px;
+    }
+
+    .lightbox.open { display: flex; }
+
+    .lightbox-inner {
+      width: min(1180px, 100%);
+      max-height: calc(100vh - 48px);
+      background: rgba(12,12,16,0.95);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+    }
+
+    .lightbox-stage {
+      position: relative;
+      background: #0b0b10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 420px;
+    }
+
+    .lightbox-stage img,
+    .lightbox-stage video,
+    .lightbox-stage iframe {
+      max-width: 100%;
+      max-height: calc(100vh - 100px);
+      display: block;
+      object-fit: contain;
+      border: 0;
+    }
+
+    .lightbox-info {
+      padding: 22px;
+      border-left: 1px solid var(--line);
+      display: grid;
+      align-content: start;
+      gap: 12px;
+      overflow: auto;
+    }
+
+    .lightbox-top {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .close-btn,
+    .nav-btn {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .close-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      font-size: 1rem;
+      flex: 0 0 auto;
+    }
+
+    .nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      z-index: 3;
+      backdrop-filter: blur(8px);
+    }
+
+    .nav-btn.prev { left: 14px; }
+    .nav-btn.next { right: 14px; }
+
+    .counter {
+      color: var(--accent-2);
+      font-size: 0.84rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 1100px) {
+      .hero,
+      .grid-2,
+      .grid-3,
+      .gallery {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .lightbox-inner { grid-template-columns: 1fr; }
+      .lightbox-info { border-left: 0; border-top: 1px solid var(--line); }
+    }
+
+    @media (max-width: 760px) {
+      .hero,
+      .grid-2,
+      .grid-3,
+      .gallery {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar,
+      .stats {
+        flex-direction: column;
+      }
+
+      .stats { grid-template-columns: 1fr; }
+      .timeline-item { grid-template-columns: 1fr; }
+      .lightbox { padding: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+
+  <main class="page">
+    <div class="topbar">
+      <a class="back" href="fiches.html">← Retour aux fiches</a>
+      <div class="track-badge">Fiche — STEP.ONE</div>
+    </div>
+
+    <section class="hero">
+      <article class="panel hero-lead">
+        <div class="eyebrow">Création de marque & produit</div>
+        <h1>STEP.ONE — baskets modulaires éco-responsables</h1>
+        <p>
+          Projet collectif mené en BTS Communication pour imaginer une marque de baskets modulaires répondant à un enjeu de surconsommation. L’idée était de proposer une alternative durable, réparable et personnalisable, à travers une identité de marque, un concept produit et des supports visuels cohérents.
+        </p>
+        <div class="stats">
+          <div class="stat">
+            <strong>1 mois</strong>
+            <span>de développement</span>
+          </div>
+          <div class="stat">
+            <strong>3 personnes</strong>
+            <span>dans l’équipe projet</span>
+          </div>
+          <div class="stat">
+            <strong>1 concept</strong>
+            <span>marque + produit + supports</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel hero-visual">
+        <img src="logo.jpg" alt="Boîte STEP.ONE">
+        <div class="hero-overlay">
+          <h3>Promesse de marque</h3>
+          <p>Changez la pièce, pas la chaussure : une réponse simple et forte à la surconsommation dans la mode.</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="section grid-3">
+      <article class="mini-card objective">
+        <div class="eyebrow">Objectif 01</div>
+        <h2>Cognitif</h2>
+        <p>Faire comprendre le principe de modularité et sensibiliser au gaspillage dans l’industrie de la chaussure.</p>
+      </article>
+      <article class="mini-card objective">
+        <div class="eyebrow">Objectif 02</div>
+        <h2>Affectif</h2>
+        <p>Créer de l’adhésion autour d’une marque innovante, responsable et personnalisable.</p>
+      </article>
+      <article class="mini-card objective">
+        <div class="eyebrow">Objectif 03</div>
+        <h2>Conatif</h2>
+        <p>Inciter à adopter une alternative durable en montrant les avantages pratiques et économiques du concept.</p>
+      </article>
+    </section>
+
+    <section class="section grid-2">
+      <article class="panel">
+        <div class="eyebrow">Contexte</div>
+        <h2>Pourquoi ce projet ?</h2>
+        <p>
+          Dans le cadre d’un projet scolaire, notre équipe a imaginé STEP.ONE, une marque de baskets modulaires conçue pour répondre à un problème concret : jeter une paire entière alors qu’une seule pièce est abîmée. Le projet devait proposer une solution à la fois écologique, économique et compréhensible pour le public.
+        </p>
+      </article>
+
+      <article class="panel">
+        <div class="eyebrow">Mon rôle</div>
+        <h2>Ce que j’ai apporté</h2>
+        <ul class="clean">
+          <li>Participation à la création du concept de marque et du positionnement.</li>
+          <li>Création de l’identité visuelle : nom, logo, slogan.</li>
+          <li>Conception des supports visuels de présentation.</li>
+          <li>Travail sur l’univers graphique et la cohérence du projet.</li>
+          <li>Réflexion sur la communication du produit et sa valeur ajoutée.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="section panel">
+      <div class="eyebrow">Méthodologie</div>
+      <h2>Déroulé du projet</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <strong>Étape 1</strong>
+          <div>
+            <h3>Recherche & veille</h3>
+            <p>Analyse des enjeux environnementaux liés à la chaussure et observation des solutions existantes en matière de modularité et de durabilité.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <strong>Étape 2</strong>
+          <div>
+            <h3>Développement du concept</h3>
+            <p>Définition du fonctionnement de la basket modulaire, des pièces remplaçables et de la logique économique du produit.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <strong>Étape 3</strong>
+          <div>
+            <h3>Création de l’identité</h3>
+            <p>Choix du nom STEP.ONE, création du logo, du slogan et de la charte visuelle pour rendre le concept identifiable et cohérent.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <strong>Étape 4</strong>
+          <div>
+            <h3>Supports de communication</h3>
+            <p>Conception de visuels de présentation du produit, du packaging et d’un support expliquant les modules et les prix.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="eyebrow">Supports & preuves</div>
+      <h2>Ce que nous avons produit</h2>
+      <div class="gallery">
+        <article class="panel card-click" data-title="Logo STEP.ONE" data-description="Création de l’identité visuelle principale de la marque, pensée pour évoquer le mouvement, l’innovation et la simplicité." data-images="logo.jpg">
+          <div class="media">
+            <span class="badge">Identité</span>
+            <img src="logo.jpg" alt="Logo STEP.ONE">
+          </div>
+          <div class="body">
+            <h3>Logo de marque</h3>
+            <div class="meta"><span>Identité visuelle</span><span>Logo</span></div>
+            <p>Élément central de l’univers STEP.ONE, utilisé comme base de toute la communication.</p>
+          </div>
+        </article>
+
+        <article class="panel card-click" data-title="Packaging STEP.ONE" data-description="Boîte produit conçue pour prolonger l’univers de marque et porter la promesse : Changez la pièce, pas la chaussure." data-images="boite.jpg">
+          <div class="media">
+            <span class="badge">Packaging</span>
+            <img src="boite.jpg" alt="Boîte STEP.ONE">
+          </div>
+          <div class="body">
+            <h3>Boîte produit</h3>
+            <div class="meta"><span>Branding</span><span>Packaging</span></div>
+            <p>Déclinaison de l’identité sur un support produit concret et cohérent.</p>
+          </div>
+        </article>
+
+        <article class="panel card-click" data-title="Support produit STEP.ONE" data-description="Visuel de présentation du concept, avec la chaussure modulaire, le slogan et le détail des modules remplaçables et de leurs prix." data-images="STEP_ONE.jpg">
+          <div class="media">
+            <span class="badge">Produit</span>
+            <img src="STEP_ONE.jpg" alt="Support produit STEP.ONE">
+          </div>
+          <div class="body">
+            <h3>Présentation produit</h3>
+            <div class="meta"><span>Support visuel</span><span>Concept</span></div>
+            <p>Support permettant d’expliquer clairement le fonctionnement et la valeur du projet.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section grid-2">
+      <article class="panel">
+        <div class="eyebrow">Positionnement</div>
+        <h2>La force du concept</h2>
+        <div class="quote-box">
+          STEP.ONE propose une autre manière de consommer : au lieu de racheter une paire complète, l’utilisateur ne remplace que les éléments usés. Le produit devient plus durable, plus économique à long terme et plus cohérent avec une logique de consommation responsable.
+        </div>
+      </article>
+
+      <article class="panel">
+        <div class="eyebrow">Résultats</div>
+        <h2>Ce que le projet a montré</h2>
+        <ul class="clean">
+          <li>Le concept a été jugé original et pertinent sur le plan écologique.</li>
+          <li>Les supports visuels ont permis de rendre la modularité plus claire.</li>
+          <li>Le branding a renforcé la crédibilité et l’attractivité du projet.</li>
+          <li>Le projet a montré qu’un produit complexe peut être rendu accessible grâce à une bonne communication.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="section grid-2">
+      <article class="panel">
+        <div class="eyebrow">Compétences</div>
+        <h2>Ce que ce projet m’a appris</h2>
+        <ul class="clean">
+          <li>Construire une identité de marque cohérente à partir d’un concept.</li>
+          <li>Travailler le lien entre problématique, solution et communication.</li>
+          <li>Rendre compréhensible une innovation grâce à des supports visuels clairs.</li>
+          <li>Collaborer en équipe sur un projet à la fois créatif et stratégique.</li>
+          <li>Penser un produit en termes de promesse, cible et positionnement.</li>
+        </ul>
+      </article>
+
+      <article class="panel">
+        <div class="eyebrow">Outils</div>
+        <h2>Logiciels et supports mobilisés</h2>
+        <div class="meta" style="margin-bottom:12px;">
+          <span>Canva</span>
+          <span>ChatGPT</span>
+        </div>
+        <p>
+          Canva a été utilisé pour créer le support visuel, le logo et la charte graphique. ChatGPT a servi à générer des images pour aider à la conception du flyer et à enrichir la présentation du concept.
+        </p>
+      </article>
+    </section>
+
+    <div class="bottom-nav">
+      <a class="ghost-btn" href="fiches.html">← Retour aux fiches</a>
+      <a class="next-btn" href="fiches.html">Voir les autres fiches →</a>
+    </div>
+  </main>
+
+  <div class="lightbox" id="lightbox">
+    <div class="lightbox-inner">
+      <div class="lightbox-stage">
+        <button class="nav-btn prev" id="prevBtn" type="button" aria-label="Précédent">←</button>
+        <div id="lightboxContent"></div>
+        <button class="nav-btn next" id="nextBtn" type="button" aria-label="Suivant">→</button>
+      </div>
+      <div class="lightbox-info">
+        <div class="lightbox-top">
+          <div>
+            <div class="counter" id="lightboxCounter">1 / 1</div>
+            <h3 id="lightboxTitle">Titre</h3>
+          </div>
+          <button class="close-btn" id="closeLightbox" type="button" aria-label="Fermer">✕</button>
+        </div>
+        <p id="lightboxDescription"></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const cards = document.querySelectorAll('.card-click');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxContent = document.getElementById('lightboxContent');
+    const lightboxTitle = document.getElementById('lightboxTitle');
+    const lightboxDescription = document.getElementById('lightboxDescription');
+    const lightboxCounter = document.getElementById('lightboxCounter');
+    const closeLightbox = document.getElementById('closeLightbox');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    let currentMedia = [];
+    let currentIndex = 0;
+
+    function renderMedia() {
+      lightboxContent.innerHTML = '';
+      const src = currentMedia[currentIndex];
+      const lower = src.toLowerCase();
+      const isVideo = /\.(mp4|webm|ogg)$/i.test(lower);
+      const isPdf = /\.pdf$/i.test(lower);
+
+      if (isVideo) {
+        const video = document.createElement('video');
+        video.controls = true;
+        video.autoplay = true;
+        video.src = src;
+        lightboxContent.appendChild(video);
+      } else if (isPdf) {
+        const iframe = document.createElement('iframe');
+        iframe.src = src;
+        iframe.style.width = '100%';
+        iframe.style.height = '80vh';
+        lightboxContent.appendChild(iframe);
+      } else {
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = lightboxTitle.textContent;
+        lightboxContent.appendChild(img);
+      }
+
+      lightboxCounter.textContent = `${currentIndex + 1} / ${currentMedia.length}`;
+      const showNav = currentMedia.length > 1;
+      prevBtn.style.display = showNav ? 'inline-flex' : 'none';
+      nextBtn.style.display = showNav ? 'inline-flex' : 'none';
+    }
+
+    function openLightbox(card) {
+      const title = card.dataset.title || 'Support';
+      const description = card.dataset.description || '';
+      const images = card.dataset.images ? card.dataset.images.split('|') : [];
+      const videos = card.dataset.videos ? card.dataset.videos.split('|') : [];
+      const pdfs = card.dataset.pdfs ? card.dataset.pdfs.split('|') : [];
+
+      currentMedia = [...images, ...videos, ...pdfs];
+      currentIndex = 0;
+
+      lightboxTitle.textContent = title;
+      lightboxDescription.textContent = description;
+      renderMedia();
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeBox() {
+      lightbox.classList.remove('open');
+      lightboxContent.innerHTML = '';
+      document.body.style.overflow = '';
+    }
+
+    function showNext() {
+      if (!currentMedia.length) return;
+      currentIndex = (currentIndex + 1) % currentMedia.length;
+      renderMedia();
+    }
+
+    function showPrev() {
+      if (!currentMedia.length) return;
+      currentIndex = (currentIndex - 1 + currentMedia.length) % currentMedia.length;
+      renderMedia();
+    }
+
+    cards.forEach(card => {
+      card.addEventListener('click', () => openLightbox(card));
+    });
+
+    closeLightbox.addEventListener('click', closeBox);
+    nextBtn.addEventListener('click', showNext);
+    prevBtn.addEventListener('click', showPrev);
+
+    lightbox.addEventListener('click', (event) => {
+      if (event.target === lightbox) closeBox();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (!lightbox.classList.contains('open')) return;
+      if (event.key === 'Escape') closeBox();
+      if (event.key === 'ArrowRight') showNext();
+      if (event.key === 'ArrowLeft') showPrev();
+    });
+  </script>
+     <div class="bottom-nav">
+  <a class="next-btn" href="bulle.html">Page suivante →</a>
+</body>
+</html>

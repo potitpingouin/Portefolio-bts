@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/quent/Downloads/**)",
+      "Bash(powershell -command \"Expand-Archive -Path 'Portfolio Montague.zip' -DestinationPath 'Portfolio_Montague_extract' -Force\")",
+      "Bash(powershell -command \"Expand-Archive -Path 'C:\\\\Users\\\\quent\\\\Downloads\\\\Portfolio Montague.zip' -DestinationPath 'C:\\\\Users\\\\quent\\\\Downloads\\\\Portfolio_Montague_extract' -Force; Get-ChildItem 'C:\\\\Users\\\\quent\\\\Downloads\\\\Portfolio_Montague_extract' -Recurse | Select-Object FullName\")",
+      "Read(//c/Users/quent/AppData/Roaming/Claude/local-agent-mode-sessions/skills-plugin/9189b8a4-1011-47fe-9da7-d7444d1ab0e2/4afb4c6c-d57c-4537-a009-944e9f3f77f2/skills/pdf/**)",
+      "Bash(python -c ' *)",
+      "Bash(python3 -c ' *)",
+      "PowerShell(& \"C:\\\\Users\\\\quent\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\Python311\\\\python.exe\" -m pip install pdfplumber -q)",
+      "Bash(where python3 *)",
+      "Bash(where python *)",
+      "mcp__Claude_Preview__preview_start",
+      "PowerShell(winget install Python.Python.3.14 --source winget --accept-source-agreements --accept-package-agreements 2>&1)",
+      "PowerShell(winget install oschwartz10612.poppler --source winget --accept-source-agreements --accept-package-agreements 2>&1)"
+    ]
+  }
+}

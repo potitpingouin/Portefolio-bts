@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fiches pro — Portfolio BTS Communication</title>
+  <style>
+    :root {
+      --bg: #09090d;
+      --bg-2: #13131a;
+      --line: rgba(255,255,255,0.12);
+      --text: #f6f6f8;
+      --muted: #b8b8c2;
+      --accent: #d7b56d;
+      --accent-2: #c88bff;
+      --shadow: 0 24px 70px rgba(0,0,0,0.42);
+      --radius: 24px;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top, rgba(200,139,255,0.10), transparent 28%),
+        radial-gradient(circle at 20% 20%, rgba(215,181,109,0.10), transparent 20%),
+        linear-gradient(180deg, #09090d, #13131a 50%, #0b0b0f 100%);
+    }
+    .noise {
+      position: fixed; inset: 0; pointer-events: none; opacity: 0.08;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.3) 0.8px, transparent 1px);
+      background-size: 10px 10px; mix-blend-mode: soft-light;
+    }
+    .page { position: relative; z-index: 1; max-width: 1220px; margin: 0 auto; padding: 28px 22px 60px; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 28px; }
+    .back {
+      display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text);
+      padding: 12px 16px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,0.04);
+    }
+    .back:hover { background: rgba(255,255,255,0.08); }
+    .track-badge {
+      padding: 10px 14px; border-radius: 999px; border: 1px solid var(--line); color: var(--accent);
+      background: rgba(255,255,255,0.04); font-weight: 800; letter-spacing: 0.08em; font-size: 0.82rem; text-transform: uppercase;
+    }
+    .hero { margin-bottom: 22px; }
+    .panel {
+      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03));
+      border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 28px;
+    }
+    .eyebrow {
+      display: inline-block; margin-bottom: 14px; color: var(--accent); text-transform: uppercase;
+      letter-spacing: 0.14em; font-weight: 800; font-size: 0.84rem;
+    }
+    h1 { margin: 0 0 14px; font-size: clamp(2.4rem, 4vw, 4.2rem); line-height: 0.95; letter-spacing: -0.04em; }
+    h2 { margin: 0 0 12px; font-size: 1.35rem; line-height: 1.25; }
+    h3 { margin: 0 0 8px; font-size: 0.95rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; }
+    p { color: var(--muted); line-height: 1.7; margin: 0; }
+
+    .fiches {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 18px;
+    }
+
+    /* Carte cliquable */
+    .fiche-card {
+      position: relative;
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      transition: transform 240ms ease, border-color 240ms ease;
+      cursor: pointer;
+    }
+    .fiche-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto auto 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      z-index: 2;
+    }
+    .fiche-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(215,181,109,0.4);
+    }
+    .fiche-card:hover .fiche-arrow {
+      transform: translateX(6px);
+      color: var(--accent);
+    }
+
+    .fiche-block {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+    }
+    .fiche-block:first-of-type {
+      margin-top: 18px;
+    }
+
+    .fiche-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .fiche-tag {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      font-size: 0.78rem;
+      color: var(--text);
+    }
+
+    .fiche-footer {
+      margin-top: auto;
+      padding-top: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .fiche-cta {
+      font-weight: 800;
+      font-size: 0.88rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+    .fiche-arrow {
+      font-size: 1.2rem;
+      color: var(--muted);
+      transition: transform 240ms ease, color 240ms ease;
+    }
+
+    .oral-tip {
+      margin-top: 18px;
+      padding: 16px 18px;
+      border-left: 3px solid var(--accent);
+      background: rgba(255,255,255,0.04);
+      border-radius: 14px;
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .bottom-nav {
+      margin-top: 32px;
+      display: flex;
+      justify-content: flex-end;
+    }
+    .next-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text);
+      padding: 14px 22px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      font-weight: 700;
+    }
+    .next-btn:hover { background: rgba(255,255,255,0.08); }
+
+    @media (max-width: 980px) { .fiches { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <main class="page">
+    <div class="topbar">
+      <a class="back" href="portfolio_bts_vinyle.html?tracklist=1">← Retour à la tracklist</a>
+      <div class="track-badge">Track 04 — Fiches pro</div>
+    </div>
+
+    <section class="hero panel">
+      <div class="eyebrow">Situations professionnelles</div>
+      <h1>Mes fiches pro</h1>
+      <p>
+        Trois projets concrets menés pendant ma formation, chacun illustrant une facette différente de la communication :
+        sensibilisation événementielle, création de marque et communication digitale en magasin.
+        Clique sur une fiche pour découvrir le projet en détail.
+      </p>
+      <div class="oral-tip">
+        💡 Chaque fiche présente le contexte, mon rôle, le déroulé, les supports produits et ce que le projet m'a apporté.
+      </div>
+    </section>
+
+    <section class="fiches">
+
+      <!-- FICHE 1 — HARCÈLEMENT -->
+      <a class="panel fiche-card" href="harcelement.html">
+        <div class="eyebrow">Fiche 01 — Événementiel</div>
+        <h2>Escape game de sensibilisation au harcèlement</h2>
+
+        <div class="fiche-block">
+          <h3>Contexte</h3>
+          <p>Projet collectif mené à Alema Business School pour la Journée nationale de lutte contre le harcèlement scolaire.</p>
+        </div>
+
+        <div class="fiche-block">
+          <h3>Mon rôle</h3>
+          <p>Conception du projet, création des supports visuels, mise en scène immersive et organisation du jour J.</p>
+        </div>
+
+        <div class="fiche-block">
+          <h3>Résultat</h3>
+          <p>5 semaines de préparation, 11 étudiants mobilisés, +80% de retours positifs au questionnaire final.</p>
+        </div>
+
+        <div class="fiche-tags">
+          <span class="fiche-tag">Événementiel</span>
+          <span class="fiche-tag">Sensibilisation</span>
+          <span class="fiche-tag">Collectif</span>
+        </div>
+
+        <div class="fiche-footer">
+          <span class="fiche-cta">Voir la fiche</span>
+          <span class="fiche-arrow">→</span>
+        </div>
+      </a>
+
+      <!-- FICHE 2 — AIR ALEMA -->
+      <a class="panel fiche-card" href="alema-air.html">
+        <div class="eyebrow">Fiche 02 — Événementiel</div>
+        <h2>Air Alema — Promotion de l'ouverture du BTS Tourisme</h2>
+
+        <div class="fiche-block">
+          <h3>Contexte</h3>
+          <p>Conception d'un événement BtoB destiné à promouvoir l'ouverture du BTS Tourisme auprès d'élus et d'acteurs institutionnels locaux, en compétition avec une autre classe.</p>
+        </div>
+
+        <div class="fiche-block">
+          <h3>Mon rôle</h3>
+          <p>Veille créative, conception du concept événementiel, création des affiches sur Canva, prise de contact avec des prestataires restaurateurs et présentation devant jury.</p>
+        </div>
+
+        <div class="fiche-block">
+          <h3>Résultat</h3>
+          <p>Projet non retenu face à la classe concurrente — une expérience formatrice sur la gestion de projet en temps contraint et la relation prestataire.</p>
+        </div>
+
+        <div class="fiche-tags">
+          <span class="fiche-tag">Événementiel</span>
+          <span class="fiche-tag">BtoB</span>
+          <span class="fiche-tag">Achats prestataires</span>
+        </div>
+
+        <div class="fiche-footer">
+          <span class="fiche-cta">Voir la fiche</span>
+          <span class="fiche-arrow">→</span>
+        </div>
+      </a>
+
+      <!-- FICHE 3 — BULLE DE JEUX -->
+      <a class="panel fiche-card" href="bulle.html">
+        <div class="eyebrow">Fiche 03 — Communication digitale</div>
+        <h2>Bulle de Jeux — création de contenus et promotion</h2>
+
+        <div class="fiche-block">
+          <h3>Contexte</h3>
+          <p>Mission de création et diffusion de contenus pour la promotion des nouveautés et événements du magasin Bulle de Jeux.</p>
+        </div>
+
+        <div class="fiche-block">
+          <h3>Mon rôle</h3>
+          <p>Observation du magasin, sélection des produits à valoriser, création des visuels et diffusion sur les supports digitaux.</p>
+        </div>
+
+        <div class="fiche-block">
+          <h3>Résultat</h3>
+          <p>Une série de posts cohérents qui valorisent les nouveautés, anniversaires et avant-premières du magasin.</p>
+        </div>
+
+        <div class="fiche-tags">
+          <span class="fiche-tag">Réseaux sociaux</span>
+          <span class="fiche-tag">Création visuelle</span>
+          <span class="fiche-tag">Stage</span>
+        </div>
+
+        <div class="fiche-footer">
+          <span class="fiche-cta">Voir la fiche</span>
+          <span class="fiche-arrow">→</span>
+        </div>
+      </a>
+
+    </section>
+
+    <div class="bottom-nav">
+      <a class="next-btn" href="portfolio_bts_vinyle.html?tracklist=1">Retour à la tracklist →</a>
+    </div>
+  </main>
+</body>
+</html>

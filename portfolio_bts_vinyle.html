@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio BTS Communication — Édition Vinyle</title>
+  <style>
+    :root {
+      --bg: #09090d;
+      --bg-2: #13131a;
+      --line: rgba(255,255,255,0.12);
+      --text: #f6f6f8;
+      --muted: #b8b8c2;
+      --accent: #d7b56d;
+      --accent-2: #c88bff;
+      --shadow: 0 24px 70px rgba(0,0,0,0.45);
+      --radius: 24px;
+      --transition: 280ms ease;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(200,139,255,0.10), transparent 28%),
+        radial-gradient(circle at 20% 20%, rgba(215,181,109,0.10), transparent 20%),
+        linear-gradient(180deg, #09090d, #13131a 50%, #0b0b0f 100%);
+      color: var(--text);
+    }
+
+    body {
+      position: relative;
+    }
+
+    .noise {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.08;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.3) 0.8px, transparent 1px);
+      background-size: 10px 10px;
+      mix-blend-mode: soft-light;
+    }
+
+    .home {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .album-scene {
+      position: relative;
+      width: min(560px, 88vw);
+      aspect-ratio: 1 / 1;
+    }
+
+    .record {
+      position: absolute;
+      top: 50%;
+      left: 56%;
+      width: 82%;
+      aspect-ratio: 1 / 1;
+      transform: translate(-8%, -50%);
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at center, #0a0a0a 0 7%, #1a1a1f 7% 11%, #09090b 11% 14%, transparent 14%),
+        repeating-radial-gradient(circle at center,
+          #0b0b0d 0 10px,
+          #17171c 10px 12px,
+          #09090b 12px 15px);
+      box-shadow: var(--shadow);
+      z-index: 1;
+      cursor: pointer;
+      transition: transform var(--transition), filter var(--transition);
+    }
+
+    .record:hover,
+    .record:focus-visible {
+      transform: translate(-4%, -50%);
+      filter: brightness(1.06);
+      outline: none;
+    }
+
+    .record::after {
+      content: "QX";
+      position: absolute;
+      inset: 39% auto auto 39%;
+      width: 22%;
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #111;
+      box-shadow: 0 0 0 8px rgba(0,0,0,0.28);
+    }
+
+    .sleeve {
+      position: absolute;
+      inset: 0;
+      border-radius: 22px;
+      background:
+          linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.04)),
+  url('pochette.jpg') center/cover;
+      overflow: hidden;
+      z-index: 3;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,0.10);
+    }
+
+    .sleeve::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.10), rgba(0,0,0,0.46));
+    }
+
+.album-label {
+  position: absolute;
+  bottom: 200px;
+  left: 20px;
+  z-index: 2;
+  padding: 12px 18px;
+  border-radius: 12px;
+  background: rgba(0,0,0,0.3);
+}
+
+    .album-kicker {
+      display: inline-block;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--accent);
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .album-title {
+      font-size: clamp(1.7rem, 3.2vw, 2.6rem);
+      font-weight: 900;
+      line-height: 1;
+      margin: 0 0 8px;
+    }
+
+    .album-subtitle {
+      margin: 0;
+      color: #e1e1e7;
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+
+    .tracklist-panel {
+      position: fixed;
+      inset: 0;
+      background: rgba(7,7,10,0.78);
+      backdrop-filter: blur(18px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 260ms ease;
+      z-index: 20;
+    }
+
+    .tracklist-panel.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .tracklist-card {
+      width: min(560px, calc(100vw - 32px));
+      max-height: calc(100vh - 32px);
+      overflow: auto;
+      border-radius: 24px;
+      border: 1px solid var(--line);
+      background: rgba(12,12,16,0.95);
+      box-shadow: var(--shadow);
+      padding: 22px;
+    }
+
+    .tracklist-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    .tracklist-head h1 {
+      margin: 0;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    .close-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .tracklist {
+      display: grid;
+      gap: 10px;
+    }
+
+    .track-item {
+      display: grid;
+      grid-template-columns: 64px 1fr;
+      gap: 12px;
+      align-items: center;
+      padding: 14px;
+      border-radius: 18px;
+      border: 1px solid transparent;
+      transition: var(--transition);
+      background: rgba(255,255,255,0.035);
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .track-item:hover,
+    .track-item:focus-visible {
+      transform: translateX(4px);
+      border-color: var(--line);
+      background: rgba(255,255,255,0.07);
+      outline: none;
+    }
+
+    .track-number {
+      color: var(--accent);
+      font-weight: 800;
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+    }
+
+    .track-title {
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .track-desc {
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+
+    .home-hint {
+      position: fixed;
+      bottom: 26px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.92rem;
+      z-index: 2;
+      width: calc(100% - 40px);
+    }
+
+    .home-hint strong {
+      color: var(--accent);
+    }
+
+    @media (max-width: 700px) {
+      .album-scene {
+        width: min(96vw, 460px);
+      }
+
+      .record {
+        width: 86%;
+        left: 58%;
+        transform: translate(-10%, -50%);
+      }
+
+      .album-label {
+        inset: auto 14px 14px 14px;
+        padding: 16px;
+      }
+
+      .home-hint {
+        bottom: 16px;
+        font-size: 0.86rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+
+  <main class="home">
+    <div class="album-scene">
+      <div class="record" id="record" role="button" tabindex="0" aria-label="Ouvrir la tracklist"></div>
+
+      <div class="sleeve" aria-label="Pochette du portfolio">
+<div class="album-label">
+  <h2 class="album-title">Quentin Xiong</h2>
+</div>
+      </div>
+    </div>
+  </main>
+
+  <div class="home-hint">
+    <strong>Clique sur le vinyle</strong> pour ouvrir la tracklist.
+  </div>
+
+  <aside class="tracklist-panel" id="tracklistPanel" aria-hidden="true">
+    <div class="tracklist-card">
+      <div class="tracklist-head">
+        <h1>Tracklist</h1>
+        <button class="close-btn" id="closeTracklistBtn" aria-label="Fermer la tracklist">✕</button>
+      </div>
+
+      <nav class="tracklist" aria-label="Sommaire du portfolio">
+        <a class="track-item" href="presentation.html">
+          <div class="track-number">01</div>
+          <div>
+            <div class="track-title">Présentation</div>
+            <div class="track-desc">Page dédiée à ta présentation personnelle pour l’oral.</div>
+          </div>
+        </a>
+
+        <a class="track-item" href="parcours.html">
+          <div class="track-number">02</div>
+          <div>
+            <div class="track-title">Parcours</div>
+            <div class="track-desc">Formation, évolution, expériences et repères de ton parcours.</div>
+          </div>
+        </a>
+
+        <a class="track-item" href="creations.html">
+          <div class="track-number">03</div>
+          <div>
+            <div class="track-title">Mes créations</div>
+            <div class="track-desc">Tes réalisations classées par genre de création.</div>
+          </div>
+        </a>
+
+        <a class="track-item" href="fiches.html">
+          <div class="track-number">04</div>
+          <div>
+            <div class="track-title">Fiches pro</div>
+            <div class="track-desc">Accès aux pages de tes situations professionnelles.</div>
+          </div>
+        </a>
+      </nav>
+    </div>
+  </aside>
+
+<script>
+  const record = document.getElementById('record');
+  const tracklistPanel = document.getElementById('tracklistPanel');
+  const closeTracklistBtn = document.getElementById('closeTracklistBtn');
+
+  function openTracklist() {
+    tracklistPanel.classList.add('open');
+    tracklistPanel.setAttribute('aria-hidden', 'false');
+  }
+
+  function closeTracklist() {
+    tracklistPanel.classList.remove('open');
+    tracklistPanel.setAttribute('aria-hidden', 'true');
+  }
+
+  record.addEventListener('click', openTracklist);
+  closeTracklistBtn.addEventListener('click', closeTracklist);
+
+  record.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      openTracklist();
+    }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      closeTracklist();
+    }
+  });
+
+  tracklistPanel.addEventListener('click', (event) => {
+    if (event.target === tracklistPanel) {
+      closeTracklist();
+    }
+  });
+
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('tracklist') === '1') {
+    openTracklist();
+  }
+</script>
+</body>
+</html>

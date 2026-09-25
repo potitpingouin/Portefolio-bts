@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fiche — Air Alema</title>
+  <style>
+    :root {
+      --bg: #09090d;
+      --line: rgba(255,255,255,0.12);
+      --text: #f6f6f8;
+      --muted: #b8b8c2;
+      --accent: #4C9471;
+      --accent-2: #d7b56d;
+      --danger: #d85b68;
+      --shadow: 0 24px 70px rgba(0,0,0,0.42);
+      --radius: 24px;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top, rgba(76,148,113,0.12), transparent 25%),
+        radial-gradient(circle at 80% 10%, rgba(215,181,109,0.08), transparent 22%),
+        linear-gradient(180deg, #09090d, #13131a 55%, #0b0b0f 100%);
+    }
+    .noise { position: fixed; inset: 0; pointer-events: none; opacity: 0.07; background-image: radial-gradient(circle, rgba(255,255,255,0.3) 0.8px, transparent 1px); background-size: 10px 10px; mix-blend-mode: soft-light; }
+    .page { position: relative; z-index: 1; max-width: 1280px; margin: 0 auto; padding: 28px 22px 60px; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 28px; }
+    .back { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); padding: 12px 16px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,0.04); }
+    .back:hover { background: rgba(255,255,255,0.08); }
+    .track-badge { padding: 10px 14px; border-radius: 999px; border: 1px solid var(--line); color: var(--accent-2); background: rgba(255,255,255,0.04); font-weight: 800; letter-spacing: 0.08em; font-size: 0.82rem; text-transform: uppercase; }
+    .panel { background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03)); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 28px; }
+    .hero { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 20px; margin-bottom: 24px; }
+    .eyebrow { display: inline-block; margin-bottom: 14px; color: var(--accent-2); text-transform: uppercase; letter-spacing: 0.14em; font-weight: 800; font-size: 0.84rem; }
+    h1 { margin: 0 0 14px; font-size: clamp(2.2rem, 4vw, 3.8rem); line-height: 0.95; letter-spacing: -0.04em; }
+    h2 { margin: 0 0 12px; font-size: 1.5rem; }
+    h3 { margin: 0 0 10px; font-size: 1rem; }
+    p { color: var(--muted); line-height: 1.72; margin: 0; }
+    .hero-lead { display: grid; gap: 16px; align-content: start; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 8px; }
+    .stat { padding: 16px; border-radius: 18px; border: 1px solid var(--line); background: rgba(255,255,255,0.03); }
+    .stat strong { display: block; color: var(--text); font-size: 1.1rem; margin-bottom: 6px; }
+    .hero-visual { position: relative; min-height: 420px; overflow: hidden; padding: 0; }
+    .hero-visual img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .hero-overlay { position: absolute; inset: auto 18px 18px 18px; padding: 16px 18px; border-radius: 18px; background: rgba(7,7,10,0.68); border: 1px solid rgba(255,255,255,0.12); backdrop-filter: blur(10px); }
+    .section { margin-top: 26px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+    .mini-card { padding: 22px; border-radius: 22px; border: 1px solid var(--line); background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.025)); box-shadow: var(--shadow); }
+    .objective { position: relative; overflow: hidden; }
+    .objective::before { content: ""; position: absolute; inset: 0 auto auto 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
+    ul.clean { margin: 0; padding-left: 18px; color: var(--muted); line-height: 1.85; }
+    ul.clean li { margin-bottom: 4px; }
+    .quote-box { padding: 18px; border-left: 3px solid var(--accent-2); border-radius: 14px; background: rgba(255,255,255,0.04); color: var(--text); line-height: 1.7; }
+    .warning-box { padding: 18px; border-left: 3px solid var(--danger); border-radius: 14px; background: rgba(255,255,255,0.04); color: var(--text); line-height: 1.7; }
+
+    /* Planning table */
+    .planning-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    .planning-table th { background: rgba(255,255,255,0.07); color: var(--accent-2); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.75rem; padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--line); }
+    .planning-table td { padding: 12px 14px; border-bottom: 1px solid rgba(255,255,255,0.06); color: var(--muted); vertical-align: top; }
+    .planning-table tr:last-child td { border-bottom: none; }
+    .planning-table td:first-child { color: var(--text); font-weight: 600; white-space: nowrap; }
+
+    /* Scoring table */
+    .scoring-table { width: 100%; border-collapse: collapse; font-size: 0.86rem; margin-top: 14px; }
+    .scoring-table th { background: rgba(255,255,255,0.07); color: var(--accent-2); text-transform: uppercase; letter-spacing: 0.07em; font-size: 0.74rem; padding: 10px 12px; text-align: center; border-bottom: 1px solid var(--line); }
+    .scoring-table th:first-child { text-align: left; }
+    .scoring-table td { padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.06); color: var(--muted); text-align: center; }
+    .scoring-table td:first-child { text-align: left; color: var(--text); }
+    .scoring-table tr:last-child td { border-bottom: none; font-weight: 700; color: var(--accent-2); }
+    .score-best { color: var(--accent) !important; font-weight: 700; }
+
+    /* Tags */
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .tag { padding: 7px 12px; border-radius: 999px; border: 1px solid var(--line); font-size: 0.78rem; color: var(--text); background: rgba(255,255,255,0.04); }
+    .tag.green { border-color: rgba(76,148,113,0.4); color: #4C9471; background: rgba(76,148,113,0.08); }
+    .tag.gold { border-color: rgba(215,181,109,0.4); color: var(--accent-2); background: rgba(215,181,109,0.08); }
+
+    /* Affiche */
+    .affiche-wrap { border-radius: 18px; overflow: hidden; border: 1px solid var(--line); cursor: pointer; transition: transform 220ms ease; }
+    .affiche-wrap:hover { transform: scale(1.02); }
+    .affiche-wrap img { width: 100%; display: block; }
+
+    /* Lightbox */
+    .lightbox { position: fixed; inset: 0; z-index: 200; display: none; align-items: center; justify-content: center; background: rgba(6,6,10,0.92); backdrop-filter: blur(18px); padding: 24px; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 100%; max-height: calc(100vh - 80px); border-radius: 14px; display: block; }
+    .close-lb { position: absolute; top: 20px; right: 20px; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); background: rgba(255,255,255,0.08); color: var(--text); font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+    .bottom-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 30px; flex-wrap: wrap; }
+    .next-btn, .ghost-btn { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; padding: 14px 20px; border-radius: 999px; font-weight: 800; }
+    .next-btn { color: #111; background: linear-gradient(135deg, #d7b56d, #f0d79e); box-shadow: 0 14px 30px rgba(0,0,0,0.25); }
+    .ghost-btn { color: var(--text); border: 1px solid var(--line); background: rgba(255,255,255,0.04); }
+
+    /* Cahier des charges document */
+    .cdc-doc { border: 1px solid var(--line); border-radius: 18px; overflow: hidden; margin-bottom: 28px; }
+    .cdc-section-head { background: rgba(255,255,255,0.07); padding: 12px 18px; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent-2); text-align: center; border-bottom: 1px solid var(--line); }
+    .cdc-body { padding: 18px 20px; border-bottom: 1px solid var(--line); font-size: 0.86rem; color: var(--muted); line-height: 1.8; }
+    .cdc-body:last-child { border-bottom: none; }
+    .cdc-body p { margin-bottom: 6px; color: var(--muted); }
+    .cdc-body p span { color: var(--text); font-weight: 600; }
+    .cdc-body ul { margin: 6px 0 10px 18px; padding: 0; }
+    .cdc-body ul li { margin-bottom: 3px; }
+    .cdc-body strong { color: var(--text); }
+
+    @media (max-width: 1100px) { .hero, .grid-2, .grid-3 { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 760px) { .hero, .grid-2, .grid-3 { grid-template-columns: 1fr; } .stats { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+
+  <main class="page">
+    <div class="topbar">
+      <a class="back" href="fiches.html">← Retour aux fiches</a>
+      <div class="track-badge">Fiche 02 — Événementiel</div>
+    </div>
+
+    <!-- HERO -->
+    <section class="hero">
+      <article class="panel hero-lead">
+        <div class="eyebrow">Promotion d'ouverture · BToB · Compétition inter-classes</div>
+        <h1>Air Alema — Événement de promotion du BTS Tourisme</h1>
+        <p>
+          Conception d'un concept événementiel complet destiné à promouvoir l'ouverture du BTS Tourisme
+          auprès de personnalités locales (élus, maires, acteurs institutionnels). Projet mené en compétition
+          directe avec une autre classe, présenté devant le directeur et les professeurs de l'établissement.
+        </p>
+        <div class="stats">
+          <div class="stat">
+            <strong>~1 semaine</strong>
+            <span>de conception en classe</span>
+          </div>
+          <div class="stat">
+            <strong>~10 élèves</strong>
+            <span>mobilisés sur le projet</span>
+          </div>
+          <div class="stat">
+            <strong>Compétition</strong>
+            <span>face à une autre classe</span>
+          </div>
+        </div>
+        <div class="tags" style="margin-top:16px;">
+          <span class="tag green">Activité 1 — Veille</span>
+          <span class="tag green">Activité 2 — Création</span>
+          <span class="tag green">Activité 4 — Achats prestataires</span>
+        </div>
+      </article>
+
+      <article class="panel hero-visual">
+        <img src="affiche_alema_air.jpg" alt="Affiche événement Air Alema">
+        <div class="hero-overlay">
+          <h3>Concept visuel</h3>
+          <p>Univers voyage et découverte, adressé à un public institutionnel BtoB. Affiches conçues sur Canva.</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- SECTION 1 — CONTEXTE + DIAGNOSTIC -->
+    <section class="section">
+      <div class="eyebrow" style="font-size:0.72rem; margin-bottom:10px;">Section 1</div>
+      <div class="grid-2">
+        <article class="panel">
+          <div class="eyebrow">Contexte</div>
+          <h2>Pourquoi ce projet ?</h2>
+          <p>
+            Dans le cadre d'un projet scolaire, la classe de BTS Communication a été chargée de concevoir
+            un événement nommé Air Alema, dont l'objectif était de promouvoir l'ouverture du BTS Tourisme
+            auprès de personnalités locales importantes — élus, maire, acteurs institutionnels — dans une
+            logique proche du BtoB.
+          </p>
+          <p style="margin-top:12px;">
+            Le projet était en compétition directe avec une autre classe. À l'issue de la présentation devant
+            l'administration, notre projet n'a pas été retenu — ce qui n'a pas permis de passer à la phase
+            de diffusion et d'évaluation réelle.
+          </p>
+        </article>
+
+        <article class="panel">
+          <div class="eyebrow">Diagnostic</div>
+          <h2>Analyse de la situation</h2>
+          <ul class="clean">
+            <li>Alema Business School ouvre une nouvelle filière : le BTS Tourisme.</li>
+            <li>L'établissement a besoin d'ancrage local et de légitimité institutionnelle.</li>
+            <li>La cible est BtoB et exigeante : élus, maires, décideurs locaux — pas le grand public.</li>
+            <li>Un événement physique de prestige est le levier le plus adapté pour créer du lien.</li>
+            <li>Le contexte de compétition impose une exigence de qualité et d'originalité élevée.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- SECTION 2 — ACTIVITÉ 1 VEILLE -->
+    <section class="section panel">
+      <div class="eyebrow" style="font-size:0.72rem; margin-bottom:4px;">Section 2</div>
+      <div class="eyebrow">Activité 1 — Veille créative et technologique</div>
+      <h2>Démarche de veille</h2>
+      <div class="grid-2" style="margin-top:18px;">
+        <div>
+          <h3 style="color:var(--accent-2); font-size:0.9rem; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px;">Sources consultées</h3>
+          <ul class="clean">
+            <li><strong>Pinterest / Behance</strong> — inspirations visuelles événements d'entreprise et galas institutionnels</li>
+            <li><strong>Sites d'écoles et BTS</strong> — communication autour d'ouvertures de formations</li>
+            <li><strong>Événements BtoB de référence</strong> — soirées d'inauguration, cocktails institutionnels</li>
+            <li><strong>Univers branding tourisme</strong> — codes visuels des compagnies aériennes et agences de voyage haut de gamme</li>
+          </ul>
+        </div>
+        <div>
+          <h3 style="color:var(--accent-2); font-size:0.9rem; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px;">Ce que la veille nous a apporté</h3>
+          <ul class="clean">
+            <li>Identification du thème voyage comme fil directeur fort et cohérent avec le BTS Tourisme</li>
+            <li>Choix d'un univers visuel premium (bleu profond, typographie bold, destinations iconiques)</li>
+            <li>Adoption d'un format cocktail déjeunatoire — adapté à une cible institutionnelle et à une durée de 3h</li>
+            <li>Intégration de prestataires restauration pour crédibiliser le projet</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3 — PLAN DE COMMUNICATION -->
+    <section class="section panel">
+      <div class="eyebrow" style="font-size:0.72rem; margin-bottom:4px;">Section 3</div>
+      <div class="eyebrow">Plan de communication</div>
+      <h2>Stratégie globale</h2>
+
+      <!-- Problématique -->
+      <div style="margin-top:20px; margin-bottom:20px;">
+        <h3 style="color:var(--accent-2); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:10px;">Problématique</h3>
+        <div class="quote-box">
+          Comment concevoir un événement de prestige capable de convaincre des personnalités locales
+          de s'engager en faveur de l'ouverture du BTS Tourisme, dans un contexte de compétition inter-classes
+          et avec une semaine de préparation ?
+        </div>
+      </div>
+
+      <!-- Positionnement -->
+      <div style="margin-bottom:20px;">
+        <h3 style="color:var(--accent-2); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:10px;">Positionnement</h3>
+        <p>
+          Créer un événement à thème voyage — <strong>Air Alema</strong> — évoquant le départ, la découverte
+          et l'aventure, en cohérence avec l'univers du tourisme. L'identité visuelle joue sur les codes
+          du voyage (avion, destinations mondiales, cartes postales) pour créer une atmosphère immersive
+          et mémorable, adaptée à une cible institutionnelle.
+        </p>
+        <div class="tags" style="margin-top:10px;">
+          <span class="tag gold">Événement physique · 17 décembre 2024</span>
+          <span class="tag gold">11h00 – 14h00</span>
+          <span class="tag">Cible BtoB</span>
+          <span class="tag">Outil : Canva</span>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-top:4px; gap:18px;">
+        <div>
+          <!-- Cibles -->
+          <h3 style="color:var(--accent-2); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:10px;">Cibles</h3>
+          <ul class="clean">
+            <li><strong>Cible principale</strong> — Personnalités locales : élus, maires, acteurs institutionnels</li>
+            <li><strong>Cible secondaire</strong> — Direction et équipe pédagogique d'Alema</li>
+            <li><strong>Jury de sélection</strong> — Directeur et professeurs de l'établissement</li>
+          </ul>
+
+          <!-- Objectifs CAC -->
+          <h3 style="color:var(--accent-2); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:10px; margin-top:18px;">Objectifs CAC</h3>
+          <ul class="clean">
+            <li><strong>Cognitif</strong> — Faire connaître l'ouverture du BTS Tourisme auprès des personnalités et acteurs locaux influents.</li>
+            <li><strong>Affectif</strong> — Valoriser l'établissement et créer un sentiment de proximité et de prestige autour de l'événement.</li>
+            <li><strong>Conatif</strong> — Inciter les personnalités invitées à soutenir et relayer l'ouverture du BTS Tourisme.</li>
+          </ul>
+
+          <!-- Budget -->
+          <h3 style="color:var(--accent-2); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:10px; margin-top:18px;">Budget prévisionnel</h3>
+          <p>Prestataire restauration retenu : L'Atelier de Cuisine du Valois — 1 500€ TTC. Supports print Canva : 0€ (outils gratuits). Budget total estimé : <strong style="color:var(--text)">~1 500€ TTC</strong>.</p>
+        </div>
+        <div>
+          <!-- Message -->
+          <h3 style="color:var(--accent-2); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:10px;">Message</h3>
+          <ul class="clean">
+            <li>Alema Business School s'ancre dans les métiers du tourisme et de l'événementiel</li>
+            <li>L'ouverture du BTS Tourisme est une opportunité pour le territoire local</li>
+            <li>Un événement de prestige pour des partenaires de prestige</li>
+          </ul>
+
+          <!-- Stratégie des moyens -->
+          <h3 style="color:var(--accent-2); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:10px; margin-top:18px;">Stratégie des moyens</h3>
+          <ul class="clean">
+            <li>Événement physique en présentiel — cocktail déjeunatoire thématisé (17 déc. 2024, 11h-14h)</li>
+            <li>Affiches et supports visuels conçus sur Canva (univers voyage premium)</li>
+            <li>Pitch de présentation devant le directeur et le jury de sélection</li>
+            <li>Sélection d'un prestataire traiteur via appel d'offres comparatif</li>
+          </ul>
+
+          <!-- KPI prévisionnels -->
+          <h3 style="color:var(--accent-2); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:10px; margin-top:18px;">KPI prévisionnels</h3>
+          <ul class="clean">
+            <li>Projet sélectionné par le jury (objectif principal)</li>
+            <li>Supports visuels livrés dans les délais (5 jours)</li>
+            <li>Minimum 3 devis prestataires comparés</li>
+            <li>Pitch complet de 10 minutes préparé et délivré</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4 — ACTIVITÉ 2 CRÉATION -->
+    <section class="section">
+      <div class="eyebrow" style="font-size:0.72rem; margin-bottom:10px;">Section 4</div>
+      <div class="grid-2">
+        <article class="panel">
+          <div class="eyebrow">Activité 2 — Créer des contenus</div>
+          <h2>Supports produits</h2>
+          <div class="affiche-wrap" id="openLb" style="margin-top:14px;">
+            <img src="affiche_alema_air.jpg" alt="Affiche Air Alema">
+          </div>
+          <div class="tags" style="margin-top:14px;">
+            <span class="tag">Canva</span>
+            <span class="tag">Affiche événementielle</span>
+            <span class="tag">Communication BtoB</span>
+            <span class="tag">Pitch de projet</span>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="eyebrow">Justification créa</div>
+          <h2>Choix techniques et droits</h2>
+          <ul class="clean" style="margin-top:10px;">
+            <li>
+              <strong style="color:var(--text);">Format</strong> — Affiche A3 portrait (420 × 297 mm), adaptée à l'affichage événementiel en présentiel et à la projection lors du pitch.
+            </li>
+            <li style="margin-top:10px;">
+              <strong style="color:var(--text);">Typographie</strong> — Police bold et élégante (style compagnies aériennes) pour asseoir le positionnement premium. Contrastes forts pour lisibilité à distance.
+            </li>
+            <li style="margin-top:10px;">
+              <strong style="color:var(--text);">Palette</strong> — Fond bleu marine profond, accents dorés, blanc cassé. Codes des marques de voyage et d'aviation haut de gamme.
+            </li>
+            <li style="margin-top:10px;">
+              <strong style="color:var(--text);">Droits d'auteur</strong> — Visuels issus de la bibliothèque Canva Pro (photos destinations, icônes avion) — libres d'utilisation pour projets scolaires. Aucun visage identifiable, aucun logo tiers.
+            </li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- SECTION 5 — ACTIVITÉ 3 PLANNING + BUDGET DÉTAILLÉ -->
+    <section class="section panel">
+      <div class="eyebrow" style="font-size:0.72rem; margin-bottom:4px;">Section 5</div>
+      <div class="eyebrow">Activité 3 — Planning et diffusion</div>
+      <h2>Rétroplanning sur la semaine de conception</h2>
+      <table class="planning-table" style="margin-top:18px;">
+        <thead>
+          <tr>
+            <th>Étape</th>
+            <th>Actions</th>
+            <th>Responsable</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Étape 1</td>
+            <td>Veille créative — recherche d'inspirations événements BtoB, thèmes voyage, communication d'ouverture de formations</td>
+            <td>Classe entière</td>
+          </tr>
+          <tr>
+            <td>Étape 2</td>
+            <td>Définition du concept "Air Alema" — thème voyage, format cocktail déjeunatoire, ligne éditoriale et visuelle</td>
+            <td>Classe entière</td>
+          </tr>
+          <tr>
+            <td>Étape 3</td>
+            <td>Création des affiches et supports visuels de communication sur Canva</td>
+            <td>Classe entière</td>
+          </tr>
+          <tr>
+            <td>Étape 4</td>
+            <td>Prise de contact avec des prestataires restaurateurs — collecte des offres et comparaison</td>
+            <td>Classe entière</td>
+          </tr>
+          <tr>
+            <td>Étape 5</td>
+            <td>Préparation et présentation du projet devant le directeur et les professeurs de l'établissement</td>
+            <td>Classe entière</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 style="color:var(--accent-2); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.1em; margin:24px 0 10px;">Budget détaillé</h3>
+      <table class="planning-table">
+        <thead>
+          <tr>
+            <th>Poste</th>
+            <th>Détail</th>
+            <th>Montant</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Création supports</td>
+            <td>Affiches et supports visuels — Canva (outil gratuit)</td>
+            <td style="color:var(--accent);">0 €</td>
+          </tr>
+          <tr>
+            <td>Prestataire traiteur</td>
+            <td>L'Atelier de Cuisine du Valois — cocktail dînatoire (prestataire retenu, événement non tenu)</td>
+            <td style="color:var(--accent-2);">1 500 € TTC</td>
+          </tr>
+          <tr>
+            <td>Impression affiches</td>
+            <td>Phase conception uniquement — impression non réalisée</td>
+            <td style="color:var(--accent);">0 €</td>
+          </tr>
+          <tr>
+            <td><strong>Total estimé</strong></td>
+            <td>Budget de conception + prestataire sélectionné</td>
+            <td style="color:var(--accent-2);"><strong>~1 500 € TTC</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- SECTION 6 — ACTIVITÉ 4 ACHATS PRESTATAIRES -->
+    <section class="section panel">
+      <div class="eyebrow" style="font-size:0.72rem; margin-bottom:4px;">Section 6</div>
+      <div class="eyebrow">Activité 4 — Achats et relations avec des prestataires</div>
+      <h2>Sélection des prestataires restauration</h2>
+      <p style="margin-bottom:18px;">Dans le cadre de l'organisation logistique d'Air Alema, nous avons rédigé un cahier des charges pour encadrer la sélection du prestataire traiteur, puis contacté 4 prestataires. Les offres ont été comparées selon les critères pondérés définis ci-dessous.</p>
+
+      <div class="cdc-doc">
+
+        <div class="cdc-section-head">Informations générales</div>
+        <div class="cdc-body">
+          <p><span>Nom du projet :</span> AIR ALEMA</p>
+          <p><span>Nature du projet :</span> Événement physique — cocktail déjeunatoire institutionnel</p>
+          <p><span>Type de document :</span> Cahier des charges prestataire restauration</p>
+          <p><span>Organisateur :</span> Classe BTS Communication — Alema Business School</p>
+          <p><span>Date de l'événement :</span> 17 décembre 2024 · 11h00 – 14h00</p>
+          <p><span>Responsable du projet :</span> Tarik Benahmed</p>
+          <p><span>Contact :</span> contact@alema.fr</p>
+          <p><span>Adresse :</span> 7 Rue de la Font Rouge, 77700 Chessy</p>
+        </div>
+
+        <div class="cdc-section-head">Description du besoin</div>
+        <div class="cdc-body">
+          <p>Alema Business School souhaite consulter plusieurs prestataires traiteurs afin de sélectionner l'offre la plus adaptée à l'événement Air Alema, organisé le 17 décembre 2024 dans le cadre du lancement du BTS Tourisme.</p>
+          <p style="margin-top:8px;">Le prestataire retenu devra fournir un cocktail déjeunatoire destiné à accueillir des partenaires institutionnels, élus locaux et acteurs économiques. La prestation devra être livrée sur site et prête à être mise en place par les étudiants.</p>
+        </div>
+
+        <div class="cdc-section-head">Livrables attendus</div>
+        <div class="cdc-body">
+          <strong>Pièces salées</strong>
+          <p>Entre 4 et 5 pièces salées par personne. Exemples attendus :</p>
+          <ul>
+            <li>Mini wraps, navettes garnies, mini sandwiches</li>
+            <li>Verrines salées, mini quiches, bouchées apéritives</li>
+          </ul>
+          <strong>Pièces sucrées</strong>
+          <p>3 pièces sucrées par personne. Exemples :</p>
+          <ul>
+            <li>Mini tartelettes, mignardises, financiers, macarons, verrines sucrées</li>
+          </ul>
+          <strong>Boissons sans alcool</strong>
+          <ul>
+            <li>Eau plate, eau gazeuse, jus de fruits, softs variés</li>
+          </ul>
+          <strong>Adaptation alimentaire obligatoire</strong>
+          <ul>
+            <li>Plusieurs options végétariennes</li>
+            <li>Plusieurs options sans porc</li>
+            <li>Produit halal disponible</li>
+            <li>Les propositions devront être clairement identifiées dans le devis</li>
+          </ul>
+        </div>
+
+        <div class="cdc-section-head">Exigences techniques</div>
+        <div class="cdc-body">
+          <strong>Qualité attendue — les produits proposés devront :</strong>
+          <ul>
+            <li>Être adaptés à un événement professionnel BtoB et une cible institutionnelle</li>
+            <li>Présenter une qualité gustative et visuelle valorisante</li>
+            <li>Être faciles à distribuer par des étudiants non professionnels</li>
+            <li>Respecter les normes sanitaires en vigueur</li>
+            <li>Proposer une diversité suffisante pour satisfaire différents régimes alimentaires</li>
+          </ul>
+        </div>
+
+        <div class="cdc-section-head">Critères d'évaluation et pondération</div>
+        <div class="cdc-body">
+          <ul>
+            <li>Prix / respect du budget — <strong>coef 3</strong></li>
+            <li>Adéquation avec la thématique tourisme / voyage / prestige — <strong>coef 3</strong></li>
+            <li>Qualité et diversité de l'offre — <strong>coef 2</strong></li>
+            <li>Image et professionnalisme du prestataire — <strong>coef 1</strong></li>
+            <li>Disponibilité et délai de réponse — <strong>coef 1</strong></li>
+          </ul>
+        </div>
+
+        <div class="cdc-section-head">Conditions commerciales</div>
+        <div class="cdc-body">
+          <p><span>Budget cible :</span> 1 500 € TTC maximum.</p>
+        </div>
+
+        <div class="cdc-section-head">Format de réponse attendu</div>
+        <div class="cdc-body">
+          <p>Chaque prestataire devra fournir :</p>
+          <ul>
+            <li>Un devis détaillé</li>
+            <li>La composition complète du cocktail</li>
+            <li>Le nombre de pièces proposées</li>
+            <li>Les options végétariennes, sans porc et halal</li>
+            <li>Les conditions de livraison et de mise en place</li>
+            <li>Les éventuels frais annexes</li>
+            <li>Les conditions de règlement</li>
+          </ul>
+        </div>
+
+      </div>
+      <table class="scoring-table">
+        <thead>
+          <tr>
+            <th>Critère</th>
+            <th>Coeff.</th>
+            <th>L'Atelier de Cuisine du Valois<br><span style="font-weight:400;font-size:0.78rem;opacity:0.7">Cocktail dînatoire · 1 500€ TTC</span></th>
+            <th>Oh ! P'tits Terroirs<br><span style="font-weight:400;font-size:0.78rem;opacity:0.7">Buffet complet · 1 600€ TTC</span></th>
+            <th>INSTANT-B<br><span style="font-weight:400;font-size:0.78rem;opacity:0.7">Animation crêpes · 1 283€ TTC</span></th>
+            <th>Au fil des papilles<br><span style="font-weight:400;font-size:0.78rem;opacity:0.7">Traiteur local · devis reçu</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Adéquation thématique (univers voyage / prestige)</td>
+            <td>3</td>
+            <td class="score-best">9</td>
+            <td>7</td>
+            <td>6</td>
+            <td>7</td>
+          </tr>
+          <tr>
+            <td>Prix / Budget du projet</td>
+            <td>3</td>
+            <td>7</td>
+            <td>7</td>
+            <td class="score-best">9</td>
+            <td>8</td>
+          </tr>
+          <tr>
+            <td>Qualité et diversité de l'offre</td>
+            <td>2</td>
+            <td class="score-best">9</td>
+            <td>8</td>
+            <td>5</td>
+            <td>7</td>
+          </tr>
+          <tr>
+            <td>Disponibilité et délai de réponse</td>
+            <td>1</td>
+            <td class="score-best">9</td>
+            <td>8</td>
+            <td>8</td>
+            <td>7</td>
+          </tr>
+          <tr>
+            <td>Image & professionnalisme</td>
+            <td>1</td>
+            <td class="score-best">9</td>
+            <td>7</td>
+            <td>7</td>
+            <td>6</td>
+          </tr>
+          <tr>
+            <td><strong>Score pondéré / 100</strong></td>
+            <td>—</td>
+            <td class="score-best">85</td>
+            <td>74</td>
+            <td>72</td>
+            <td>70</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="margin-top:14px; font-size:0.88rem;">
+        <strong style="color:var(--accent)">L'Atelier de Cuisine du Valois</strong> a été retenu pour son adéquation avec l'univers thématique de l'événement (cocktail dînatoire haute cuisine, 14 types d'amuse-bouches), son image professionnelle et sa disponibilité. Malgré un prix de 1 500€ TTC, l'offre justifie pleinement le positionnement premium d'Air Alema pour une cible institutionnelle.
+      </p>
+
+      <div style="margin-top:28px;">
+        <h3 style="font-size:1rem; color:var(--accent-2); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:16px;">Devis reçus</h3>
+        <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:14px;">
+
+          <div style="background:rgba(255,255,255,0.04); border:1px solid var(--line); border-radius:14px; padding:14px;">
+            <div style="font-size:0.78rem; font-weight:800; color:var(--accent); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:6px;">L'Atelier de Cuisine du Valois</div>
+            <div style="font-size:0.82rem; color:var(--muted); margin-bottom:10px;">Cocktail dînatoire · 1 500€ TTC · 2 pages</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+              <a href="devis_atelier_p1.jpg" target="_blank"><img src="devis_atelier_p1.jpg" alt="Devis Atelier page 1" style="width:100%; border-radius:8px; border:1px solid var(--line);"></a>
+              <a href="devis_atelier_p2.jpg" target="_blank"><img src="devis_atelier_p2.jpg" alt="Devis Atelier page 2" style="width:100%; border-radius:8px; border:1px solid var(--line);"></a>
+            </div>
+          </div>
+
+          <div style="background:rgba(255,255,255,0.04); border:1px solid var(--line); border-radius:14px; padding:14px;">
+            <div style="font-size:0.78rem; font-weight:800; color:var(--accent); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:6px;">Oh ! P'tits Terroirs</div>
+            <div style="font-size:0.82rem; color:var(--muted); margin-bottom:10px;">Buffet complet · 1 600€ TTC · 1 page</div>
+            <a href="devis_ohptits_p1.jpg" target="_blank"><img src="devis_ohptits_p1.jpg" alt="Devis Oh P'tits Terroirs" style="width:100%; border-radius:8px; border:1px solid var(--line);"></a>
+          </div>
+
+          <div style="background:rgba(255,255,255,0.04); border:1px solid var(--line); border-radius:14px; padding:14px;">
+            <div style="font-size:0.78rem; font-weight:800; color:var(--accent); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:6px;">INSTANT-B</div>
+            <div style="font-size:0.82rem; color:var(--muted); margin-bottom:10px;">Animation crêpes · 1 283€ TTC · 4 pages</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+              <a href="devis_instantb_p1.jpg" target="_blank"><img src="devis_instantb_p1.jpg" alt="Devis INSTANT-B page 1" style="width:100%; border-radius:8px; border:1px solid var(--line);"></a>
+              <a href="devis_instantb_p2.jpg" target="_blank"><img src="devis_instantb_p2.jpg" alt="Devis INSTANT-B page 2" style="width:100%; border-radius:8px; border:1px solid var(--line);"></a>
+              <a href="devis_instantb_p3.jpg" target="_blank"><img src="devis_instantb_p3.jpg" alt="Devis INSTANT-B page 3" style="width:100%; border-radius:8px; border:1px solid var(--line);"></a>
+              <a href="devis_instantb_p4.jpg" target="_blank"><img src="devis_instantb_p4.jpg" alt="Devis INSTANT-B page 4" style="width:100%; border-radius:8px; border:1px solid var(--line);"></a>
+            </div>
+          </div>
+
+          <div style="background:rgba(255,255,255,0.04); border:1px solid var(--line); border-radius:14px; padding:14px;">
+            <div style="font-size:0.78rem; font-weight:800; color:var(--accent); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:6px;">Au fil des papilles</div>
+            <div style="font-size:0.82rem; color:var(--muted); margin-bottom:10px;">Traiteur local · devis reçu · 2 pages</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+              <a href="devis_aufildes_p1.jpg" target="_blank"><img src="devis_aufildes_p1.jpg" alt="Devis Au fil des papilles page 1" style="width:100%; border-radius:8px; border:1px solid var(--line);"></a>
+              <a href="devis_aufildes_p2.jpg" target="_blank"><img src="devis_aufildes_p2.jpg" alt="Devis Au fil des papilles page 2" style="width:100%; border-radius:8px; border:1px solid var(--line);"></a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 7 — TABLEAU KPI -->
+    <section class="section panel">
+      <div class="eyebrow" style="font-size:0.72rem; margin-bottom:4px;">Section 7</div>
+      <div class="eyebrow">Activité 5 — Évaluation</div>
+      <h2>Tableau KPI</h2>
+      <div class="warning-box" style="margin:14px 0;">
+        Le projet n'a pas été sélectionné face à la classe concurrente. La phase de diffusion réelle n'a pas eu lieu — les résultats ci-dessous concernent la phase de conception et de pitch.
+      </div>
+      <table class="planning-table" style="margin-top:14px;">
+        <thead>
+          <tr>
+            <th>Objectif</th>
+            <th>Résultat réel</th>
+            <th>Axe d'amélioration</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Projet sélectionné par le jury</td>
+            <td style="color:var(--danger);">Non retenu — classe concurrente sélectionnée</td>
+            <td>Anticiper le positionnement de la classe adverse pour se différencier davantage</td>
+          </tr>
+          <tr>
+            <td>Supports visuels livrés dans les 5 jours</td>
+            <td style="color:var(--accent);">Oui — affiches produites dans les délais</td>
+            <td>Développer une maquette 3D ou simulation du lieu pour rendre le concept plus concret</td>
+          </tr>
+          <tr>
+            <td>Minimum 3 devis prestataires comparés</td>
+            <td style="color:var(--accent);">Oui — 4 prestataires contactés et comparés</td>
+            <td>Formaliser le cahier des charges avant la prise de contact pour cadrer les demandes</td>
+          </tr>
+          <tr>
+            <td>Pitch complet de 10 minutes délivré</td>
+            <td style="color:var(--accent);">Oui — présentation réalisée devant le jury</td>
+            <td>Inclure un budget formalisé dès le pitch pour renforcer la crédibilité du projet</td>
+          </tr>
+          <tr>
+            <td>Identité visuelle cohérente avec le positionnement</td>
+            <td style="color:var(--accent);">Oui — codes voyage premium respectés</td>
+            <td>Tester la lisibilité sur différents formats avant la présentation</td>
+          </tr>
+          <tr>
+            <td>Planning de diffusion post-sélection anticipé</td>
+            <td style="color:var(--danger);">Non prévu — focus sur la phase conception</td>
+            <td>Préparer un plan de communication aval pour montrer la vision à long terme au jury</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <div class="bottom-nav">
+      <a class="ghost-btn" href="fiches.html">← Retour aux fiches</a>
+      <a class="next-btn" href="bulle.html">Fiche suivante →</a>
+    </div>
+  </main>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <button class="close-lb" id="closeLb">✕</button>
+    <img src="affiche_alema_air.jpg" alt="Affiche Air Alema agrandie">
+  </div>
+
+  <script>
+    const lb = document.getElementById('lightbox');
+    document.getElementById('openLb').addEventListener('click', () => { lb.classList.add('open'); document.body.style.overflow = 'hidden'; });
+    document.getElementById('closeLb').addEventListener('click', () => { lb.classList.remove('open'); document.body.style.overflow = ''; });
+    lb.addEventListener('click', (e) => { if (e.target === lb) { lb.classList.remove('open'); document.body.style.overflow = ''; } });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { lb.classList.remove('open'); document.body.style.overflow = ''; } });
+  </script>
+</body>
+</html>

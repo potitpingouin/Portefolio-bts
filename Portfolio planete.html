@@ -1,0 +1,639 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portfolio BTS Communication - Espace</title>
+  <style>
+    :root{
+      --bg:#050816;
+      --card: rgba(255,255,255,0.08);
+      --card2: rgba(255,255,255,0.12);
+      --text: #ffffff;
+      --muted: rgba(255,255,255,0.75);
+      --lineSoft: rgba(255,255,255,.10);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:system-ui,Segoe UI,Roboto,Arial;background:var(--bg);color:var(--text);overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+
+    /* ===== Fond animé : étoiles + nébuleuse ===== */
+    body.stars{
+      position:relative;
+      background:
+        radial-gradient(900px 600px at 70% 15%, rgba(120,130,255,.10), transparent 55%),
+        radial-gradient(700px 500px at 15% 70%, rgba(255,120,0,.08), transparent 55%),
+        radial-gradient(900px 700px at 80% 85%, rgba(0,255,200,.06), transparent 55%),
+        var(--bg);
+    }
+
+    .stars::before,
+    .stars::after{
+      content:"";
+      position:fixed; inset:-20%;
+      pointer-events:none;
+      opacity:.85;
+      will-change: transform;
+      filter: blur(.15px);
+      transform: translate3d(0,0,0);
+    }
+
+    /* Couche 1 (petites étoiles) */
+    .stars::before{
+      background:
+        radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,.75) 55%, transparent 56%),
+        radial-gradient(1px 1px at 35% 70%, rgba(255,255,255,.65) 55%, transparent 56%),
+        radial-gradient(1px 1px at 80% 30%, rgba(255,255,255,.70) 55%, transparent 56%),
+        radial-gradient(1px 1px at 60% 85%, rgba(255,255,255,.55) 55%, transparent 56%),
+        radial-gradient(1px 1px at 22% 45%, rgba(255,255,255,.60) 55%, transparent 56%),
+        radial-gradient(1px 1px at 92% 62%, rgba(255,255,255,.55) 55%, transparent 56%);
+      animation: drift1 26s linear infinite;
+    }
+
+    /* Couche 2 (grosses étoiles) */
+    .stars::after{
+      opacity:.55;
+      background:
+        radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,.75) 50%, transparent 52%),
+        radial-gradient(2px 2px at 70% 60%, rgba(255,255,255,.65) 50%, transparent 52%),
+        radial-gradient(2px 2px at 40% 82%, rgba(255,255,255,.55) 50%, transparent 52%),
+        radial-gradient(2px 2px at 85% 20%, rgba(255,255,255,.65) 50%, transparent 52%),
+        radial-gradient(2px 2px at 10% 70%, rgba(255,255,255,.50) 50%, transparent 52%);
+      animation: drift2 38s linear infinite;
+    }
+
+    @keyframes drift1{
+      from{transform: translate3d(0,0,0)}
+      to{transform: translate3d(-6%, 4%, 0)}
+    }
+    @keyframes drift2{
+      from{transform: translate3d(0,0,0)}
+      to{transform: translate3d(5%, -4%, 0)}
+    }
+
+    header{
+      position:fixed; top:0; left:0; right:0;
+      padding:18px 18px;
+      display:flex; align-items:center; justify-content:space-between;
+      background: linear-gradient(to bottom, rgba(5,8,22,.88), rgba(5,8,22,0));
+      z-index:50;
+    }
+    .title{font-weight:800; letter-spacing:.2px}
+    .hint{color:var(--muted); font-size:14px}
+
+    /* ===== scène ===== */
+    .scene{
+      height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      padding-top:70px;
+    }
+
+    /* ===== orbites (visuelles) ===== */
+    .orbit{
+      position:absolute;
+      border:1px solid var(--lineSoft);
+      border-radius:999px;
+      transform: translate(-50%,-50%);
+      left:50%;
+      top:52%;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.03);
+    }
+    .o1{width:220px;height:220px}
+    .o2{width:320px;height:320px}
+    .o3{width:430px;height:430px}
+    .o4{width:540px;height:540px}
+    .o5{width:680px;height:680px}
+    .o6{width:820px;height:820px}
+    .o7{width:950px;height:950px}
+    .o8{width:1100px;height:1100px}
+
+    /* ===== Orbits animés : FIX (on sépare translate et rotate) ===== */
+    .orbit-wrap{
+      position:absolute;
+      left:50%;
+      top:52%;
+      width:0; height:0;
+      transform: translate(-50%,-50%);
+      pointer-events:none;
+      z-index:2;
+    }
+
+    .orbit-anim{
+      position:absolute;
+      left:0; top:0;
+      width:var(--size);
+      height:var(--size);
+      margin-left:calc(var(--size) / -2);
+      margin-top:calc(var(--size) / -2);
+      animation: spin var(--dur) linear infinite;
+      will-change: transform;
+    }
+
+
+    @keyframes spin{
+      from{transform: rotate(0deg)}
+      to{transform: rotate(360deg)}
+    }
+
+    /* Chaque orbite animée a sa taille + durée */
+    .w1{--size:220px; --dur:10s;}
+    .w2{--size:320px; --dur:14s;}
+    .w3{--size:430px; --dur:18s;}
+    .w4{--size:540px; --dur:24s;}
+    .w5{--size:680px; --dur:30s;}
+    .w6{--size:820px; --dur:38s;}
+    .w7{--size:950px; --dur:46s;}
+    .w8{--size:1100px; --dur:56s;}
+
+    /* ===== soleil + planètes ===== */
+    .planet{
+      position:absolute;
+      transform: translate(-50%,-50%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:999px;
+      cursor:pointer;
+      transition: transform .15s ease, filter .15s ease, box-shadow .15s ease;
+      box-shadow: 0 12px 30px rgba(0,0,0,.35);
+      outline: 1px solid rgba(255,255,255,.15);
+      will-change: transform;
+      pointer-events:auto; /* important pour cliquer */
+    }
+
+    .planet:hover{
+      transform: translate(-50%,-50%) scale(1.10);
+      filter: brightness(1.12);
+      box-shadow: 0 16px 40px rgba(0,0,0,.45), 0 0 22px rgba(255,255,255,.12);
+    }
+
+    .label{
+      position:absolute;
+      top:110%;
+      left:50%;
+      transform: translateX(-50%);
+      font-size:13px;
+      color:var(--muted);
+      white-space:nowrap;
+      text-shadow: 0 6px 18px rgba(0,0,0,.7);
+      pointer-events:none;
+    }
+
+    .sun{
+      width:120px;height:120px;
+      background: radial-gradient(circle at 30% 30%, #fff6b0, #ffcc2e 40%, #ff7b00 72%, #b23b00);
+      outline:none;
+      box-shadow: 0 0 45px rgba(255,190,30,.35), 0 0 90px rgba(255,120,0,.18);
+      z-index:5;
+    }
+
+    /* Soleil qui pulse légèrement */
+    @keyframes pulse {
+      0%,100% { transform: translate(-50%,-50%) scale(1); }
+      50% { transform: translate(-50%,-50%) scale(1.03); }
+    }
+    .sun{ animation: pulse 3.2s ease-in-out infinite; }
+
+    .mercury{width:30px;height:30px;background:radial-gradient(circle at 30% 30%, #d9d9d9, #7b7b7b)}
+    .venus{width:42px;height:42px;background:radial-gradient(circle at 30% 30%, #ffd6a3, #d27b2c)}
+    .earth{width:48px;height:48px;background:radial-gradient(circle at 30% 30%, #8cd3ff, #1b4bd6 55%, #113070)}
+    .mars{width:38px;height:38px;background:radial-gradient(circle at 30% 30%, #ffb1a3, #c83b2a)}
+    .jupiter{width:70px;height:70px;background:linear-gradient(135deg,#f0d2b2,#cfa47a,#b77b54)}
+    .saturn{width:66px;height:66px;background:radial-gradient(circle at 30% 30%, #ffe6a6, #d2a851)}
+    .uranus{width:54px;height:54px;background:radial-gradient(circle at 30% 30%, #b9fff3, #2fb3a2)}
+    .neptune{width:54px;height:54px;background:radial-gradient(circle at 30% 30%, #9bb6ff, #2b4ad8)}
+
+    /* anneaux saturne */
+    .saturn::after{
+      content:"";
+      position:absolute;
+      width:110px;height:26px;
+      border-radius:999px;
+      border:2px solid rgba(255,255,255,.25);
+      transform: rotate(-18deg);
+      box-shadow: inset 0 0 0 999px rgba(255,255,255,.04);
+    }
+
+    /* ===== Panneaux (animation + look moins fade) ===== */
+    @keyframes panelIn{
+      from { opacity: 0; transform: translateY(14px) scale(.985); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .panel{
+      position:fixed;
+      inset:0;
+      display:none;
+      padding:90px 18px 18px;
+      background: radial-gradient(circle at 30% 20%, rgba(120,130,255,.18), rgba(5,8,22,.86) 55%, rgba(5,8,22,.94));
+      backdrop-filter: blur(12px);
+      z-index:80;
+    }
+    .panel:target{display:block;}
+    .panel:target .card{ animation: panelIn .22s ease-out both; }
+
+    .card{
+      max-width:900px;
+      margin:0 auto;
+      background: linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.06));
+      border:1px solid rgba(255,255,255,.18);
+      border-radius:22px;
+      padding:18px;
+      box-shadow: 0 22px 70px rgba(0,0,0,.55);
+      position:relative;
+      overflow:hidden;
+    }
+    .card::before{
+      content:"";
+      position:absolute;
+      width:380px; height:380px;
+      right:-140px; top:-160px;
+      background: radial-gradient(circle, rgba(255,255,255,.20), transparent 60%);
+      pointer-events:none;
+    }
+
+    .card header{
+      position:static;
+      padding:0;
+      background:none;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:12px;
+      display:flex;
+      align-items:center;
+    }
+    .card h2{margin:0;font-size:22px}
+
+    .close{
+      padding:10px 12px;
+      border-radius:12px;
+      background: rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.16);
+      font-weight:700;
+      transition: transform .12s ease, background .12s ease;
+    }
+    .close:hover{transform: translateY(-1px); background: rgba(255,255,255,.14);}
+
+    .back{
+      padding:10px 12px;
+      border-radius:12px;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.14);
+      font-weight:600;
+      color: rgba(255,255,255,.9);
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+
+    @media (max-width: 780px){
+      .grid{grid-template-columns:1fr}
+      .o8,.o7,.o6,.o5,.o4{display:none}
+      header{gap:10px}
+      .hint{display:none}
+    }
+
+    .box{
+      background: rgba(255,255,255,.07);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:16px;
+      padding:14px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.02);
+    }
+    .box h3{margin:0 0 8px;font-size:15px;color:rgba(255,255,255,.92)}
+    .box p{margin:0;color:var(--muted);line-height:1.5}
+
+    .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .chip{
+      font-size:12px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.07);
+      color: rgba(255,255,255,.88);
+    }
+
+    /* accessibilité : si l'utilisateur préfère moins d'animations */
+    @media (prefers-reduced-motion: reduce){
+      .stars::before,.stars::after,
+      .orbit-anim,
+      .sun{animation:none !important}
+      .panel:target .card{animation:none !important}
+      html{scroll-behavior:auto}
+    }
+  </style>
+</head>
+
+<body class="stars">
+  <header>
+    <div class="title">Portfolio – BTS Communication (Thème Espace)</div>
+    <div class="hint">Clique sur une planète pour ouvrir une section</div>
+  </header>
+
+  <main class="scene">
+    <!-- orbites visuelles -->
+    <div class="orbit o1"></div>
+    <div class="orbit o2"></div>
+    <div class="orbit o3"></div>
+    <div class="orbit o4"></div>
+    <div class="orbit o5"></div>
+    <div class="orbit o6"></div>
+    <div class="orbit o7"></div>
+    <div class="orbit o8"></div>
+
+    <!-- Soleil -->
+    <a class="planet sun" href="#sun" style="left:50%;top:52%;">
+      <span class="label">Soleil • Accueil</span>
+    </a>
+
+    <!-- Planètes qui gravitent vraiment : chaque planète sur sa propre orbite -->
+    <div class="orbit-wrap w1">
+      <div class="orbit-anim">
+        <a class="planet mercury" href="#mercury" style="left:50%; top:0%;">
+          <span class="label">Mercure</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="orbit-wrap w2 rev">
+      <div class="orbit-anim">
+        <a class="planet venus" href="#venus" style="left:50%; top:0%;">
+          <span class="label">Vénus</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="orbit-wrap w3">
+      <div class="orbit-anim">
+        <a class="planet earth" href="#earth" style="left:50%; top:0%;">
+          <span class="label">Terre</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="orbit-wrap w4 rev">
+      <div class="orbit-anim">
+        <a class="planet mars" href="#mars" style="left:50%; top:0%;">
+          <span class="label">Mars</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="orbit-wrap w5">
+      <div class="orbit-anim">
+        <a class="planet jupiter" href="#jupiter" style="left:50%; top:0%;">
+          <span class="label">Jupiter</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="orbit-wrap w6 rev">
+      <div class="orbit-anim">
+        <a class="planet saturn" href="#saturn" style="left:50%; top:0%;">
+          <span class="label">Saturne</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="orbit-wrap w7 rev">
+      <div class="orbit-anim">
+        <a class="planet uranus" href="#uranus" style="left:50%; top:0%;">
+          <span class="label">Uranus</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="orbit-wrap w8">
+      <div class="orbit-anim">
+        <a class="planet neptune" href="#neptune" style="left:50%; top:0%;">
+          <span class="label">Neptune</span>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- PANNEAUX (tes textes inchangés) -->
+  <section id="sun" class="panel">
+    <div class="card">
+      <header>
+        <h2>☀️ À propos de moi</h2>
+        <div style="display:flex; gap:10px;">
+          <a class="back" href="#">Retour</a>
+          <a class="close" href="#">Fermer</a>
+        </div>
+      </header>
+      <div class="grid">
+        <div class="box">
+          <h3>Bienvenue dans mon univers</h3>
+          <p>
+            Passionné d'astronomie et de musique, je me forme en BTS communication avec l'ambition de devenir Community manager
+            pour mes artistes préférés.
+            Venez avec moi je vous invite à explorer mon univers.
+          </p>
+          <div class="chips">
+            <span class="chip">Créatif</span>
+            <span class="chip">Stratégique</span>
+            <span class="chip">Digital</span>
+          </div>
+        </div>
+
+        <div class="box">
+          <h3>Mon parcours</h3>
+          <p>
+            Etudiant en BTS communication j'ai choisi cette formation pour...
+          </p>
+          <div class="chips">
+            <span class="chip">Gestion de projet</span>
+            <span class="chip">Réseaux sociaux</span>
+            <span class="chip">Création de contenu</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="mercury" class="panel">
+    <div class="card">
+      <header>
+        <h2>🪐 Mercure — Veille creative et technologique</h2>
+        <div style="display:flex; gap:10px;">
+          <a class="back" href="#">Retour</a>
+          <a class="close" href="#">Fermer</a>
+        </div>
+      </header>
+      <div class="grid">
+        <div class="box">
+          <h3>Contexte + Objectif</h3>
+          <p>Ex : créer un logo, une charte graphique et des supports pour une marque / association / projet.</p>
+        </div>
+        <div class="box">
+          <h3>Livrables</h3>
+          <p>Logo, palette, typographies, cartes, affiche, post Instagram, mockups.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="venus" class="panel">
+    <div class="card">
+      <header>
+        <h2>🪐 Vénus — Acheter des prestations</h2>
+        <div style="display:flex; gap:10px;">
+          <a class="back" href="#">Retour</a>
+          <a class="close" href="#">Fermer</a>
+        </div>
+      </header>
+      <div class="grid">
+        <div class="box">
+          <h3>Stratégie</h3>
+          <p>Cible, messages, ton, calendrier éditorial, formats (reels, stories, carrousels).</p>
+        </div>
+        <div class="box">
+          <h3>Exemples</h3>
+          <p>5 posts + 5 stories + 1 reel + hashtags + KPIs à suivre.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="earth" class="panel">
+    <div class="card">
+      <header>
+        <h2>🌍 Terre — Créer des contenus</h2>
+        <div style="display:flex; gap:10px;">
+          <a class="back" href="#">Retour</a>
+          <a class="close" href="#">Fermer</a>
+        </div>
+      </header>
+      <div class="grid">
+        <div class="box">
+          <h3>Organisation</h3>
+          <p>Objectif, budget, planning, partenaires, logistique, communication avant/pendant/après.</p>
+        </div>
+        <div class="box">
+          <h3>Supports</h3>
+          <p>Affiche, invitations, communiqué, plan de com, checklists, bilan.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="mars" class="panel">
+    <div class="card">
+      <header>
+        <h2>🔴 Mars — Contrôler et évaluer</h2>
+        <div style="display:flex; gap:10px;">
+          <a class="back" href="#">Retour</a>
+          <a class="close" href="#">Fermer</a>
+        </div>
+      </header>
+      <div class="grid">
+        <div class="box">
+          <h3>Concept</h3>
+          <p>Script, storyboard, durée, objectif (notoriété, trafic, inscription…).</p>
+        </div>
+        <div class="box">
+          <h3>Production</h3>
+          <p>Tournage/montage (CapCut/Premiere), sous-titres, musique libre, formats 9:16 / 1:1.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="jupiter" class="panel">
+    <div class="card">
+      <header>
+        <h2>🟣 Jupiter — Situation 3</h2>
+        <div style="display:flex; gap:10px;">
+          <a class="back" href="#">Retour</a>
+          <a class="close" href="#">Fermer</a>
+        </div>
+      </header>
+      <div class="grid">
+        <div class="box">
+          <h3>Outils</h3>
+          <p>Communiqué, dossier de presse, ciblage médias, relances.</p>
+        </div>
+        <div class="box">
+          <h3>Exemple</h3>
+          <p>Un CP complet + une liste médias + un email de relance.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="saturn" class="panel">
+    <div class="card">
+      <header>
+        <h2>🟡 Saturne — Produire et diffuser</h2>
+        <div style="display:flex; gap:10px;">
+          <a class="back" href="#">Retour</a>
+          <a class="close" href="#">Fermer</a>
+        </div>
+      </header>
+      <div class="grid">
+        <div class="box">
+          <h3>Contenu</h3>
+          <p>Présentation du projet, audiences, valeurs, contreparties, budget.</p>
+        </div>
+        <div class="box">
+          <h3>Packs</h3>
+          <p>Pack Bronze/Argent/Or + visibilité + KPI + calendrier.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="uranus" class="panel">
+    <div class="card">
+      <header>
+        <h2>🟢 Uranus — situation 1</h2>
+        <div style="display:flex; gap:10px;">
+          <a class="back" href="#">Retour</a>
+          <a class="close" href="#">Fermer</a>
+        </div>
+      </header>
+      <div class="grid">
+        <div class="box">
+          <h3>Veille</h3>
+          <p>Tendances, concurrents, nouvelles campagnes, inspirations créatives.</p>
+        </div>
+        <div class="box">
+          <h3>Format</h3>
+          <p>1 page “analyse” + 1 page “insights” + 1 reco actionnable.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="neptune" class="panel">
+    <div class="card">
+      <header>
+        <h2>🔵 Neptune — Situation 2</h2>
+        <div style="display:flex; gap:10px;">
+          <a class="back" href="#">Retour</a>
+          <a class="close" href="#">Fermer</a>
+        </div>
+      </header>
+      <div class="grid">
+        <div class="box">
+          <h3>Gestion</h3>
+          <p>Modération, réponses types, charte éditoriale, ligne graphique.</p>
+        </div>
+        <div class="box">
+          <h3>Mesures</h3>
+          <p>KPI : portée, engagement, clics, abonnés, taux de conversion.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Présentation — Portfolio BTS Communication</title>
+  <style>
+    :root {
+      --bg: #09090d;
+      --bg-2: #13131a;
+      --card: rgba(255,255,255,0.05);
+      --line: rgba(255,255,255,0.12);
+      --text: #f6f6f8;
+      --muted: #b8b8c2;
+      --accent: #d7b56d;
+      --accent-2: #c88bff;
+      --shadow: 0 24px 70px rgba(0,0,0,0.42);
+      --radius: 24px;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top, rgba(200,139,255,0.10), transparent 28%),
+        radial-gradient(circle at 20% 20%, rgba(215,181,109,0.10), transparent 20%),
+        linear-gradient(180deg, #09090d, #13131a 50%, #0b0b0f 100%);
+    }
+    .noise {
+      position: fixed; inset: 0; pointer-events: none; opacity: 0.08;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.3) 0.8px, transparent 1px);
+      background-size: 10px 10px; mix-blend-mode: soft-light;
+    }
+    .page { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; padding: 28px 22px 60px; }
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      margin-bottom: 28px;
+    }
+    .back {
+      display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text);
+      padding: 12px 16px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,0.04);
+    }
+    .back:hover { background: rgba(255,255,255,0.08); }
+    .track-badge {
+      padding: 10px 14px; border-radius: 999px; border: 1px solid var(--line); color: var(--accent);
+      background: rgba(255,255,255,0.04); font-weight: 800; letter-spacing: 0.08em; font-size: 0.82rem;
+      text-transform: uppercase;
+    }
+    .hero {
+      display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 24px; align-items: stretch; margin-bottom: 24px;
+    }
+    .panel {
+      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03));
+      border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 28px;
+    }
+    .eyebrow {
+      display: inline-block; margin-bottom: 14px; color: var(--accent); text-transform: uppercase;
+      letter-spacing: 0.14em; font-weight: 800; font-size: 0.84rem;
+    }
+    h1 {
+      margin: 0 0 14px; font-size: clamp(2.4rem, 4vw, 4.2rem); line-height: 0.95; letter-spacing: -0.04em;
+    }
+    p { color: var(--muted); line-height: 1.75; }
+    .vinyl-card {
+      position: relative; min-height: 420px; display: flex; align-items: center; justify-content: center; overflow: hidden;
+    }
+    .record {
+      position: absolute; width: 72%; aspect-ratio: 1/1; border-radius: 50%; right: -4%; top: 50%; transform: translateY(-50%);
+      background:
+        radial-gradient(circle at center, #0a0a0a 0 7%, #1a1a1f 7% 11%, #09090b 11% 14%, transparent 14%),
+        repeating-radial-gradient(circle at center, #0b0b0d 0 10px, #17171c 10px 12px, #09090b 12px 15px);
+      box-shadow: var(--shadow);
+    }
+    .record::after {
+      content: "QX"; position: absolute; inset: 39% auto auto 39%; width: 22%; aspect-ratio: 1/1; border-radius: 50%;
+      display: grid; place-items: center; font-weight: 900; letter-spacing: 0.08em;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #111; box-shadow: 0 0 0 8px rgba(0,0,0,0.28);
+    }
+    .cover {
+      position: relative; width: 82%; aspect-ratio: 1/1; border-radius: 22px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.04)),
+      url('https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=1200&q=80') center/cover;
+      border: 1px solid rgba(255,255,255,0.10); box-shadow: var(--shadow); overflow: hidden; z-index: 2;
+    }
+    .cover::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.08), rgba(0,0,0,0.52)); }
+    .cover-label {
+      position: absolute; inset: auto 18px 18px 18px; z-index: 2; padding: 18px; border-radius: 18px;
+      background: rgba(0,0,0,0.42); border: 1px solid rgba(255,255,255,0.10); backdrop-filter: blur(8px);
+    }
+    .cover-label h2 { margin: 0 0 8px; font-size: 1.5rem; }
+    .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 18px; }
+    .card { grid-column: span 4; }
+    .card.wide { grid-column: span 8; }
+    .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+    .chip {
+      padding: 10px 14px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,0.04);
+      font-size: 0.92rem;
+    }
+    .quote {
+      margin-top: 18px; padding: 16px 18px; border-left: 3px solid var(--accent); background: rgba(255,255,255,0.04); border-radius: 14px;
+      color: var(--text); line-height: 1.7;
+    }
+    .timeline { display: grid; gap: 14px; }
+    .timeline-item {
+      border: 1px solid var(--line); border-radius: 18px; padding: 16px; background: rgba(255,255,255,0.03);
+      display: grid; grid-template-columns: 120px 1fr; gap: 14px;
+    }
+    .timeline-item strong { color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.84rem; }
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .card, .card.wide { grid-column: span 12; }
+    }
+    @media (max-width: 700px) {
+      .timeline-item { grid-template-columns: 1fr; }
+    }
+    .logiciels-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 24px;
+    }
+    .logiciel-card {
+      background: rgba(255,255,255,0.04); border: 1px solid var(--line); border-radius: 18px; padding: 20px;
+    }
+    .logiciel-card h3 { margin: 0 0 6px; font-size: 1rem; color: var(--text); }
+    .logiciel-card p { margin: 0; font-size: 0.88rem; line-height: 1.6; }
+    .logiciel-icon { font-size: 1.5rem; margin-bottom: 10px; }
+    .section-title { margin: 32px 0 0; }
+    .section-title .eyebrow { display: block; margin-bottom: 8px; }
+    .section-title h2 { margin: 0 0 18px; font-size: 1.6rem; }
+    .bottom-nav {
+      display: flex; justify-content: flex-end; padding: 28px 0 0;
+    }
+    .next-btn {
+      display: inline-flex; align-items: center; gap: 10px; text-decoration: none;
+      padding: 14px 22px; border-radius: 999px; border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04); color: var(--accent); font-weight: 700;
+      letter-spacing: 0.06em; transition: background 0.2s;
+    }
+    .next-btn:hover { background: rgba(255,255,255,0.09); }
+    @media (max-width: 900px) {
+      .logiciels-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .logiciels-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <main class="page">
+    <div class="topbar">
+      <a class="back" href="portfolio_bts_vinyle.html?tracklist=1">← Retour à la tracklist</a>
+      <div class="track-badge">Track 01 — Présentation</div>
+    </div>
+
+    <section class="hero">
+      <article class="panel">
+        <div class="eyebrow">Ouverture</div>
+        <h1>Qui je suis</h1>
+        <p>
+          Bonjour, je m’appelle <strong>Quentin Xiong</strong>. J’ai commencé ce BTS avec un bac général scientifique,
+          sans parcours créatif derrière moi. Deux ans plus tard, je suis capable de coder un musée interactif,
+          réaliser une vidéo hip-hop de A à Z et concevoir une campagne de communication de bout en bout.
+          Ce portfolio, c’est le récit de cette transformation.
+        </p>
+        <p>
+          Ce qui me caractérise en tant que communicant : la curiosité, la polyvalence, et le besoin de concret.
+          Je ne conçois pas la communication de façon abstraite — chaque projet doit servir quelqu’un,
+          s’adresser à une vraie cible, créer un impact réel.
+        </p>
+      </article>
+
+      <article class="panel vinyl-card">
+        <div class="record" aria-hidden="true"></div>
+        <div class="cover">
+          <div class="cover-label">
+            <h2>Quentin Xiong</h2>
+            <p>BTS Communication · Alema Business School</p>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="grid">
+      <article class="panel card">
+        <div class="eyebrow">Profil</div>
+        <h2>Mes points forts</h2>
+       
+        <div class="chips">
+          <span class="chip">Créatif</span>
+          <span class="chip">Curieux</span>
+          <span class="chip">Polyvalent</span>
+          <span class="chip">Impliqué</span>
+        </div>
+      </article>
+
+      <article class="panel card">
+        <div class="eyebrow">Motivation</div>
+        <h2>Pourquoi la communication</h2>
+        <p>
+          Ce qui m’attire dans la communication, c’est la possibilité de créer des choses concrètes qui touchent
+          les gens — une affiche qu’on remarque, une vidéo qui fait sourire, un événement dont on se souvient.
+          J’ai besoin que mon travail serve à quelque chose et s’adresse à quelqu’un.
+        </p>
+      </article>
+
+      <article class="panel card">
+        <div class="eyebrow">Objectif</div>
+        <h2>Mon projet</h2>
+        <p>
+          Après le BTS, je poursuis en Bachelor Communication Événementielle à Alema, idéalement en alternance.
+          L’événementiel, c’est là où tout converge pour moi : la stratégie, la créativité, le concret et le contact
+          avec le public. C’est la direction que je me suis fixée.
+        </p>
+      </article>
+
+    </section>
+
+    <div class="section-title">
+      <span class="eyebrow">Expériences</span>
+      <h2>Mes deux stages</h2>
+    </div>
+    <div class="logiciels-grid">
+      <div class="logiciel-card">
+        <div class="logiciel-icon">🃏</div>
+        <h3>Bulle de Jeux — Meaux <span style="color:var(--accent);font-size:0.8rem;font-weight:700;margin-left:8px;">1ère année · 2 mois</span></h3>
+        <p><strong style="color:var(--text)">Poste :</strong> Chargé de communication</p>
+        <p style="margin-top:8px">Bulle de Jeux est une librairie spécialisée mangas, bandes dessinées, jeux de société et cartes à collectionner (TCG). J’étais en charge de la communication : création de posts Instagram sur Canva, aide à la préparation d’événements comme les sorties de nouvelles extensions TCG.</p>
+      </div>
+      <div class="logiciel-card">
+        <div class="logiciel-icon">🎪</div>
+        <h3>Wonderful Land — Trampoline Park <span style="color:var(--accent);font-size:0.8rem;font-weight:700;margin-left:8px;">2ème année · 2 mois</span></h3>
+        <p><strong style="color:var(--text)">Poste :</strong> Chargé de communication</p>
+        <p style="margin-top:8px">Wonderful Land est un parc de loisirs / trampoline park. J’étais en charge de la communication digitale : tournage et montage de films et stories, création de posts réseaux sociaux — Canva pour les visuels, CapCut pour la vidéo.</p>
+      </div>
+    </div>
+
+    <div class="section-title">
+      <span class="eyebrow">Portfolio créatif</span>
+      <h2>Mes créations en 4 catégories</h2>
+    </div>
+    <div class="chips" style="margin-bottom:8px">
+      <span class="chip">🖨 Print</span>
+      <span class="chip">💻 Digital</span>
+      <span class="chip">🎬 Audiovisuel</span>
+      <span class="chip">🖼 Affiches & Supports</span>
+    </div>
+    <p style="color:var(--muted);line-height:1.75;margin-top:12px">
+      Ce portfolio regroupe l’ensemble de mes réalisations en quatre catégories. Quatre créations sont particulièrement importantes — elles forment un fil conducteur qui montre une progression : de la première création hésitante (Wemby) jusqu’à la maîtrise complète d’un projet de A à Z (Citeo). Montrer cette évolution, c’est montrer que je suis capable d’apprendre, d’analyser mes erreurs et de progresser.
+    </p>
+
+    <div class="section-title">
+      <span class="eyebrow">Outils</span>
+      <h2>Logiciels maîtrisés</h2>
+    </div>
+    <div class="logiciels-grid">
+      <div class="logiciel-card">
+        <div class="logiciel-icon">🎨</div>
+        <h3>Canva</h3>
+        <p>Affiches, posts Instagram, flyers, newsletters — outil principal utilisé en stage et sur tous les projets BTS.</p>
+      </div>
+      <div class="logiciel-card">
+        <div class="logiciel-icon">🎬</div>
+        <h3>CapCut</h3>
+        <p>Montage vidéo et stories — utilisé pendant le stage à Wonderful Land pour les contenus réseaux sociaux.</p>
+      </div>
+      <div class="logiciel-card">
+        <div class="logiciel-icon">📊</div>
+        <h3>Excel</h3>
+        <p>Tableaux de bord, plannings, suivi de KPI et calendriers éditoriaux pour les projets de communication.</p>
+      </div>
+      <div class="logiciel-card">
+        <div class="logiciel-icon">📋</div>
+        <h3>Google Forms</h3>
+        <p>Création de questionnaires et collecte de données — notamment pour la campagne harcèlement (63 réponses).</p>
+      </div>
+      <div class="logiciel-card">
+        <div class="logiciel-icon">💻</div>
+        <h3>VS Code</h3>
+        <p>Développement du musée interactif en HTML/CSS — capable de coder des expériences digitales de A à Z.</p>
+      </div>
+      <div class="logiciel-card">
+        <div class="logiciel-icon">🤖</div>
+        <h3>ChatGPT</h3>
+        <p>Aide à la rédaction, reformulation et recherche d'idées — utilisé comme outil d'appui, pas de substitution.</p>
+      </div>
+    </div>
+
+    <div class="bottom-nav">
+      <a class="next-btn" href="parcours.html">Page suivante →</a>
+    </div>
+  </main>
+</body>
+</html>

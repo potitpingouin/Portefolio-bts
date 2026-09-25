@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fiche — Bulle de Jeux</title>
+  <style>
+    :root {
+      --bg: #09090d;
+      --line: rgba(255,255,255,0.12);
+      --text: #f6f6f8;
+      --muted: #b8b8c2;
+      --accent: #4C9471;
+      --accent-2: #d7b56d;
+      --shadow: 0 24px 70px rgba(0,0,0,0.42);
+      --radius: 24px;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top, rgba(76,148,113,0.12), transparent 25%),
+        radial-gradient(circle at 80% 10%, rgba(215,181,109,0.08), transparent 22%),
+        linear-gradient(180deg, #09090d, #13131a 55%, #0b0b0f 100%);
+    }
+    .noise {
+      position: fixed; inset: 0; pointer-events: none; opacity: 0.07;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.3) 0.8px, transparent 1px);
+      background-size: 10px 10px; mix-blend-mode: soft-light;
+    }
+    .page { position: relative; z-index: 1; max-width: 1280px; margin: 0 auto; padding: 28px 22px 60px; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 28px; }
+    .back {
+      display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text);
+      padding: 12px 16px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,0.04);
+    }
+    .back:hover { background: rgba(255,255,255,0.08); }
+    .track-badge {
+      padding: 10px 14px; border-radius: 999px; border: 1px solid var(--line); color: var(--accent-2);
+      background: rgba(255,255,255,0.04); font-weight: 800; letter-spacing: 0.08em; font-size: 0.82rem; text-transform: uppercase;
+    }
+    .panel {
+      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03));
+      border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 28px;
+    }
+    .hero { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 20px; margin-bottom: 24px; }
+    .eyebrow {
+      display: inline-block; margin-bottom: 14px; color: var(--accent-2); text-transform: uppercase;
+      letter-spacing: 0.14em; font-weight: 800; font-size: 0.84rem;
+    }
+    h1 { margin: 0 0 14px; font-size: clamp(2.4rem, 4vw, 4.2rem); line-height: 0.95; letter-spacing: -0.04em; }
+    h2 { margin: 0 0 12px; font-size: 1.5rem; }
+    h3 { margin: 0 0 10px; font-size: 1rem; }
+    p { color: var(--muted); line-height: 1.72; margin: 0; }
+    .hero-lead { display: grid; gap: 16px; align-content: start; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 8px; }
+    .stat { padding: 16px; border-radius: 18px; border: 1px solid var(--line); background: rgba(255,255,255,0.03); }
+    .stat strong { display: block; color: var(--text); font-size: 1.1rem; margin-bottom: 6px; }
+    .hero-visual { position: relative; min-height: 420px; overflow: hidden; padding: 0; }
+    .hero-visual img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .hero-overlay {
+      position: absolute; inset: auto 18px 18px 18px; padding: 16px 18px; border-radius: 18px;
+      background: rgba(7,7,10,0.68); border: 1px solid rgba(255,255,255,0.12); backdrop-filter: blur(10px);
+    }
+    .activity-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+    .activity-tag {
+      padding: 8px 14px; border-radius: 999px; border: 1px solid rgba(76,148,113,0.4);
+      background: rgba(76,148,113,0.1); font-size: 0.82rem; color: var(--accent); font-weight: 600;
+    }
+    .section { margin-top: 26px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 18px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 18px; }
+    .mini-card {
+      padding: 22px; border-radius: 22px; border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.025)); box-shadow: var(--shadow);
+    }
+    .objective { position: relative; overflow: hidden; }
+    .objective::before {
+      content: ""; position: absolute; inset: 0 auto auto 0;
+      width: 100%; height: 4px; background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    }
+    ul.clean { margin: 0; padding-left: 18px; color: var(--muted); line-height: 1.75; }
+
+    /* Veille */
+    .veille-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; margin-top: 14px; }
+    .veille-card { padding: 18px; border-radius: 18px; border: 1px solid var(--line); background: rgba(255,255,255,0.03); }
+    .veille-card .source { font-size: 0.78rem; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+    .veille-card h3 { font-size: 0.92rem; margin: 0 0 6px; color: var(--text); }
+    .veille-card p { font-size: 0.86rem; }
+    .veille-apport {
+      margin-top: 14px; padding: 16px 18px; border-left: 3px solid var(--accent);
+      border-radius: 14px; background: rgba(255,255,255,0.04); color: var(--text); line-height: 1.7;
+    }
+
+    /* Plan de com */
+    .com-table { width: 100%; border-collapse: collapse; margin-top: 14px; }
+    .com-table th {
+      text-align: left; padding: 10px 14px; font-size: 0.8rem; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--accent-2); border-bottom: 1px solid var(--line);
+    }
+    .com-table td {
+      padding: 10px 14px; color: var(--muted); font-size: 0.88rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06); vertical-align: top; line-height: 1.55;
+    }
+    .com-table tr:last-child td { border-bottom: none; }
+    .com-table td:first-child { color: var(--text); font-weight: 600; }
+
+    /* Calendrier éditorial */
+    .cal-table { width: 100%; border-collapse: collapse; margin-top: 14px; }
+    .cal-table th {
+      text-align: left; padding: 10px 14px; font-size: 0.8rem; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--accent-2); border-bottom: 1px solid var(--line);
+    }
+    .cal-table td {
+      padding: 10px 14px; color: var(--muted); font-size: 0.86rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06); vertical-align: middle;
+    }
+    .cal-table tr:last-child td { border-bottom: none; }
+    .cal-table td:first-child { color: var(--text); font-weight: 600; white-space: nowrap; }
+    .cal-tag {
+      display: inline-block; padding: 4px 9px; border-radius: 999px; font-size: 0.75rem; font-weight: 600;
+      border: 1px solid var(--line); background: rgba(255,255,255,0.04);
+    }
+    .cal-tag.event { border-color: rgba(76,148,113,0.4); background: rgba(76,148,113,0.1); color: var(--accent); }
+    .cal-tag.promo { border-color: rgba(215,181,109,0.4); background: rgba(215,181,109,0.1); color: var(--accent-2); }
+    .cal-tag.produit { border-color: rgba(200,139,255,0.3); background: rgba(200,139,255,0.08); color: #c88bff; }
+
+    /* KPI */
+    .kpi-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 14px; margin-bottom: 18px; }
+    .kpi-card {
+      padding: 20px; border-radius: 18px; border: 1px solid var(--line);
+      background: rgba(255,255,255,0.03); text-align: center;
+    }
+    .kpi-card .kpi-val { font-size: 2rem; font-weight: 900; color: var(--accent); display: block; margin-bottom: 4px; }
+    .kpi-card .kpi-label { font-size: 0.82rem; color: var(--muted); }
+
+    /* Analyse */
+    .analyse-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px; margin-top: 14px; }
+    .analyse-card { padding: 18px; border-radius: 18px; border: 1px solid var(--line); background: rgba(255,255,255,0.03); }
+    .analyse-card h3 { font-size: 0.92rem; color: var(--text); margin: 0 0 6px; }
+    .analyse-card p { font-size: 0.86rem; }
+
+    /* Gallery */
+    .gallery { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 18px; }
+    .card-click { display: flex; flex-direction: column; overflow: hidden; padding: 0; cursor: pointer; }
+    .media {
+      position: relative; aspect-ratio: 4/3; overflow: hidden;
+      border-bottom: 1px solid var(--line); background: rgba(255,255,255,0.03);
+    }
+    .media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 220ms ease; }
+    .card-click:hover .media img { transform: scale(1.03); }
+    .badge {
+      position: absolute; right: 12px; top: 12px; z-index: 2; padding: 7px 10px;
+      border-radius: 999px; background: rgba(7,7,10,0.8); border: 1px solid rgba(255,255,255,0.14);
+      font-size: 0.78rem; color: var(--text); backdrop-filter: blur(8px);
+    }
+    .body { padding: 18px; display: grid; gap: 10px; }
+    .meta { display: flex; flex-wrap: wrap; gap: 8px; }
+    .meta span {
+      padding: 7px 10px; border-radius: 999px; border: 1px solid var(--line);
+      font-size: 0.78rem; color: var(--text); background: rgba(255,255,255,0.04);
+    }
+
+    /* Amélioration */
+    .amelioration-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; margin-top: 14px; }
+    .amel-card { padding: 18px; border-radius: 18px; border: 1px solid var(--line); background: rgba(255,255,255,0.03); }
+    .amel-card .num { font-size: 1.4rem; font-weight: 900; color: var(--accent-2); opacity: 0.5; margin-bottom: 8px; }
+    .amel-card h3 { font-size: 0.95rem; color: var(--text); margin: 0 0 6px; }
+    .amel-card p { font-size: 0.86rem; }
+
+    /* Nav */
+    .bottom-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 30px; flex-wrap: wrap; }
+    .next-btn, .ghost-btn {
+      display: inline-flex; align-items: center; gap: 10px; text-decoration: none; padding: 14px 20px;
+      border-radius: 999px; font-weight: 800;
+    }
+    .next-btn { color: #111; background: linear-gradient(135deg, #d7b56d, #f0d79e); box-shadow: 0 14px 30px rgba(0,0,0,0.25); }
+    .ghost-btn { color: var(--text); border: 1px solid var(--line); background: rgba(255,255,255,0.04); }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed; inset: 0; z-index: 200; display: none; align-items: center; justify-content: center;
+      background: rgba(6,6,10,0.88); backdrop-filter: blur(16px); padding: 24px;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox-inner {
+      width: min(1180px,100%); max-height: calc(100vh - 48px); background: rgba(12,12,16,0.95);
+      border: 1px solid var(--line); border-radius: 24px; overflow: hidden; box-shadow: var(--shadow);
+      display: grid; grid-template-columns: minmax(0,1fr) 320px;
+    }
+    .lightbox-stage {
+      position: relative; background: #0b0b10; display: flex; align-items: center; justify-content: center; min-height: 420px;
+    }
+    .lightbox-stage img { max-width: 100%; max-height: calc(100vh - 100px); display: block; object-fit: contain; }
+    .lightbox-info { padding: 22px; border-left: 1px solid var(--line); display: grid; align-content: start; gap: 12px; overflow: auto; }
+    .lightbox-top { display: flex; align-items: start; justify-content: space-between; gap: 12px; }
+    .close-btn, .nav-btn { border: 1px solid var(--line); background: rgba(255,255,255,0.04); color: var(--text); cursor: pointer; }
+    .close-btn { width: 40px; height: 40px; border-radius: 50%; font-size: 1rem; flex: 0 0 auto; }
+    .nav-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 48px; height: 48px; border-radius: 50%; font-size: 1.2rem; z-index: 3; backdrop-filter: blur(8px);
+    }
+    .nav-btn.prev { left: 14px; }
+    .nav-btn.next { right: 14px; }
+    .counter { color: var(--accent-2); font-size: 0.84rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+
+    @media (max-width: 1100px) {
+      .hero, .grid-2, .grid-3, .gallery, .veille-grid, .amelioration-grid, .analyse-grid { grid-template-columns: 1fr 1fr; }
+      .kpi-grid { grid-template-columns: repeat(2,1fr); }
+      .lightbox-inner { grid-template-columns: 1fr; }
+      .lightbox-info { border-left: 0; border-top: 1px solid var(--line); }
+    }
+    @media (max-width: 760px) {
+      .hero, .grid-2, .grid-3, .gallery, .veille-grid, .amelioration-grid, .analyse-grid { grid-template-columns: 1fr; }
+      .kpi-grid { grid-template-columns: repeat(2,1fr); }
+      .stats { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+
+  <main class="page">
+    <div class="topbar">
+      <a class="back" href="fiches.html">← Retour aux fiches</a>
+      <div class="track-badge">Fiche 03 — Bulle de Jeux</div>
+    </div>
+
+    <!-- HERO -->
+    <section class="hero">
+      <article class="panel hero-lead">
+        <div class="eyebrow">Stage — Communication digitale en magasin</div>
+        <h1>Bulle de Jeux — création de contenus et promotion</h1>
+        <p>
+          Expérience professionnelle réalisée en stage au sein de Bulle de Jeux, boutique spécialisée dans les jeux de société, mangas et avant-premières de jeux de cartes à Meaux. Ma mission : créer des contenus visuels pour animer le compte Instagram et générer du trafic en boutique.
+        </p>
+        <div class="stats">
+          <div class="stat">
+            <strong>9 posts</strong>
+            <span>créés et publiés</span>
+          </div>
+          <div class="stat">
+            <strong>55 likes</strong>
+            <span>sur le meilleur post</span>
+          </div>
+          <div class="stat">
+            <strong>Instagram</strong>
+            <span>canal principal de diffusion</span>
+          </div>
+        </div>
+        <div class="activity-tags">
+          <span class="activity-tag">Activité 1 — Veille</span>
+          <span class="activity-tag">Activité 2 — Création</span>
+          <span class="activity-tag">Activité 3 — Diffusion</span>
+          <span class="activity-tag">Activité 5 — Évaluation</span>
+        </div>
+      </article>
+
+      <article class="panel hero-visual">
+        <img src="post1.jpg" alt="Post Instagram Bulle de Jeux">
+        <div class="hero-overlay">
+          <h3>Objectif principal</h3>
+          <p>Valoriser les nouveautés et événements de la boutique via des contenus adaptés à la communauté gaming et manga.</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- 1. CONTEXTE + DIAGNOSTIC -->
+    <section class="section grid-2">
+      <article class="panel">
+        <div class="eyebrow">1 — Contexte</div>
+        <h2>La mission du stage</h2>
+        <p>Bulle de Jeux est une boutique spécialisée basée à Meaux, qui propose des jeux de société, des mangas, des jeux de cartes (Magic, Lorcana, Star Wars Unlimited…) et organise régulièrement des avant-premières TCG. La boutique utilise Instagram comme principal canal de communication pour animer sa communauté et informer ses clients.</p>
+        <p style="margin-top:10px;"><strong style="color:var(--accent);">Mon rôle :</strong> chargé de communication stagiaire — veille, création de visuels sur Canva, rédaction des légendes et publication sur <strong>@bulledejeuxmeaux</strong>.</p>
+      </article>
+      <article class="panel">
+        <div class="eyebrow">Diagnostic</div>
+        <h2>Problématique identifiée</h2>
+        <p>Le compte Instagram de Bulle de Jeux manquait de régularité et de cohérence visuelle. Les publications étaient irrégulières et peu adaptées aux codes de la communauté gaming/manga. La boutique peinait à convertir son audience en trafic physique, notamment pour les événements avant-premières.</p>
+        <div class="quote-box" style="margin-top:14px;">Comment créer une stratégie de contenu Instagram régulière et engageante pour une boutique spécialisée, afin d'informer la communauté et générer du trafic en magasin ?</div>
+      </article>
+    </section>
+
+    <!-- 2. ACTIVITÉ 1 : VEILLE -->
+    <section class="section panel">
+      <div class="eyebrow">2 — Activité 1 : Veille créative et technologique</div>
+      <h2>Sources et apports de la veille</h2>
+      <p style="margin-bottom:0;">Avant de produire les contenus, j'ai effectué une veille sur les pratiques de communication des boutiques spécialisées et les tendances visuelles Instagram dans l'univers gaming et manga.</p>
+      <div class="veille-grid">
+        <div class="veille-card">
+          <div class="source">Instagram / comptes similaires</div>
+          <h3>Boutiques gaming et librairies BD</h3>
+          <p>Analyse de comptes comme Cultura, Fnac, librairies BD locales et boutiques gaming : formats carrés, posts produit/événement, utilisation de couleurs fortes et de typographies lisibles.</p>
+        </div>
+        <div class="veille-card">
+          <div class="source">Canva / Pinterest</div>
+          <h3>Tendances visuelles promotionnelles</h3>
+          <p>Veille sur les templates de posts promotionnels : annonces d'avant-premières, mises en avant de produits collector, offres limitées — code visuel avec couleurs de l'univers du jeu ou de l'éditeur.</p>
+        </div>
+        <div class="veille-card">
+          <div class="source">Éditeurs officiels</div>
+          <h3>Codes visuels des éditeurs</h3>
+          <p>Observation des communications officielles Pika Edition, Mangetsu, Fantasy Flight Games — pour s'aligner avec les codes visuels des licences et adopter un graphisme cohérent avec les produits.</p>
+        </div>
+      </div>
+      <div class="veille-apport">
+        <strong>Ce que j'en ai retiré :</strong> adapter le style visuel à l'univers de chaque produit, alterner entre posts événementiels et posts produit, rédiger des légendes courtes avec les infos pratiques en évidence (date, prix, inscription).
+      </div>
+    </section>
+
+    <!-- 3. PLAN DE COMMUNICATION -->
+    <section class="section panel">
+      <div class="eyebrow">3 — Plan de communication</div>
+      <h2>Stratégie de communication digitale</h2>
+
+      <div class="grid-2" style="margin-bottom:20px;">
+        <div>
+          <h3 style="font-size:0.82rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);margin-bottom:8px;">Problématique</h3>
+          <p>Comment créer une stratégie de contenu Instagram régulière et engageante pour une boutique spécialisée gaming/manga, afin d'informer la communauté locale et générer du trafic en magasin ?</p>
+        </div>
+        <div>
+          <h3 style="font-size:0.82rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);margin-bottom:8px;">Positionnement</h3>
+          <p>Une boutique de proximité passionnée, qui partage l'actualité des jeux avec les codes de sa communauté — ton proche, infos pratiques, visuels adaptés à chaque univers.</p>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:20px;">
+        <div>
+          <h3 style="font-size:0.82rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);margin-bottom:8px;">Cibles</h3>
+          <ul class="clean">
+            <li><strong>Principale :</strong> Passionnés gaming, manga, TCG — 15–35 ans, région de Meaux</li>
+            <li><strong>Cœur de cible :</strong> Abonnés actifs @bulledejeuxmeaux, clients réguliers</li>
+            <li><strong>Secondaire :</strong> Nouveaux clients potentiels attirés par les événements</li>
+          </ul>
+        </div>
+        <div>
+          <h3 style="font-size:0.82rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);margin-bottom:8px;">Message clé</h3>
+          <p>« Venez découvrir les nouveautés en boutique — votre prochaine obsession vous attend. »</p>
+        </div>
+      </div>
+
+      <h3 style="font-size:0.82rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);margin-bottom:10px;">Objectifs (CAC)</h3>
+      <div class="grid-3" style="margin-bottom:20px;">
+        <article class="mini-card objective">
+          <div class="eyebrow">Cognitif</div>
+          <h2>Informer</h2>
+          <p>Faire connaître les nouveautés, sorties et avant-premières organisées en boutique auprès de la communauté gaming/manga de la région.</p>
+        </article>
+        <article class="mini-card objective">
+          <div class="eyebrow">Affectif</div>
+          <h2>Créer de l'envie</h2>
+          <p>Susciter l'intérêt et l'attachement à la boutique grâce à des visuels attractifs et un ton proche de la communauté.</p>
+        </article>
+        <article class="mini-card objective">
+          <div class="eyebrow">Conatif</div>
+          <h2>Générer du trafic</h2>
+          <p>Inciter les abonnés à venir en boutique, s'inscrire aux événements et acheter les produits mis en avant.</p>
+        </article>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <h3 style="font-size:0.82rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);margin-bottom:8px;">Stratégie des moyens</h3>
+          <ul class="clean">
+            <li>Posts Instagram carrés 1080×1080px — visuels produit et événement</li>
+            <li>Légendes informatives avec date, tarif et call-to-action</li>
+            <li>Fréquence : 2 à 3 posts par semaine selon l'actualité</li>
+            <li>Alternance posts nouveautés / promotions / avant-premières</li>
+            <li>Adaptation visuelle aux codes de chaque éditeur (Pika, Mangetsu, FFG)</li>
+          </ul>
+        </div>
+        <div>
+          <h3 style="font-size:0.82rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);margin-bottom:8px;">KPI prévisionnels</h3>
+          <ul class="clean">
+            <li>8 posts publiés sur la durée du stage (1 par semaine)</li>
+            <li>Moyenne de 15 likes par post</li>
+            <li>Engagement supérieur à la moyenne habituelle du compte</li>
+            <li>Couverture de toutes les avant-premières et nouveautés majeures</li>
+          </ul>
+          <h3 style="font-size:0.82rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);margin-bottom:8px;margin-top:14px;">Budget</h3>
+          <p><strong>0 €</strong> — Canva gratuit, photos produit en magasin, compte Instagram existant</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. ACTIVITÉ 2 : CRÉER DES CONTENUS -->
+    <section class="section">
+      <div class="eyebrow" style="margin-bottom:12px;">4 — Activité 2 : Créer des contenus</div>
+      <h2>Supports produits</h2>
+
+      <div class="panel" style="margin-bottom:18px;">
+        <h3 style="font-size:0.82rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);margin-bottom:10px;">Justification créa — Taille, Typographie &amp; Droits</h3>
+        <div class="grid-3">
+          <div>
+            <strong style="color:var(--text);font-size:0.88rem;">Format / Taille</strong>
+            <p style="font-size:0.84rem;">Posts au format carré 1080×1080px — standard Instagram pour une qualité optimale sur mobile et desktop. Affiches événementielles en format portrait 1080×1350px pour maximiser la surface dans le feed.</p>
+          </div>
+          <div>
+            <strong style="color:var(--text);font-size:0.88rem;">Typographie</strong>
+            <p style="font-size:0.84rem;">Polices sans-serif modernes et lisibles sur petit écran (Inter, Montserrat). Adaptation à l'univers de chaque produit : typographies gaming pour les jeux de cartes, polices manga pour les sorties Pika/Mangetsu.</p>
+          </div>
+          <div>
+            <strong style="color:var(--text);font-size:0.88rem;">Droits d'auteur</strong>
+            <p style="font-size:0.84rem;">Visuels des produits utilisés avec l'accord implicite de la boutique (promotion de leurs stocks). Éléments graphiques issus de la bibliothèque Canva (libre de droits) ou des assets officiels des éditeurs fournis pour la communication revendeurs.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="gallery">
+        <article class="panel card-click" data-title="Post nouveautés jeux de société" data-description="Publication Instagram mettant en avant plusieurs nouveautés disponibles en boutique. Meilleur engagement du stage." data-images="post1.jpg">
+          <div class="media"><span class="badge">55 likes ★</span><img src="post1.jpg" alt="Post nouveautés jeux"></div>
+          <div class="body">
+            <h3>Post nouveautés jeux</h3>
+            <div class="meta"><span>Instagram</span><span>1080×1080</span><span>Canva</span></div>
+            <p>Meilleur engagement — photos de rayons en boutique.</p>
+          </div>
+        </article>
+        <article class="panel card-click" data-title="Post Blue Lock édition anniversaire" data-description="Publication dédiée à l'édition anniversaire de Blue Lock tome 1 et tome 27 collector avec puzzle exclusif." data-images="post2.jpg">
+          <div class="media"><span class="badge">Collector</span><img src="post2.jpg" alt="Blue Lock anniversaire"></div>
+          <div class="body">
+            <h3>Blue Lock anniversaire</h3>
+            <div class="meta"><span>Instagram</span><span>Canva</span><span>Manga</span></div>
+            <p>Mise en avant d'un produit collector manga avec angle communautaire.</p>
+          </div>
+        </article>
+        <article class="panel card-click" data-title="Post nouvelles arrivées en boutique" data-description="Publication centrée sur l'arrivée de nouveaux jeux et l'invitation à venir les découvrir." data-images="post3.jpg">
+          <div class="media"><span class="badge">Nouveautés</span><img src="post3.jpg" alt="Nouvelles arrivées"></div>
+          <div class="body">
+            <h3>Post nouvelles arrivées</h3>
+            <div class="meta"><span>Instagram</span><span>Canva</span></div>
+            <p>Publication centrée sur le renouvellement de l'offre en magasin.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- 5. ACTIVITÉ 3 : PLANNING + CALENDRIER ÉDITORIAL + BUDGET -->
+    <section class="section panel">
+      <div class="eyebrow">5 — Activité 3 : Planning, calendrier éditorial &amp; diffusion</div>
+      <h2>Organisation et publications Instagram</h2>
+
+      <h3 style="font-size:0.82rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);margin-bottom:12px;">Calendrier éditorial — 9 publications réalisées</h3>
+      <table class="cal-table">
+        <thead>
+          <tr><th>Date</th><th>Contenu</th><th>Type</th><th>Engagement</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>14 mai 2025</td><td>Avant-première Lorcana Chapitre 8 — Le Règne de Jafar (30 mai, 19h30, 35€)</td><td><span class="cal-tag event">Événement</span></td><td>16 likes</td></tr>
+          <tr><td>3 juin 2025</td><td>Arrivée de nouveaux jeux en boutique — toutes catégories</td><td><span class="cal-tag produit">Nouveautés</span></td><td>55 likes ★</td></tr>
+          <tr><td>11 juin 2025</td><td>Blue Lock anniversaire — tome 1 et tome 27 collector avec puzzle exclusif</td><td><span class="cal-tag produit">Produit</span></td><td>10 likes</td></tr>
+          <tr><td>18 juin 2025</td><td>Offre Pika Edition 25 ans — casquette collector offerte pour 3 mangas achetés</td><td><span class="cal-tag promo">Promotion</span></td><td>10 likes</td></tr>
+          <tr><td>21 juin 2025</td><td>Opération J.L. Istin — portfolio collector offert pour 3 albums</td><td><span class="cal-tag promo">Promotion</span></td><td>9 likes</td></tr>
+          <tr><td>25 juin 2025</td><td>Avant-première Star Wars Unlimited : Légendes de la Force (4 juillet, 19h30, 31€)</td><td><span class="cal-tag event">Événement</span></td><td>10 likes</td></tr>
+          <tr><td>25 juin 2025</td><td>Arrivée Mangetsu / Junji Ito — porte-carte collector offert</td><td><span class="cal-tag promo">Promotion</span></td><td>12 likes</td></tr>
+          <tr><td>2 juillet 2025</td><td>Japan Expo — nouvelles séries disponibles (Ruridragon, Junji Ito, Solo Leveling…)</td><td><span class="cal-tag produit">Nouveautés</span></td><td>46 likes</td></tr>
+          <tr><td>9 juillet 2025</td><td>Ruridragon en librairie — mini-exposition planches en boutique</td><td><span class="cal-tag event">Événement</span></td><td>25 likes</td></tr>
+        </tbody>
+      </table>
+
+      <h3 style="font-size:0.82rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);margin:24px 0 12px;">Planning — Semaine type</h3>
+      <table class="cal-table">
+        <thead>
+          <tr><th>Jour</th><th>Action</th><th>Détail</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Mardi</td>
+            <td>Réception des nouveautés</td>
+            <td>Sélection des produits à mettre en avant, prises de photos en boutique, recherche des bios et infos des séries si besoin</td>
+          </tr>
+          <tr>
+            <td>Mercredi</td>
+            <td>Création + publication (prioritaire)</td>
+            <td>Mise en page sur Canva, rédaction de la légende, publication sur Instagram — jour privilégié pour maximiser la visibilité en début de semaine</td>
+          </tr>
+          <tr>
+            <td>Samedi</td>
+            <td>Publication de rattrapage</td>
+            <td>Si le post n'a pas pu être publié mercredi, publication le samedi pour capter l'audience du week-end</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 style="font-size:0.82rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);margin:20px 0 10px;">Budget détaillé</h3>
+      <table class="com-table">
+        <thead><tr><th>Poste</th><th>Détail</th><th>Coût</th></tr></thead>
+        <tbody>
+          <tr><td>Création visuels</td><td>Canva gratuit</td><td>0 €</td></tr>
+          <tr><td>Canal de diffusion</td><td>Instagram — compte boutique existant, gratuit</td><td>0 €</td></tr>
+          <tr><td>Photos produits</td><td>Prises en boutique avec smartphone</td><td>0 €</td></tr>
+          <tr><td><strong>TOTAL</strong></td><td>—</td><td><strong>0 €</strong></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 6. ACTIVITÉ 4 : ACHATS ET PRESTATIONS -->
+    <section class="section panel">
+      <div class="eyebrow">6 — Activité 4 : Achats et prestations</div>
+      <h2>Aucun prestataire externe</h2>
+      <p>Ce stage n'a nécessité aucun achat ni prestataire externe. L'ensemble de la production a été réalisé avec des outils gratuits (Canva, Instagram) et les ressources de la boutique (produits en stock, compte Instagram existant). Aucun cahier des charges ni tableau de scoring n'a été nécessaire pour cette fiche.</p>
+    </section>
+
+    <!-- 7. TABLEAU KPI -->
+    <section class="section panel">
+      <div class="eyebrow">7 — Contrôle &amp; évaluation</div>
+      <h2>Tableau KPI : objectifs, résultats &amp; axes d'amélioration</h2>
+      <table class="com-table">
+        <thead>
+          <tr><th>KPI</th><th>Objectif fixé</th><th>Résultat réel</th><th>Axe d'amélioration</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Nombre de posts publiés</td>
+            <td>8 posts (1 par semaine)</td>
+            <td class="score-best">9 posts ✓</td>
+            <td>Maintenir la cadence 1 post/semaine minimum après le stage</td>
+          </tr>
+          <tr>
+            <td>Likes sur le meilleur post</td>
+            <td>30+ likes</td>
+            <td class="score-best">55 likes ✓</td>
+            <td>Systématiser les photos de rayons (format le plus performant)</td>
+          </tr>
+          <tr>
+            <td>Moyenne de likes par post</td>
+            <td>15 likes</td>
+            <td class="score-best">19 likes ✓</td>
+            <td>Tester les Reels pour augmenter la portée algorithmique</td>
+          </tr>
+          <tr>
+            <td>Total likes générés</td>
+            <td>135+ (9×15)</td>
+            <td class="score-best">193 likes ✓</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>Couverture des événements</td>
+            <td>100% des avant-premières annoncées</td>
+            <td class="score-best">100% ✓</td>
+            <td>Ajouter Stories avec lien d'inscription direct pour les événements</td>
+          </tr>
+          <tr>
+            <td>Statistiques de portée</td>
+            <td>Accès aux stats complètes</td>
+            <td>Non accessibles (compte pro non configuré)</td>
+            <td>Passer le compte en profil professionnel pour mesurer portée et impressions</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <div class="bottom-nav">
+      <a class="ghost-btn" href="fiches.html">← Retour aux fiches</a>
+      <a class="next-btn" href="fiches.html">Retour aux fiches →</a>
+    </div>
+  </main>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <div class="lightbox-inner">
+      <div class="lightbox-stage">
+        <button class="nav-btn prev" id="prevBtn" type="button">←</button>
+        <div id="lightboxContent"></div>
+        <button class="nav-btn next" id="nextBtn" type="button">→</button>
+      </div>
+      <div class="lightbox-info">
+        <div class="lightbox-top">
+          <div>
+            <div class="counter" id="lightboxCounter">1 / 1</div>
+            <h3 id="lightboxTitle"></h3>
+          </div>
+          <button class="close-btn" id="closeLightbox" type="button">✕</button>
+        </div>
+        <p id="lightboxDescription"></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const cards = document.querySelectorAll('.card-click');
+    const lightbox = document.getElementById('lightbox');
+    const content = document.getElementById('lightboxContent');
+    const title = document.getElementById('lightboxTitle');
+    const desc = document.getElementById('lightboxDescription');
+    const counter = document.getElementById('lightboxCounter');
+    const closeBtn = document.getElementById('closeLightbox');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    let media = [], idx = 0;
+
+    function render() {
+      content.innerHTML = '';
+      const src = media[idx];
+      const img = document.createElement('img');
+      img.src = src; img.alt = title.textContent;
+      content.appendChild(img);
+      counter.textContent = `${idx + 1} / ${media.length}`;
+      const nav = media.length > 1;
+      prevBtn.style.display = nav ? 'inline-flex' : 'none';
+      nextBtn.style.display = nav ? 'inline-flex' : 'none';
+    }
+
+    function open(card) {
+      media = (card.dataset.images || '').split('|').filter(Boolean);
+      idx = 0;
+      title.textContent = card.dataset.title || '';
+      desc.textContent = card.dataset.description || '';
+      render();
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function close() {
+      lightbox.classList.remove('open');
+      content.innerHTML = '';
+      document.body.style.overflow = '';
+    }
+
+    cards.forEach(c => c.addEventListener('click', () => open(c)));
+    closeBtn.addEventListener('click', close);
+    nextBtn.addEventListener('click', () => { idx = (idx + 1) % media.length; render(); });
+    prevBtn.addEventListener('click', () => { idx = (idx - 1 + media.length) % media.length; render(); });
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) close(); });
+    document.addEventListener('keydown', e => {
+      if (!lightbox.classList.contains('open')) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowRight') { idx = (idx + 1) % media.length; render(); }
+      if (e.key === 'ArrowLeft') { idx = (idx - 1 + media.length) % media.length; render(); }
+    });
+  </script>
+</body>
+</html>
