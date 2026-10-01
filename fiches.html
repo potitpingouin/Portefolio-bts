@@ -56,71 +56,10 @@
     h3 { margin: 0 0 8px; font-size: 0.95rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; }
     p { color: var(--muted); line-height: 1.7; margin: 0; }
 
-    /* Sections activités */
-    .activite-section {
-      margin-top: 36px;
-    }
-    .activite-head {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 16px;
-      flex-wrap: wrap;
-    }
-    .activite-num {
-      flex-shrink: 0;
-      width: 44px; height: 44px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      color: #111;
-      font-weight: 900;
-      font-size: 0.82rem;
-      letter-spacing: 0.06em;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .activite-label {
-      flex: 1;
-    }
-    .activite-label .act-kicker {
-      font-size: 0.72rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: var(--accent);
-      margin-bottom: 3px;
-    }
-    .activite-label h2 {
-      margin: 0;
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: var(--text);
-      letter-spacing: -0.01em;
-    }
-
     .fiches {
       display: grid;
       grid-template-columns: repeat(3, minmax(0,1fr));
       gap: 18px;
-    }
-
-    .fiches-empty {
-      grid-column: 1 / -1;
-      padding: 20px 22px;
-      border: 1px dashed rgba(255,255,255,0.12);
-      border-radius: 18px;
-      color: var(--muted);
-      font-size: 0.88rem;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .fiches-empty::before {
-      content: '○';
-      font-size: 1rem;
-      color: rgba(255,255,255,0.2);
-      flex-shrink: 0;
     }
 
     /* Carte cliquable */
@@ -263,153 +202,105 @@
       </div>
     </section>
 
-    <!-- ACTIVITÉ 1 -->
-    <div class="activite-section">
-      <div class="activite-head">
-        <div class="activite-num">A1</div>
-        <div class="activite-label">
-          <div class="act-kicker">Activité 1</div>
-          <h2>Veille créative et technologique au service de la demande</h2>
+    <section class="fiches">
+
+      <!-- FICHE 1 — HARCÈLEMENT -->
+      <a class="panel fiche-card" href="harcelement.html">
+        <div class="eyebrow">Fiche 01 — Événementiel</div>
+        <h2>Escape game de sensibilisation au harcèlement</h2>
+
+        <div class="fiche-block">
+          <h3>Contexte</h3>
+          <p>Projet collectif mené à Alema Business School pour la Journée nationale de lutte contre le harcèlement scolaire.</p>
         </div>
-      </div>
-      <div class="fiches">
-        <div class="fiches-empty">Aucune fiche associée à cette activité pour l'instant.</div>
-      </div>
-    </div>
 
-    <!-- ACTIVITÉ 2 -->
-    <div class="activite-section">
-      <div class="activite-head">
-        <div class="activite-num">A2</div>
-        <div class="activite-label">
-          <div class="act-kicker">Activité 2</div>
-          <h2>Création de contenus et de solutions de communication</h2>
+        <div class="fiche-block">
+          <h3>Mon rôle</h3>
+          <p>Conception du projet, création des supports visuels, mise en scène immersive et organisation du jour J.</p>
         </div>
-      </div>
-      <div class="fiches">
 
-        <a class="panel fiche-card" href="bulle.html">
-          <div class="eyebrow">Fiche 03 — Communication digitale</div>
-          <h2>Bulle de Jeux — création de contenus et promotion</h2>
-          <div class="fiche-block">
-            <h3>Contexte</h3>
-            <p>Mission de création et diffusion de contenus pour la promotion des nouveautés et événements du magasin Bulle de Jeux.</p>
-          </div>
-          <div class="fiche-block">
-            <h3>Mon rôle</h3>
-            <p>Observation du magasin, sélection des produits à valoriser, création des visuels et diffusion sur les supports digitaux.</p>
-          </div>
-          <div class="fiche-block">
-            <h3>Résultat</h3>
-            <p>Une série de posts cohérents qui valorisent les nouveautés, anniversaires et avant-premières du magasin.</p>
-          </div>
-          <div class="fiche-tags">
-            <span class="fiche-tag">Réseaux sociaux</span>
-            <span class="fiche-tag">Création visuelle</span>
-            <span class="fiche-tag">Stage</span>
-          </div>
-          <div class="fiche-footer">
-            <span class="fiche-cta">Voir la fiche</span>
-            <span class="fiche-arrow">→</span>
-          </div>
-        </a>
-
-      </div>
-    </div>
-
-    <!-- ACTIVITÉ 3 -->
-    <div class="activite-section">
-      <div class="activite-head">
-        <div class="activite-num">A3</div>
-        <div class="activite-label">
-          <div class="act-kicker">Activité 3</div>
-          <h2>Production et diffusion des solutions de communication</h2>
+        <div class="fiche-block">
+          <h3>Résultat</h3>
+          <p>5 semaines de préparation, 11 étudiants mobilisés, +80% de retours positifs au questionnaire final.</p>
         </div>
-      </div>
-      <div class="fiches">
 
-        <a class="panel fiche-card" href="harcelement.html">
-          <div class="eyebrow">Fiche 01 — Événementiel</div>
-          <h2>Escape game de sensibilisation au harcèlement</h2>
-          <div class="fiche-block">
-            <h3>Contexte</h3>
-            <p>Projet collectif mené à Alema Business School pour la Journée nationale de lutte contre le harcèlement scolaire.</p>
-          </div>
-          <div class="fiche-block">
-            <h3>Mon rôle</h3>
-            <p>Conception du projet, création des supports visuels, mise en scène immersive et organisation du jour J.</p>
-          </div>
-          <div class="fiche-block">
-            <h3>Résultat</h3>
-            <p>5 semaines de préparation, 11 étudiants mobilisés, +80% de retours positifs au questionnaire final.</p>
-          </div>
-          <div class="fiche-tags">
-            <span class="fiche-tag">Événementiel</span>
-            <span class="fiche-tag">Sensibilisation</span>
-            <span class="fiche-tag">Collectif</span>
-          </div>
-          <div class="fiche-footer">
-            <span class="fiche-cta">Voir la fiche</span>
-            <span class="fiche-arrow">→</span>
-          </div>
-        </a>
-
-      </div>
-    </div>
-
-    <!-- ACTIVITÉ 4 -->
-    <div class="activite-section">
-      <div class="activite-head">
-        <div class="activite-num">A4</div>
-        <div class="activite-label">
-          <div class="act-kicker">Activité 4</div>
-          <h2>Achats et relations avec des prestataires</h2>
+        <div class="fiche-tags">
+          <span class="fiche-tag">Événementiel</span>
+          <span class="fiche-tag">Sensibilisation</span>
+          <span class="fiche-tag">Collectif</span>
         </div>
-      </div>
-      <div class="fiches">
 
-        <a class="panel fiche-card" href="alema-air.html">
-          <div class="eyebrow">Fiche 02 — Événementiel</div>
-          <h2>Air Alema — Promotion de l'ouverture du BTS Tourisme</h2>
-          <div class="fiche-block">
-            <h3>Contexte</h3>
-            <p>Conception d'un événement BtoB destiné à promouvoir l'ouverture du BTS Tourisme auprès d'élus et d'acteurs institutionnels locaux, en compétition avec une autre classe.</p>
-          </div>
-          <div class="fiche-block">
-            <h3>Mon rôle</h3>
-            <p>Veille créative, conception du concept événementiel, création des affiches sur Canva, prise de contact avec des prestataires restaurateurs et présentation devant jury.</p>
-          </div>
-          <div class="fiche-block">
-            <h3>Résultat</h3>
-            <p>Projet non retenu face à la classe concurrente — une expérience formatrice sur la gestion de projet en temps contraint et la relation prestataire.</p>
-          </div>
-          <div class="fiche-tags">
-            <span class="fiche-tag">Événementiel</span>
-            <span class="fiche-tag">BtoB</span>
-            <span class="fiche-tag">Achats prestataires</span>
-          </div>
-          <div class="fiche-footer">
-            <span class="fiche-cta">Voir la fiche</span>
-            <span class="fiche-arrow">→</span>
-          </div>
-        </a>
-
-      </div>
-    </div>
-
-    <!-- ACTIVITÉ 5 -->
-    <div class="activite-section">
-      <div class="activite-head">
-        <div class="activite-num">A5</div>
-        <div class="activite-label">
-          <div class="act-kicker">Activité 5</div>
-          <h2>Contrôle et évaluation des solutions de communication</h2>
+        <div class="fiche-footer">
+          <span class="fiche-cta">Voir la fiche</span>
+          <span class="fiche-arrow">→</span>
         </div>
-      </div>
-      <div class="fiches">
-        <div class="fiches-empty">Aucune fiche associée à cette activité pour l'instant.</div>
-      </div>
-    </div>
+      </a>
+
+      <!-- FICHE 2 — AIR ALEMA -->
+      <a class="panel fiche-card" href="alema-air.html">
+        <div class="eyebrow">Fiche 02 — Événementiel</div>
+        <h2>Air Alema — Promotion de l'ouverture du BTS Tourisme</h2>
+
+        <div class="fiche-block">
+          <h3>Contexte</h3>
+          <p>Conception d'un événement BtoB destiné à promouvoir l'ouverture du BTS Tourisme auprès d'élus et d'acteurs institutionnels locaux, en compétition avec une autre classe.</p>
+        </div>
+
+        <div class="fiche-block">
+          <h3>Mon rôle</h3>
+          <p>Veille créative, conception du concept événementiel, création des affiches sur Canva, prise de contact avec des prestataires restaurateurs et présentation devant jury.</p>
+        </div>
+
+        <div class="fiche-block">
+          <h3>Résultat</h3>
+          <p>Projet non retenu face à la classe concurrente — une expérience formatrice sur la gestion de projet en temps contraint et la relation prestataire.</p>
+        </div>
+
+        <div class="fiche-tags">
+          <span class="fiche-tag">Événementiel</span>
+          <span class="fiche-tag">BtoB</span>
+          <span class="fiche-tag">Achats prestataires</span>
+        </div>
+
+        <div class="fiche-footer">
+          <span class="fiche-cta">Voir la fiche</span>
+          <span class="fiche-arrow">→</span>
+        </div>
+      </a>
+
+      <!-- FICHE 3 — BULLE DE JEUX -->
+      <a class="panel fiche-card" href="bulle.html">
+        <div class="eyebrow">Fiche 03 — Communication digitale</div>
+        <h2>Bulle de Jeux — création de contenus et promotion</h2>
+
+        <div class="fiche-block">
+          <h3>Contexte</h3>
+          <p>Mission de création et diffusion de contenus pour la promotion des nouveautés et événements du magasin Bulle de Jeux.</p>
+        </div>
+
+        <div class="fiche-block">
+          <h3>Mon rôle</h3>
+          <p>Observation du magasin, sélection des produits à valoriser, création des visuels et diffusion sur les supports digitaux.</p>
+        </div>
+
+        <div class="fiche-block">
+          <h3>Résultat</h3>
+          <p>Une série de posts cohérents qui valorisent les nouveautés, anniversaires et avant-premières du magasin.</p>
+        </div>
+
+        <div class="fiche-tags">
+          <span class="fiche-tag">Réseaux sociaux</span>
+          <span class="fiche-tag">Création visuelle</span>
+          <span class="fiche-tag">Stage</span>
+        </div>
+
+        <div class="fiche-footer">
+          <span class="fiche-cta">Voir la fiche</span>
+          <span class="fiche-arrow">→</span>
+        </div>
+      </a>
+
+    </section>
 
     <div class="bottom-nav">
       <a class="next-btn" href="portfolio_bts_vinyle.html?tracklist=1">Retour à la tracklist →</a>
