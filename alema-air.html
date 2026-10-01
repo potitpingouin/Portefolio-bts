@@ -141,7 +141,22 @@
       animation: progress-load 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
       pointer-events: none;
     }
-    @keyframes progress-load { from { width: 0; } to { width: 100%; } }  </style>
+    @keyframes progress-load { from { width: 0; } to { width: 100%; } }
+    /* Nav activités sticky */
+    .act-nav {
+      display: flex; gap: 5px; flex-wrap: wrap;
+      background: rgba(10,10,14,0.82); border: 1px solid var(--line);
+      border-radius: 16px; padding: 6px; margin-bottom: 24px;
+      position: sticky; top: 6px; z-index: 50; backdrop-filter: blur(18px);
+    }
+    .act-nav a {
+      flex: 1; text-align: center; text-decoration: none;
+      padding: 9px 4px; border-radius: 10px; font-size: 0.73rem; font-weight: 700;
+      color: var(--muted); transition: all 180ms ease; letter-spacing: 0.03em;
+      white-space: nowrap; border: 1px solid transparent;
+    }
+    .act-nav a:hover { background: rgba(255,255,255,0.07); color: var(--text); }
+    .act-nav a.on { background: rgba(76,148,113,0.16); color: var(--accent); border-color: rgba(76,148,113,0.3); }  </style>
 </head>
 <body>
   <div class="progress-bar" aria-hidden="true"></div>
@@ -196,8 +211,18 @@
       </article>
     </section>
 
+
+    <nav class="act-nav" id="actNav" aria-label="Navigation par activité">
+      <a href="#contexte">Contexte</a>
+      <a href="#act1">A1 — Veille</a>
+      <a href="#plancom">Plan de com</a>
+      <a href="#act2">A2 — Création</a>
+      <a href="#act3">A3 — Diffusion</a>
+      <a href="#act4">A4 — Achats</a>
+      <a href="#act5">A5 — Évaluation</a>
+    </nav>
     <!-- SECTION 1 — CONTEXTE + DIAGNOSTIC -->
-    <section class="section">
+    <section class="section" id="contexte">
       <div class="eyebrow" style="font-size:0.72rem; margin-bottom:10px;">Section 1</div>
       <div class="grid-2">
         <article class="panel">
@@ -231,7 +256,7 @@
     </section>
 
     <!-- SECTION 2 — ACTIVITÉ 1 VEILLE -->
-    <section class="section panel">
+    <section class="section panel" id="act1">
       <div class="eyebrow" style="font-size:0.72rem; margin-bottom:4px;">Section 2</div>
       <div class="eyebrow">Activité 1 — Veille créative et technologique</div>
       <h2>Démarche de veille</h2>
@@ -258,7 +283,7 @@
     </section>
 
     <!-- SECTION 3 — PLAN DE COMMUNICATION -->
-    <section class="section panel">
+    <section class="section panel" id="plancom">
       <div class="eyebrow" style="font-size:0.72rem; margin-bottom:4px;">Section 3</div>
       <div class="eyebrow">Plan de communication</div>
       <h2>Stratégie globale</h2>
@@ -343,7 +368,7 @@
     </section>
 
     <!-- SECTION 4 — ACTIVITÉ 2 CRÉATION -->
-    <section class="section">
+    <section class="section" id="act2">
       <div class="eyebrow" style="font-size:0.72rem; margin-bottom:10px;">Section 4</div>
       <div class="grid-2">
         <article class="panel">
@@ -382,7 +407,7 @@
     </section>
 
     <!-- SECTION 5 — ACTIVITÉ 3 PLANNING + BUDGET DÉTAILLÉ -->
-    <section class="section panel">
+    <section class="section panel" id="act3">
       <div class="eyebrow" style="font-size:0.72rem; margin-bottom:4px;">Section 5</div>
       <div class="eyebrow">Activité 3 — Planning et diffusion</div>
       <h2>Rétroplanning sur la semaine de conception</h2>
@@ -458,7 +483,7 @@
     </section>
 
     <!-- SECTION 6 — ACTIVITÉ 4 ACHATS PRESTATAIRES -->
-    <section class="section panel">
+    <section class="section panel" id="act4">
       <div class="eyebrow" style="font-size:0.72rem; margin-bottom:4px;">Section 6</div>
       <div class="eyebrow">Activité 4 — Achats et relations avec des prestataires</div>
       <h2>Sélection des prestataires restauration</h2>
@@ -663,7 +688,7 @@
     </section>
 
     <!-- SECTION 7 — TABLEAU KPI -->
-    <section class="section panel">
+    <section class="section panel" id="act5">
       <div class="eyebrow" style="font-size:0.72rem; margin-bottom:4px;">Section 7</div>
       <div class="eyebrow">Activité 5 — Évaluation</div>
       <h2>Tableau KPI</h2>
@@ -731,6 +756,25 @@
     document.getElementById('closeLb').addEventListener('click', () => { lb.classList.remove('open'); document.body.style.overflow = ''; });
     lb.addEventListener('click', (e) => { if (e.target === lb) { lb.classList.remove('open'); document.body.style.overflow = ''; } });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { lb.classList.remove('open'); document.body.style.overflow = ''; } });
+  </script>
+
+  <script>
+  (function() {
+    const ids = ['contexte','act1','plancom','act2','act3','act4','act5'];
+    const links = document.querySelectorAll('.act-nav a');
+    function highlight() {
+      let cur = '';
+      ids.forEach(function(id) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= 120) cur = id;
+      });
+      links.forEach(function(a) {
+        a.classList.toggle('on', a.getAttribute('href') === '#' + cur);
+      });
+    }
+    window.addEventListener('scroll', highlight, { passive: true });
+    highlight();
+  })();
   </script>
 </body>
 </html>
