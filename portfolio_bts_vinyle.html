@@ -72,13 +72,8 @@
       aspect-ratio: 1 / 1;
       transform: translate(-8%, -50%);
       border-radius: 50%;
-      background:
-        radial-gradient(circle at center, #0a0a0a 0 7%, #1a1a1f 7% 11%, #09090b 11% 14%, transparent 14%),
-        repeating-radial-gradient(circle at center,
-          #0b0b0d 0 10px,
-          #17171c 10px 12px,
-          #09090b 12px 15px);
-      box-shadow: var(--shadow);
+      background: url('vinyle_concert.webp') center/cover no-repeat;
+      box-shadow: var(--shadow), 0 0 0 3px rgba(255,255,255,0.06);
       z-index: 1;
       cursor: pointer;
       transition: transform var(--transition), filter var(--transition);
@@ -87,24 +82,19 @@
     .record:hover,
     .record:focus-visible {
       transform: translate(-4%, -50%);
-      filter: brightness(1.06);
+      filter: brightness(1.08);
       outline: none;
     }
 
     .record::after {
-      content: "QX";
+      content: "";
       position: absolute;
-      inset: 39% auto auto 39%;
-      width: 22%;
-      aspect-ratio: 1 / 1;
+      inset: 0;
       border-radius: 50%;
-      display: grid;
-      place-items: center;
-      font-weight: 900;
-      letter-spacing: 0.08em;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      color: #111;
-      box-shadow: 0 0 0 8px rgba(0,0,0,0.28);
+      background: radial-gradient(circle at center,
+        rgba(0,0,0,0.55) 0 12%,
+        transparent 12% 38%,
+        rgba(0,0,0,0.08) 38%);
     }
 
     .sleeve {
