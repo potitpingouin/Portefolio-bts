@@ -193,9 +193,12 @@
     .disco-cover { width:54px; height:54px; border-radius:10px; background:linear-gradient(135deg,rgba(215,181,109,0.3),rgba(200,139,255,0.2)); border:1px solid var(--line); flex-shrink:0; display:grid; place-items:center; font-size:1.4rem; }
     .disco-meta { flex:1; }
     .disco-year { font-size:0.72rem; font-weight:800; text-transform:uppercase; letter-spacing:0.12em; color:var(--accent); margin-bottom:3px; }
-  </style>
+
+    .progress-bar { position:fixed; top:0; left:0; height:2px; z-index:1000; background:linear-gradient(90deg,var(--accent),var(--accent-2),var(--accent)); animation:progress-load 1.4s cubic-bezier(0.22,1,0.36,1) forwards; pointer-events:none; }
+    @keyframes progress-load { from{width:0} to{width:100%} }  </style>
 </head>
 <body>
+  <div class="progress-bar" aria-hidden="true"></div>
   <div class="noise" aria-hidden="true"></div>
   <main class="page">
     <div class="topbar">

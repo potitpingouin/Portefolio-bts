@@ -631,9 +631,41 @@
     .radio-card .creation-media { position:relative; background:linear-gradient(135deg,rgba(215,181,109,0.12),rgba(200,139,255,0.08)); }
     .radio-card .creation-media::before { content:''; position:absolute; inset:0; background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='60' viewBox='0 0 200 60'%3E%3Cpath d='M0,30 Q5,10 10,30 Q15,50 20,30 Q25,5 30,30 Q35,55 40,30 Q45,8 50,30 Q55,52 60,30 Q65,12 70,30 Q75,48 80,30 Q85,6 90,30 Q95,54 100,30 Q105,10 110,30 Q115,50 120,30 Q125,5 130,30 Q135,55 140,30 Q145,8 150,30 Q155,52 160,30 Q165,12 170,30 Q175,48 180,30 Q185,6 190,30 Q195,54 200,30' stroke='rgba(215,181,109,0.35)' stroke-width='1.5' fill='none'/%3E%3C/svg%3E") center/cover no-repeat; }
     .radio-play-icon { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:48px; height:48px; border-radius:50%; background:rgba(215,181,109,0.2); border:1.5px solid rgba(215,181,109,0.5); display:flex; align-items:center; justify-content:center; font-size:1.2rem; z-index:2; backdrop-filter:blur(4px); }
+
+    /* Numéros de piste — CSS counter */
+    .gallery { counter-reset: track; }
+    .creation-card { counter-increment: track; }
+    .creation-media::after {
+      content: counter(track, decimal-leading-zero);
+      position: absolute; top: 10px; left: 12px; z-index: 3;
+      font-size: 0.66rem; font-weight: 900; letter-spacing: 0.1em;
+      color: var(--accent); font-family: 'Courier New', monospace;
+      background: rgba(7,7,10,0.78); border: 1px solid rgba(215,181,109,0.22);
+      padding: 4px 9px; border-radius: 6px; backdrop-filter: blur(6px);
+      pointer-events: none;
+    }
+
+    /* Plays counter */
+    .plays-count {
+      position: absolute; bottom: 10px; left: 12px; z-index: 3;
+      font-size: 0.71rem; font-weight: 700; color: rgba(255,255,255,0.7);
+      background: rgba(7,7,10,0.72); padding: 4px 10px; border-radius: 999px;
+      backdrop-filter: blur(6px); letter-spacing: 0.04em; pointer-events: none;
+    }
+
+    /* Barre de progression */
+    .progress-bar {
+      position: fixed; top: 0; left: 0; height: 2px; z-index: 1000;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent));
+      background-size: 200%;
+      animation: progress-load 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      pointer-events: none;
+    }
+    @keyframes progress-load { from { width: 0; } to { width: 100%; } }
   </style>
 </head>
 <body>
+  <div class="progress-bar" aria-hidden="true"></div>
   <div class="noise" aria-hidden="true"></div>
 
   <main class="page">
@@ -660,8 +692,7 @@
     <section class="category">
       <div class="category-head">
         <div>
-          <div class="face-label">Face A</div>
-          <div class="eyebrow" style="margin-top:8px;">Catégorie 01</div>
+          <div class="eyebrow">Face A — Catégorie 01</div>
           <h2>Print</h2>
           <p>Affiches, supports print, direction artistique — de la couverture magazine au flyer en passant par le menu et le ticket.</p>
         </div>
@@ -769,8 +800,7 @@
     <section class="category">
       <div class="category-head">
         <div>
-          <div class="face-label">Face B</div>
-          <div class="eyebrow" style="margin-top:8px;">Catégorie 02</div>
+          <div class="eyebrow">Face B — Catégorie 02</div>
           <h2>Contenus digitaux</h2>
           <p>Interfaces, newsletters, projets web et contenus digitaux pensés pour l’expérience utilisateur et la diffusion en ligne.</p>
         </div>
@@ -820,8 +850,7 @@
     <section class="category">
       <div class="category-head">
         <div>
-          <div class="face-label">Face C</div>
-          <div class="eyebrow" style="margin-top:8px;">Catégorie 03</div>
+          <div class="eyebrow">Face C — Catégorie 03</div>
           <h2>Audiovisuel</h2>
           <p>Contenus audio et vidéo, spots radio et vidéos conçus pour transmettre un message de manière plus vivante.</p>
         </div>
@@ -979,6 +1008,38 @@
   </div>
 
   <script>
+    // Son vinyle au clic (Web Audio API)
+    function playVinylClick() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const buf = ctx.createBuffer(1, Math.floor(ctx.sampleRate * 0.09), ctx.sampleRate);
+        const data = buf.getChannelData(0);
+        for (let i = 0; i < data.length; i++) {
+          data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.012));
+        }
+        const src = ctx.createBufferSource();
+        src.buffer = buf;
+        const gain = ctx.createGain();
+        gain.gain.value = 0.15;
+        src.connect(gain);
+        gain.connect(ctx.destination);
+        src.start();
+        setTimeout(() => ctx.close(), 200);
+      } catch(e) {}
+    }
+
+    // Faux compteurs plays
+    const playsCounts = [2400, 847, 1100, 630, 980, 1800, 420, 750, 2100, 3300, 560, 890, 1450, 2800, 670, 1240, 3700, 480];
+    document.querySelectorAll('.creation-card .creation-media').forEach((media, i) => {
+      const n = playsCounts[i % playsCounts.length];
+      const label = n >= 1000 ? (n / 1000).toFixed(1).replace('.0', '').replace('.', ',') + 'k' : String(n);
+      const el = document.createElement('div');
+      el.className = 'plays-count';
+      el.setAttribute('aria-hidden', 'true');
+      el.textContent = '▶ ' + label + ' plays';
+      media.appendChild(el);
+    });
+
     const cards = document.querySelectorAll('.creation-card.clickable');
     const lightbox = document.getElementById('lightbox');
     const lightboxContent = document.getElementById('lightboxContent');
@@ -1016,6 +1077,7 @@
     }
 
     function openLightbox(card) {
+      playVinylClick();
       const title = card.dataset.title || 'Création';
       const description = card.dataset.description || '';
       const images = card.dataset.images ? card.dataset.images.split('|') : [];

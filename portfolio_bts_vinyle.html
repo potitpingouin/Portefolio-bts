@@ -278,6 +278,31 @@
       color: var(--accent);
     }
 
+    /* Vinyl spin */
+    @keyframes vinyl-spin { to { transform: translate(-8%, -50%) rotate(360deg); } }
+    .record.playing { animation: vinyl-spin 2.2s linear infinite; }
+    .record.playing:hover { animation: vinyl-spin 2.2s linear infinite; filter: brightness(1.06); }
+
+    /* Player controls */
+    .player-bar {
+      position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%);
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(12,12,16,0.85); backdrop-filter: blur(18px);
+      border: 1px solid var(--line); border-radius: 999px;
+      padding: 10px 18px; z-index: 10;
+    }
+    .player-btn {
+      width: 40px; height: 40px; border-radius: 50%;
+      border: 1px solid var(--line); background: rgba(255,255,255,0.06);
+      color: var(--text); font-size: 1.1rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 180ms ease;
+    }
+    .player-btn:hover { background: rgba(255,255,255,0.14); }
+    .player-btn.active { background: rgba(215,181,109,0.18); border-color: var(--accent); color: var(--accent); }
+    .player-track-info { font-size: 0.78rem; color: var(--muted); padding: 0 4px; text-align: center; min-width: 110px; }
+    .player-track-info strong { display: block; color: var(--text); font-size: 0.84rem; }
+
     @media (max-width: 700px) {
       .album-scene {
         width: min(96vw, 460px);
@@ -299,9 +324,12 @@
         font-size: 0.86rem;
       }
     }
-  </style>
+
+    .progress-bar { position:fixed; top:0; left:0; height:2px; z-index:1000; background:linear-gradient(90deg,var(--accent),var(--accent-2),var(--accent)); animation:progress-load 1.4s cubic-bezier(0.22,1,0.36,1) forwards; pointer-events:none; }
+    @keyframes progress-load { from{width:0} to{width:100%} }  </style>
 </head>
 <body>
+  <div class="progress-bar" aria-hidden="true"></div>
   <div class="noise" aria-hidden="true"></div>
 
   <main class="home">
@@ -316,8 +344,14 @@
     </div>
   </main>
 
-  <div class="home-hint">
-    <strong>Clique sur le vinyle</strong> pour ouvrir la tracklist.
+  <div class="player-bar" id="playerBar" aria-label="Lecteur navigation">
+    <button class="player-btn" id="prevTrackBtn" title="Piste précédente">⏮</button>
+    <button class="player-btn" id="playPauseBtn" title="Play / Pause rotation">⏸</button>
+    <div class="player-track-info">
+      <strong id="playerTrackName">Portfolio</strong>
+      <span id="playerTrackSub">Cliquer sur le vinyle</span>
+    </div>
+    <button class="player-btn" id="nextTrackBtn" title="Piste suivante">⏭</button>
   </div>
 
   <aside class="tracklist-panel" id="tracklistPanel" aria-hidden="true">
@@ -404,6 +438,53 @@
   if (params.get('tracklist') === '1') {
     openTracklist();
   }
+
+  // Player controls
+  const tracks = [
+    { name: 'Présentation', sub: 'Track 01', href: 'presentation.html' },
+    { name: 'Parcours', sub: 'Track 02', href: 'parcours.html' },
+    { name: 'Mes créations', sub: 'Track 03', href: 'creations.html' },
+    { name: 'Fiches pro', sub: 'Track 04', href: 'fiches.html' },
+  ];
+  let currentTrack = -1;
+  let isPlaying = false;
+
+  const playPauseBtn = document.getElementById('playPauseBtn');
+  const prevTrackBtn = document.getElementById('prevTrackBtn');
+  const nextTrackBtn = document.getElementById('nextTrackBtn');
+  const playerTrackName = document.getElementById('playerTrackName');
+  const playerTrackSub = document.getElementById('playerTrackSub');
+
+  playPauseBtn.addEventListener('click', () => {
+    isPlaying = !isPlaying;
+    playPauseBtn.textContent = isPlaying ? '⏸' : '▶';
+    playPauseBtn.classList.toggle('active', isPlaying);
+    if (isPlaying) {
+      record.classList.add('playing');
+      playerTrackName.textContent = 'Portfolio';
+      playerTrackSub.textContent = 'Vinyle en rotation…';
+    } else {
+      record.classList.remove('playing');
+      playerTrackSub.textContent = 'Cliquer sur le vinyle';
+    }
+  });
+
+  nextTrackBtn.addEventListener('click', () => {
+    currentTrack = (currentTrack + 1) % tracks.length;
+    const t = tracks[currentTrack];
+    playerTrackName.textContent = t.name;
+    playerTrackSub.textContent = t.sub;
+    setTimeout(() => { window.location.href = t.href; }, 320);
+  });
+
+  prevTrackBtn.addEventListener('click', () => {
+    if (currentTrack <= 0) return;
+    currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
+    const t = tracks[currentTrack];
+    playerTrackName.textContent = t.name;
+    playerTrackSub.textContent = t.sub;
+    setTimeout(() => { window.location.href = t.href; }, 320);
+  });
 </script>
 </body>
 </html>

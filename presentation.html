@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
@@ -80,7 +80,7 @@
     .cover {
       position: relative; width: 82%; aspect-ratio: 1/1; border-radius: 22px;
       background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.04)),
-      url('https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=1200&q=80') center/cover;
+      url('concert_cover.jpg') center/cover;
       border: 1px solid rgba(255,255,255,0.10); box-shadow: var(--shadow); overflow: hidden; z-index: 2;
     }
     .cover::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.08), rgba(0,0,0,0.52)); }
@@ -156,9 +156,18 @@
     .artist-row:last-child { border-bottom:none; }
     .artist-row span:first-child { color:var(--muted); font-size:0.78rem; text-transform:uppercase; letter-spacing:0.1em; font-weight:700; }
     .artist-row span:last-child { color:var(--text); font-weight:600; }
+    /* Barre de progression */
+    .progress-bar { position:fixed; top:0; left:0; height:2px; z-index:1000; background:linear-gradient(90deg,var(--accent),var(--accent-2),var(--accent)); animation:progress-load 1.4s cubic-bezier(0.22,1,0.36,1) forwards; pointer-events:none; }
+    @keyframes progress-load { from{width:0} to{width:100%} }
+    /* Vinyl bg dans hero cover */
+    @keyframes vinyl-spin-bg { to { transform:translateY(-50%) rotate(360deg); } }
+    .vinyl-hero-bg { position:absolute; right:-50px; top:50%; transform:translateY(-50%); width:240px; height:240px; border-radius:50%; background:repeating-radial-gradient(circle at center,#0c0c0e 0 10px,#1c1c22 10px 12px,#0a0a0c 12px 16px); opacity:0.13; pointer-events:none; z-index:0; animation:vinyl-spin-bg 10s linear infinite; }
+    .vinyl-hero-bg::after { content:''; position:absolute; inset:40%; border-radius:50%; background:rgba(215,181,109,0.22); }
+    .panel { position:relative; overflow:hidden; }
   </style>
 </head>
 <body>
+  <div class="progress-bar" aria-hidden="true"></div>
   <div class="noise" aria-hidden="true"></div>
   <main class="page">
     <div class="topbar">
@@ -169,6 +178,7 @@
 
     <section class="hero">
       <article class="panel">
+        <div class="vinyl-hero-bg" aria-hidden="true"></div>
         <div class="eyebrow">Ouverture</div>
         <h1>Qui je suis</h1>
         <p>
@@ -238,10 +248,7 @@
       <div class="eyebrow" style="margin-bottom:14px;">Fiche artiste</div>
       <div class="artist-row"><span>Artiste</span><span>Quentin Xiong</span></div>
       <div class="artist-row"><span>Genre</span><span>Communication · Création · Événementiel</span></div>
-      <div class="artist-row"><span>Label</span><span>Alema Business School</span></div>
-      <div class="artist-row"><span>BPM</span><span>Élevé — toujours en mouvement</span></div>
-      <div class="artist-row"><span>Influences</span><span>Musique · Visuel · Stratégie · Terrain</span></div>
-      <div class="artist-row"><span>Sortie</span><span>Promo BTS Communication 2024 – 2026</span></div>
+      <div class="artist-row"><span>Label</span><span>Alema Business School</span></div>      <div class="artist-row"><span>Sortie</span><span>Promo BTS Communication 2024 – 2026</span></div>
     </div>
 
     <div class="section-title">
