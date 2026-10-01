@@ -67,8 +67,8 @@
     .record {
       position: absolute;
       top: 50%;
-      left: 56%;
-      width: 82%;
+      left: 72%;
+      width: 88%;
       aspect-ratio: 1 / 1;
       transform: translate(-8%, -50%);
       border-radius: 50%;
@@ -81,7 +81,7 @@
 
     .record:hover,
     .record:focus-visible {
-      transform: translate(-4%, -50%);
+      transform: translate(-2%, -50%);
       filter: brightness(1.08);
       outline: none;
     }
@@ -270,8 +270,8 @@
 
     /* Vinyl spin */
     @keyframes vinyl-spin { to { transform: translate(-8%, -50%) rotate(360deg); } }
-    .record.playing { animation: vinyl-spin 2.2s linear infinite; }
-    .record.playing:hover { animation: vinyl-spin 2.2s linear infinite; filter: brightness(1.06); }
+    .record.playing { animation: vinyl-spin 12s linear infinite; }
+    .record.playing:hover { animation: vinyl-spin 12s linear infinite; filter: brightness(1.08); }
 
     /* Player controls */
     .player-bar {
