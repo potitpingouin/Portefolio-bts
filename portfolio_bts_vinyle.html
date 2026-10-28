@@ -269,7 +269,7 @@
     }
 
     /* Vinyl spin */
-    @keyframes vinyl-spin { to { transform: translate(-8%, -50%) rotate(360deg); } }
+    @keyframes vinyl-spin { from { transform: translate(var(--record-x, -8%), -50%) rotate(0deg); } to { transform: translate(var(--record-x, -8%), -50%) rotate(360deg); } }
     .record.playing { animation: vinyl-spin 12s linear infinite; }
     .record.playing:hover { animation: vinyl-spin 12s linear infinite; filter: brightness(1.08); }
 
@@ -301,6 +301,7 @@
       .record {
         width: 86%;
         left: 58%;
+        --record-x: -10%;
         transform: translate(-10%, -50%);
       }
 
@@ -324,7 +325,7 @@
 
   <main class="home">
     <div class="album-scene">
-      <div class="record" id="record" role="button" tabindex="0" aria-label="Ouvrir la tracklist"></div>
+      <div class="record playing" id="record" role="button" tabindex="0" aria-label="Ouvrir la tracklist"></div>
 
       <div class="sleeve" aria-label="Pochette du portfolio">
 <div class="album-label">
@@ -336,7 +337,7 @@
 
   <div class="player-bar" id="playerBar" aria-label="Lecteur navigation">
     <button class="player-btn" id="prevTrackBtn" title="Piste précédente">⏮</button>
-    <button class="player-btn" id="playPauseBtn" title="Play / Pause rotation">⏸</button>
+    <button class="player-btn active" id="playPauseBtn" title="Play / Pause rotation">⏸</button>
     <div class="player-track-info">
       <strong id="playerTrackName">Portfolio</strong>
       <span id="playerTrackSub">Cliquer sur le vinyle</span>
@@ -437,7 +438,7 @@
     { name: 'Fiches pro', sub: 'Track 04', href: 'fiches.html' },
   ];
   let currentTrack = -1;
-  let isPlaying = false;
+  let isPlaying = true;
 
   const playPauseBtn = document.getElementById('playPauseBtn');
   const prevTrackBtn = document.getElementById('prevTrackBtn');
