@@ -359,14 +359,6 @@
     .gantt-legend i { display: inline-block; width: 22px; height: 10px; border-radius: 999px; margin-right: 8px; vertical-align: middle; }
 
     /* Storyboard */
-    .sb-timeline { display: flex; gap: 4px; margin: 16px 0 6px; height: 34px; }
-    .sb-seg {
-      display: flex; align-items: center; justify-content: center; border-radius: 8px; min-width: 0;
-      background: rgba(76,148,113,0.16); border: 1px solid rgba(76,148,113,0.35);
-      color: var(--text); font-size: 0.74rem; font-weight: 800; letter-spacing: 0.06em;
-    }
-    .sb-seg:nth-child(even) { background: rgba(215,181,109,0.12); border-color: rgba(215,181,109,0.35); }
-    .sb-scale { display: flex; justify-content: space-between; font-size: 0.74rem; color: var(--muted); margin-bottom: 18px; }
     .sb-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
     .sb-card { border: 1px solid var(--line); border-radius: 18px; background: rgba(255,255,255,0.03); overflow: hidden; display: flex; flex-direction: column; }
     .sb-frame {
@@ -397,7 +389,6 @@
     @media (max-width: 1100px) { .sb-grid { grid-template-columns: 1fr 1fr; } }
     @media (max-width: 760px) {
       .sb-grid { grid-template-columns: 1fr; }
-      .sb-seg { font-size: 0; }
     }
   </style>
 </head>
@@ -656,17 +647,7 @@
       <div id="storyboard" style="margin-top:28px;">
         <h3 class="sub-title">Storyboard — vidéo d'introduction</h3>
         <h2>La scène de harcèlement en 6 plans</h2>
-        <p>Découpage de la vidéo d'introduction projetée au début de l'escape game : 26 secondes pour poser la situation entre Sarah et Mathéo et plonger les participants dans l'histoire.</p>
 
-        <div class="sb-timeline" aria-hidden="true">
-          <div class="sb-seg" style="flex:3;">01</div>
-          <div class="sb-seg" style="flex:6;">02</div>
-          <div class="sb-seg" style="flex:2;">03</div>
-          <div class="sb-seg" style="flex:9;">04</div>
-          <div class="sb-seg" style="flex:3;">05</div>
-          <div class="sb-seg" style="flex:3;">06</div>
-        </div>
-        <div class="sb-scale" aria-hidden="true"><span>0 s</span><span>26 s</span></div>
 
         <div class="sb-grid">
           <article class="sb-card">
