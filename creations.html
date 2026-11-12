@@ -439,6 +439,9 @@
       border-radius: 10px;
     }
 
+    /* Les vidéos verticales ne doivent pas dépasser l'écran */
+    .lightbox-stage video { max-height: calc(100vh - 140px); }
+
     .lightbox-stage.zoom-small img,
     .lightbox-stage.zoom-small video {
       max-width: 68%;
@@ -850,7 +853,7 @@
           <h2>Audiovisuel</h2>
           <p>Contenus audio et vidéo, spots radio et vidéos conçus pour transmettre un message de manière plus vivante.</p>
         </div>
-        <div class="count">5 créations</div>
+        <div class="count">6 créations</div>
       </div>
 
       <div class="gallery">
@@ -935,6 +938,25 @@
               <strong>Lecture intégrée</strong>
               <video class="inline-video" controls preload="metadata">
                 <source src="Pub Accro Quentin.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel creation-card clickable" data-title="Vidéo Halloween Night — Wonderful Land" data-description="Vidéo verticale réalisée pour la soirée Halloween Night de Wonderful Land, le vendredi 31 octobre de 20h à minuit. Elle s'ouvre sur un carton d'annonce aux couleurs de l'événement (date, horaires, adresse), puis plonge dans l'ambiance de la soirée : décors, maquillages et public. Un format pensé pour les réseaux sociaux, où il faut capter l'attention dès les premières secondes." data-videos="Video Halloween.mp4">
+          <div class="creation-media">
+            <video class="inline-video" muted playsinline preload="metadata">
+              <source src="Video Halloween.mp4#t=2" type="video/mp4">
+            </video>
+          </div>
+          <div class="creation-body">
+            <h3>Vidéo Halloween Night</h3>
+            <div class="meta"><span>Vidéo</span><span>Format vertical</span><span>Événementiel</span></div>
+            <p>Vidéo réseaux sociaux pour la soirée Halloween de Wonderful Land : annonce de l'événement et immersion dans l'ambiance.</p>
+            <div class="audio-box">
+              <strong>Lecture intégrée</strong>
+              <video class="inline-video" controls preload="metadata" style="max-height:360px; background:#000;">
+                <source src="Video Halloween.mp4" type="video/mp4">
               </video>
             </div>
           </div>
