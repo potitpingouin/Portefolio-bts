@@ -106,6 +106,46 @@
     .cdc-body ul { margin: 6px 0 10px 18px; padding: 0; }
     .cdc-body ul li { margin-bottom: 3px; }
     .cdc-body strong { color: var(--text); }
+    .cdc-header {
+      display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap;
+      padding: 22px 22px 18px; border-bottom: 1px solid var(--line);
+      background: linear-gradient(135deg, rgba(215,181,109,0.10), rgba(255,255,255,0.02));
+    }
+    .cdc-header .cdc-kicker { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-2); }
+    .cdc-header h3 { margin: 6px 0 4px; font-size: 1.35rem; color: var(--text); }
+    .cdc-header p { margin: 0; font-size: 0.86rem; color: var(--muted); }
+    .cdc-stamp {
+      padding: 8px 12px; border-radius: 999px; border: 1px dashed rgba(215,181,109,0.55);
+      font-size: 0.74rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-2); white-space: nowrap;
+    }
+    .cdc-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-bottom: 1px solid var(--line); }
+    .cdc-kpi { padding: 16px 18px; border-right: 1px solid var(--line); }
+    .cdc-kpi:last-child { border-right: none; }
+    .cdc-kpi strong { display: block; font-size: 1.25rem; color: var(--text); line-height: 1.2; }
+    .cdc-kpi span { font-size: 0.78rem; color: var(--muted); }
+    .cdc-doc .cdc-section-head { text-align: left; display: flex; align-items: center; gap: 10px; }
+    .cdc-num {
+      display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%;
+      background: rgba(215,181,109,0.16); border: 1px solid rgba(215,181,109,0.45); color: var(--accent-2); font-size: 0.72rem; letter-spacing: 0;
+    }
+    .cdc-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 28px; }
+    .cdc-diet { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 4px; }
+    .cdc-diet span {
+      padding: 6px 12px; border-radius: 999px; font-size: 0.78rem; font-weight: 700;
+      background: rgba(255,255,255,0.05); border: 1px solid var(--line); color: var(--text);
+    }
+    .cdc-weights { display: grid; gap: 8px; }
+    .cdc-weight { display: grid; grid-template-columns: minmax(0, 1fr) 120px 52px; align-items: center; gap: 12px; color: var(--text); }
+    .cdc-weight i { display: block; height: 8px; border-radius: 999px; background: linear-gradient(90deg, var(--accent-2), #f0d79e); }
+    .cdc-weight b { font-size: 0.78rem; color: var(--accent-2); text-align: right; }
+    @media (max-width: 760px) {
+      .cdc-kpis { grid-template-columns: 1fr 1fr; }
+      .cdc-kpi:nth-child(2) { border-right: none; }
+      .cdc-kpi:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+      .cdc-cols { grid-template-columns: 1fr; }
+      .cdc-weight { grid-template-columns: minmax(0, 1fr) 60px 46px; }
+      .cdc-stamp { white-space: normal; }
+    }
 
     @media (max-width: 1100px) { .hero, .grid-2, .grid-3 { grid-template-columns: 1fr 1fr; } }
     @media (max-width: 760px) { .hero, .grid-2, .grid-3 { grid-template-columns: 1fr; } .stats { grid-template-columns: 1fr; } }
@@ -491,90 +531,107 @@
 
       <div class="cdc-doc">
 
-        <div class="cdc-section-head">Informations générales</div>
-        <div class="cdc-body">
-          <p><span>Nom du projet :</span> AIR ALEMA</p>
-          <p><span>Nature du projet :</span> Événement physique — cocktail déjeunatoire institutionnel</p>
-          <p><span>Type de document :</span> Cahier des charges prestataire restauration</p>
-          <p><span>Organisateur :</span> Classe BTS Communication — Alema Business School</p>
-          <p><span>Date de l'événement :</span> 17 décembre 2024 · 11h00 – 14h00</p>
+        <div class="cdc-header">
+          <div>
+            <div class="cdc-kicker">Cahier des charges · Prestation traiteur</div>
+            <h3>Cocktail déjeunatoire « Air Alema »</h3>
+            <p>Alema Business School — lancement du BTS Tourisme</p>
+          </div>
+          <div class="cdc-stamp">Consultation · 4 prestataires</div>
+        </div>
+
+        <div class="cdc-kpis">
+          <div class="cdc-kpi"><strong>~40 invités</strong><span>voire plus</span></div>
+          <div class="cdc-kpi"><strong>1 500 € TTC</strong><span>budget global, soit ~37 € / pers.</span></div>
+          <div class="cdc-kpi"><strong>6 à 8 pièces</strong><span>par personne (salé + sucré)</span></div>
+          <div class="cdc-kpi"><strong>17/12/2024</strong><span>livraison avant 11h00</span></div>
+        </div>
+
+        <div class="cdc-section-head"><span class="cdc-num">1</span>Présentation de l'événement</div>
+        <div class="cdc-body cdc-cols">
+          <p><span>Projet :</span> AIR ALEMA</p>
+          <p><span>Nature :</span> cocktail déjeunatoire institutionnel</p>
+          <p><span>Date :</span> mardi 17 décembre 2024 · 11h00 – 14h00</p>
+          <p><span>Lieu :</span> 7 rue de la Font Rouge, 77700 Chessy</p>
+          <p><span>Organisateur :</span> classe BTS Communication — Alema Business School</p>
           <p><span>Responsable du projet :</span> Tarik Benahmed</p>
           <p><span>Contact :</span> contact@alema.fr</p>
-          <p><span>Adresse :</span> 7 Rue de la Font Rouge, 77700 Chessy</p>
         </div>
 
-        <div class="cdc-section-head">Description du besoin</div>
+        <div class="cdc-section-head"><span class="cdc-num">2</span>Contexte et objet de la consultation</div>
         <div class="cdc-body">
-          <p>Alema Business School souhaite consulter plusieurs prestataires traiteurs afin de sélectionner l'offre la plus adaptée à l'événement Air Alema, organisé le 17 décembre 2024 dans le cadre du lancement du BTS Tourisme.</p>
-          <p style="margin-top:8px;">Le prestataire retenu devra fournir un cocktail déjeunatoire destiné à accueillir des partenaires institutionnels, élus locaux et acteurs économiques. La prestation devra être livrée sur site et prête à être mise en place par les étudiants.</p>
+          <p>Alema Business School organise Air Alema pour lancer son BTS Tourisme. L'événement réunit des invités importants du territoire du Val d'Europe : élus locaux, partenaires institutionnels et acteurs économiques.</p>
+          <p>Pour accueillir ces invités, l'école consulte plusieurs traiteurs afin de retenir l'offre la plus adaptée à l'image de l'événement : un voyage, une ouverture sur le monde, dans un cadre professionnel et valorisant.</p>
         </div>
 
-        <div class="cdc-section-head">Livrables attendus</div>
+        <div class="cdc-section-head"><span class="cdc-num">3</span>Prestation attendue</div>
         <div class="cdc-body">
-          <strong>Pièces salées</strong>
-          <p>Entre 4 et 5 pièces salées par personne. Exemples attendus :</p>
+          <strong>Quantités — pour environ 40 personnes, voire plus</strong>
           <ul>
-            <li>Mini wraps, navettes garnies, mini sandwiches</li>
-            <li>Verrines salées, mini quiches, bouchées apéritives</li>
+            <li><strong>4 à 5 pièces salées</strong> par personne</li>
+            <li><strong>2 à 3 pièces sucrées</strong> par personne</li>
           </ul>
-          <strong>Pièces sucrées</strong>
-          <p>3 pièces sucrées par personne. Exemples :</p>
-          <ul>
-            <li>Mini tartelettes, mignardises, financiers, macarons, verrines sucrées</li>
-          </ul>
-          <strong>Boissons sans alcool</strong>
-          <ul>
-            <li>Eau plate, eau gazeuse, jus de fruits, softs variés</li>
-          </ul>
-          <strong>Adaptation alimentaire obligatoire</strong>
-          <ul>
-            <li>Plusieurs options végétariennes</li>
-            <li>Plusieurs options sans porc</li>
-            <li>Produit halal disponible</li>
-            <li>Les propositions devront être clairement identifiées dans le devis</li>
-          </ul>
+          <strong>Thème : la cuisine du monde</strong>
+          <p>Les pièces doivent faire voyager les invités : recettes inspirées de différents pays et continents, en cohérence avec l'univers « compagnie aérienne » d'Air Alema.</p>
+          <strong>Format</strong>
+          <p>Pièces individuelles, à manger debout et sans couverts, faciles à présenter sur plateau.</p>
         </div>
 
-        <div class="cdc-section-head">Exigences techniques</div>
+        <div class="cdc-section-head"><span class="cdc-num">4</span>Régimes alimentaires</div>
         <div class="cdc-body">
-          <strong>Qualité attendue — les produits proposés devront :</strong>
+          <p>L'offre doit inclure des pièces adaptées à tous les invités :</p>
+          <div class="cdc-diet"><span>Vegan</span><span>Sans porc</span><span>Halal</span></div>
+          <p>Ces pièces devront être clairement identifiées dans le devis et à la livraison, pour éviter toute erreur au moment du service.</p>
+        </div>
+
+        <div class="cdc-section-head"><span class="cdc-num">5</span>Exigences de qualité et de service</div>
+        <div class="cdc-body">
           <ul>
-            <li>Être adaptés à un événement professionnel BtoB et une cible institutionnelle</li>
-            <li>Présenter une qualité gustative et visuelle valorisante</li>
-            <li>Être faciles à distribuer par des étudiants non professionnels</li>
-            <li>Respecter les normes sanitaires en vigueur</li>
-            <li>Proposer une diversité suffisante pour satisfaire différents régimes alimentaires</li>
+            <li><strong>Une qualité haut de gamme</strong>, à la hauteur d'un événement qui reçoit des personnalités du Val d'Europe : goût, fraîcheur et présentation soignée.</li>
+            <li><strong>Une distribution simple</strong> : le service sera assuré par des étudiants sans expérience en restauration. Les pièces doivent être prêtes à servir, sans découpe, sans réchauffage et sans montage compliqué.</li>
+            <li>Le respect des normes d'hygiène et de la chaîne du froid jusqu'à la livraison.</li>
           </ul>
         </div>
 
-        <div class="cdc-section-head">Critères d'évaluation et pondération</div>
+        <div class="cdc-section-head"><span class="cdc-num">6</span>Livraison et logistique</div>
         <div class="cdc-body">
           <ul>
-            <li>Prix / respect du budget — <strong>coef 3</strong></li>
-            <li>Adéquation avec la thématique tourisme / voyage / prestige — <strong>coef 3</strong></li>
-            <li>Qualité et diversité de l'offre — <strong>coef 2</strong></li>
-            <li>Image et professionnalisme du prestataire — <strong>coef 1</strong></li>
-            <li>Disponibilité et délai de réponse — <strong>coef 1</strong></li>
+            <li>Livraison sur site le <strong>17 décembre 2024, avant l'arrivée des invités (11h00)</strong>.</li>
+            <li>Le créneau doit laisser aux étudiants le temps de dresser et de présenter le buffet avant l'ouverture.</li>
+            <li>Les conditions de livraison, de mise en place et de reprise du matériel éventuel seront précisées dans la réponse.</li>
           </ul>
         </div>
 
-        <div class="cdc-section-head">Conditions commerciales</div>
+        <div class="cdc-section-head"><span class="cdc-num">7</span>Budget</div>
         <div class="cdc-body">
-          <p><span>Budget cible :</span> 1 500 € TTC maximum.</p>
+          <p><span>Enveloppe globale :</span> 1 500 € TTC maximum, livraison et frais annexes compris.</p>
+          <p>Pour une quarantaine d'invités, cela représente environ 37 € par personne. Une offre qui dépasse ce budget sera pénalisée sur le critère prix.</p>
         </div>
 
-        <div class="cdc-section-head">Format de réponse attendu</div>
-        <div class="cdc-body">
-          <p>Chaque prestataire devra fournir :</p>
+        <div class="cdc-section-head"><span class="cdc-num">8</span>Contenu attendu de la réponse</div>
+        <div class="cdc-body cdc-cols">
           <ul>
-            <li>Un devis détaillé</li>
+            <li>Un devis détaillé et chiffré</li>
             <li>La composition complète du cocktail</li>
-            <li>Le nombre de pièces proposées</li>
-            <li>Les options végétariennes, sans porc et halal</li>
-            <li>Les conditions de livraison et de mise en place</li>
+            <li>Le nombre de pièces par personne</li>
+            <li>Les pièces vegan, sans porc et halal</li>
+          </ul>
+          <ul>
+            <li>Les conditions et l'horaire de livraison</li>
             <li>Les éventuels frais annexes</li>
             <li>Les conditions de règlement</li>
           </ul>
+        </div>
+
+        <div class="cdc-section-head"><span class="cdc-num">9</span>Critères de sélection</div>
+        <div class="cdc-body">
+          <div class="cdc-weights">
+            <div class="cdc-weight"><span>Prix et respect du budget</span><i style="width:100%"></i><b>coef 3</b></div>
+            <div class="cdc-weight"><span>Adéquation avec le thème voyage / cuisine du monde et le prestige de l'événement</span><i style="width:100%"></i><b>coef 3</b></div>
+            <div class="cdc-weight"><span>Qualité et diversité de l'offre (dont régimes alimentaires)</span><i style="width:66%"></i><b>coef 2</b></div>
+            <div class="cdc-weight"><span>Image et professionnalisme du prestataire</span><i style="width:33%"></i><b>coef 1</b></div>
+            <div class="cdc-weight"><span>Disponibilité et délai de réponse</span><i style="width:33%"></i><b>coef 1</b></div>
+          </div>
         </div>
 
       </div>
