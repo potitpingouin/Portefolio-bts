@@ -81,6 +81,10 @@
     .tag.gold { border-color: rgba(215,181,109,0.4); color: var(--accent-2); background: rgba(215,181,109,0.08); }
 
     /* Affiche */
+    .veille-result { margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--line); }
+    .moodboard-wrap { border-radius: 16px; overflow: hidden; border: 1px solid var(--line); cursor: zoom-in; transition: transform 220ms ease; }
+    .moodboard-wrap:hover { transform: scale(1.01); }
+    .moodboard-wrap img { width: 100%; display: block; }
     .affiche-wrap { cursor: pointer; transition: transform 220ms ease; }
     .affiche-wrap:hover { transform: scale(1.02); }
     .affiche-wrap img { width: 100%; display: block; }
@@ -320,6 +324,21 @@
           </ul>
         </div>
       </div>
+
+      <div class="veille-result">
+        <h3 style="color:var(--accent-2); font-size:0.9rem; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:6px;">Résultat de veille — Moodboard</h3>
+        <p style="margin-bottom:14px;">J'ai rassemblé ma veille dans un moodboard en deux parties : la recherche de goodies à offrir aux invités (tote bag, gourde, stylo, carnet) et les inspirations pour la carte d'embarquement (identité Alema, codes visuels des billets d'avion, aéroport, voyage, accueil VIP). Il a servi de base à la création de l'invitation.</p>
+        <div class="moodboard-wrap" data-lb-src="moodboard_air_alema.webp" data-lb-alt="Moodboard Air Alema agrandi" role="button" tabindex="0" aria-label="Agrandir le moodboard Air Alema">
+          <img src="moodboard_air_alema.webp" alt="Moodboard Air Alema : recherche de goodies et inspirations pour la carte d'embarquement" loading="lazy">
+        </div>
+        <div class="tags" style="margin-top:12px;">
+          <span class="tag">Voyage</span>
+          <span class="tag">VIP</span>
+          <span class="tag">Embarquement</span>
+          <span class="tag">Premium</span>
+          <span class="tag">Invité d'honneur</span>
+        </div>
+      </div>
     </section>
 
     <!-- SECTION 3 — PLAN DE COMMUNICATION -->
@@ -414,7 +433,7 @@
         <article class="panel">
           <div class="eyebrow">Activité 2 — Création de contenus et de solutions de communication</div>
           <h2>Supports produits</h2>
-          <div class="affiche-wrap" id="openLb" style="margin-top:14px;">
+          <div class="affiche-wrap" id="openLb" data-lb-src="carte_embarquement_air_alema.webp" data-lb-alt="Carte d’embarquement Air Alema agrandie" style="margin-top:14px;">
             <img src="carte_embarquement_air_alema.webp" alt="Carte d’embarquement Air Alema">
           </div>
           <div class="tags" style="margin-top:14px;">
@@ -807,12 +826,21 @@
   <!-- LIGHTBOX -->
   <div class="lightbox" id="lightbox">
     <button class="close-lb" id="closeLb">✕</button>
-    <img src="carte_embarquement_air_alema.webp" alt="Carte d’embarquement Air Alema agrandie">
+    <img id="lbImg" src="carte_embarquement_air_alema.webp" alt="Carte d’embarquement Air Alema agrandie">
   </div>
 
   <script>
     const lb = document.getElementById('lightbox');
-    document.getElementById('openLb').addEventListener('click', () => { lb.classList.add('open'); document.body.style.overflow = 'hidden'; });
+    const lbImg = document.getElementById('lbImg');
+    document.querySelectorAll('[data-lb-src]').forEach((el) => {
+      const open = () => {
+        lbImg.src = el.dataset.lbSrc;
+        lbImg.alt = el.dataset.lbAlt || '';
+        lb.classList.add('open'); document.body.style.overflow = 'hidden';
+      };
+      el.addEventListener('click', open);
+      el.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+    });
     document.getElementById('closeLb').addEventListener('click', () => { lb.classList.remove('open'); document.body.style.overflow = ''; });
     lb.addEventListener('click', (e) => { if (e.target === lb) { lb.classList.remove('open'); document.body.style.overflow = ''; } });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { lb.classList.remove('open'); document.body.style.overflow = ''; } });
