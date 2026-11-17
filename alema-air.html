@@ -81,6 +81,53 @@
     .tag.gold { border-color: rgba(215,181,109,0.4); color: var(--accent-2); background: rgba(215,181,109,0.08); }
 
     /* Affiche */
+    /* Rétroplanning (Gantt) */
+    .gantt-wrap { overflow-x: auto; margin-top: 16px; padding-bottom: 4px; }
+    .gantt {
+      position: relative; display: grid; min-width: 780px;
+      grid-template-columns: minmax(250px, 2fr) repeat(5, minmax(84px, 1fr));
+      grid-auto-rows: minmax(40px, auto); align-items: center;
+    }
+    .gantt-head {
+      align-self: stretch; padding: 10px 6px; text-align: center; border-bottom: 1px solid var(--line);
+      font-size: 0.74rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-2);
+    }
+    .gantt-head.first { text-align: left; padding-left: 0; }
+    .gantt-head small { display: block; margin-top: 2px; font-weight: 600; letter-spacing: 0.02em; text-transform: none; color: var(--muted); }
+    .gantt-phase {
+      grid-column: 1 / -1; padding: 14px 0 6px; font-size: 0.72rem; font-weight: 800;
+      letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+    }
+    .gantt-task {
+      grid-column: 1; align-self: stretch; display: flex; flex-direction: column; justify-content: center;
+      padding: 8px 12px 8px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: 0.86rem; font-weight: 600; color: var(--text);
+    }
+    .gantt-task span { font-size: 0.76rem; font-weight: 400; color: var(--muted); }
+    .gantt-track {
+      grid-column: 2 / -1; align-self: stretch; border-bottom: 1px solid rgba(255,255,255,0.06);
+      background: linear-gradient(to right, rgba(255,255,255,0.07) 1px, transparent 1px) 0 0 / calc(100% / 5) 100%;
+    }
+    .gantt-bar {
+      position: relative; z-index: 2; height: 18px; margin: 0 6px; border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), #6fb893); box-shadow: 0 6px 16px rgba(76,148,113,0.28);
+    }
+    .gantt-bar.planned {
+      background: repeating-linear-gradient(135deg, rgba(215,181,109,0.55) 0 8px, rgba(215,181,109,0.25) 8px 16px);
+      border: 1px dashed rgba(215,181,109,0.85); box-shadow: none;
+    }
+    .gantt-bar.milestone {
+      width: 18px; height: 18px; margin: 0 auto; border-radius: 4px; transform: rotate(45deg);
+      background: var(--accent-2); box-shadow: 0 0 0 4px rgba(215,181,109,0.18);
+    }
+    .gantt-day {
+      grid-column: 5 / 6; grid-row: 1 / -1; align-self: stretch; z-index: 1; pointer-events: none;
+      background: rgba(215,181,109,0.07); border-left: 1px dashed rgba(215,181,109,0.45); border-right: 1px dashed rgba(215,181,109,0.45);
+    }
+    .gantt-legend { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 14px; font-size: 0.82rem; color: var(--muted); }
+    .gantt-legend i { display: inline-block; width: 22px; height: 10px; margin-right: 8px; border-radius: 999px; vertical-align: middle; }
+    .gantt-legend i.diamond { width: 10px; height: 10px; border-radius: 2px; transform: rotate(45deg); }
+
     .kpi-sub { margin: 18px 0 0; font-size: 0.9rem; color: var(--accent-2); text-transform: uppercase; letter-spacing: 0.08em; }
     .kpi-sub span {
       display: inline-block; margin-left: 8px; padding: 3px 9px; border-radius: 999px; vertical-align: middle;
@@ -475,7 +522,83 @@
     <section class="section panel" id="act3">
       <div class="eyebrow" style="font-size:0.72rem; margin-bottom:4px;">Section 5</div>
       <div class="eyebrow">Activité 3 — Production et diffusion des solutions de communication</div>
-      <h2>Rétroplanning sur la semaine de conception</h2>
+      <h2>Rétroplanning jusqu'au jour J</h2>
+      <p style="margin-top:8px;">Planning construit à rebours à partir du 17 décembre 2024. La phase de conception est calée sur les dates des devis reçus (du 28/11 au 05/12/2024). Le projet n'ayant pas été retenu, les étapes suivantes sont celles que j'avais prévues pour mener l'événement jusqu'au bout.</p>
+      <div class="gantt-wrap">
+        <div class="gantt">
+          <div class="gantt-day" style="grid-row:1 / 17;" aria-hidden="true"></div>
+
+          <div class="gantt-head first" style="grid-row:1;grid-column:1;">Étape</div>
+          <div class="gantt-head" style="grid-row:1;grid-column:2;">S-3<small>25/11 – 01/12</small></div>
+          <div class="gantt-head" style="grid-row:1;grid-column:3;">S-2<small>02 – 08/12</small></div>
+          <div class="gantt-head" style="grid-row:1;grid-column:4;">S-1<small>09 – 15/12</small></div>
+          <div class="gantt-head" style="grid-row:1;grid-column:5;">Jour J<small>mar. 17/12</small></div>
+          <div class="gantt-head" style="grid-row:1;grid-column:6;">Après<small>bilan</small></div>
+
+          <div class="gantt-phase" style="grid-row:2;">Conception — réalisé</div>
+
+          <div class="gantt-task" style="grid-row:3;">Veille créative et moodboard</div>
+          <div class="gantt-track" style="grid-row:3;"></div>
+          <div class="gantt-bar" style="grid-row:3;grid-column:2/3;"></div>
+
+          <div class="gantt-task" style="grid-row:4;">Définition du concept « Air Alema »<span>thème voyage, cocktail déjeunatoire</span></div>
+          <div class="gantt-track" style="grid-row:4;"></div>
+          <div class="gantt-bar" style="grid-row:4;grid-column:2/3;"></div>
+
+          <div class="gantt-task" style="grid-row:5;">Création de la carte d'embarquement</div>
+          <div class="gantt-track" style="grid-row:5;"></div>
+          <div class="gantt-bar" style="grid-row:5;grid-column:2/3;"></div>
+
+          <div class="gantt-task" style="grid-row:6;">Cahier des charges et demandes de devis<span>4 traiteurs contactés</span></div>
+          <div class="gantt-track" style="grid-row:6;"></div>
+          <div class="gantt-bar" style="grid-row:6;grid-column:2/4;"></div>
+
+          <div class="gantt-task" style="grid-row:7;">Comparaison des devis et choix du traiteur</div>
+          <div class="gantt-track" style="grid-row:7;"></div>
+          <div class="gantt-bar" style="grid-row:7;grid-column:3/4;"></div>
+
+          <div class="gantt-task" style="grid-row:8;">Pitch devant la direction et les professeurs</div>
+          <div class="gantt-track" style="grid-row:8;"></div>
+          <div class="gantt-bar" style="grid-row:8;grid-column:3/4;"></div>
+
+          <div class="gantt-phase" style="grid-row:9;">Si le projet avait été retenu — prévu</div>
+
+          <div class="gantt-task" style="grid-row:10;">Envoi des invitations<span>cartes d'embarquement</span></div>
+          <div class="gantt-track" style="grid-row:10;"></div>
+          <div class="gantt-bar planned" style="grid-row:10;grid-column:3/4;"></div>
+
+          <div class="gantt-task" style="grid-row:11;">Suivi des réponses<span>RSVP avant le 10/12</span></div>
+          <div class="gantt-track" style="grid-row:11;"></div>
+          <div class="gantt-bar planned" style="grid-row:11;grid-column:3/5;"></div>
+
+          <div class="gantt-task" style="grid-row:12;">Confirmation du traiteur<span>acompte de 40 % à la commande</span></div>
+          <div class="gantt-track" style="grid-row:12;"></div>
+          <div class="gantt-bar planned" style="grid-row:12;grid-column:4/5;"></div>
+
+          <div class="gantt-task" style="grid-row:13;">Préparation logistique<span>accueil, émargement, QR code du questionnaire</span></div>
+          <div class="gantt-track" style="grid-row:13;"></div>
+          <div class="gantt-bar planned" style="grid-row:13;grid-column:4/5;"></div>
+
+          <div class="gantt-task" style="grid-row:14;">Jour J<span>livraison avant 11h, cocktail 11h – 14h</span></div>
+          <div class="gantt-track" style="grid-row:14;"></div>
+          <div class="gantt-bar milestone" style="grid-row:14;grid-column:5/6;"></div>
+
+          <div class="gantt-task" style="grid-row:15;">Questionnaire de satisfaction</div>
+          <div class="gantt-track" style="grid-row:15;"></div>
+          <div class="gantt-bar planned" style="grid-row:15;grid-column:5/7;"></div>
+
+          <div class="gantt-task" style="grid-row:16;">Remerciements, retombées et bilan des KPI</div>
+          <div class="gantt-track" style="grid-row:16;"></div>
+          <div class="gantt-bar planned" style="grid-row:16;grid-column:6/7;"></div>
+        </div>
+      </div>
+      <div class="gantt-legend">
+        <span><i style="background:linear-gradient(90deg,var(--accent),#6fb893);"></i>Réalisé</span>
+        <span><i style="background:repeating-linear-gradient(135deg,rgba(215,181,109,0.55) 0 4px,rgba(215,181,109,0.25) 4px 8px);border:1px dashed rgba(215,181,109,0.85);"></i>Prévu si le projet avait été retenu</span>
+        <span><i class="diamond" style="background:var(--accent-2);"></i>Jour J</span>
+      </div>
+
+      <h3 class="kpi-sub" style="margin-top:28px;">Détail de la phase de conception</h3>
       <table class="planning-table" style="margin-top:18px;">
         <thead>
           <tr>
