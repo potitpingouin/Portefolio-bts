@@ -81,7 +81,13 @@
     .tag.gold { border-color: rgba(215,181,109,0.4); color: var(--accent-2); background: rgba(215,181,109,0.08); }
 
     /* Affiche */
-    .veille-result { margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--line); }
+    .kpi-sub { margin: 18px 0 0; font-size: 0.9rem; color: var(--accent-2); text-transform: uppercase; letter-spacing: 0.08em; }
+    .kpi-sub span {
+      display: inline-block; margin-left: 8px; padding: 3px 9px; border-radius: 999px; vertical-align: middle;
+      border: 1px solid var(--line); background: rgba(255,255,255,0.05);
+      font-size: 0.68rem; letter-spacing: 0.06em; color: var(--muted);
+    }
+    .veille-result {margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--line); }
     .moodboard-wrap { border-radius: 16px; overflow: hidden; border: 1px solid var(--line); cursor: zoom-in; transition: transform 220ms ease; }
     .moodboard-wrap:hover { transform: scale(1.01); }
     .moodboard-wrap img { width: 100%; display: block; }
@@ -774,6 +780,7 @@
       <div class="warning-box" style="margin:14px 0;">
         Le projet n'a pas été sélectionné face à la classe concurrente. La phase de diffusion réelle n'a pas eu lieu — les résultats ci-dessous concernent la phase de conception et de pitch.
       </div>
+      <h3 class="kpi-sub">1 — KPI de la conception et du pitch <span>résultats réels</span></h3>
       <table class="planning-table" style="margin-top:14px;">
         <thead>
           <tr>
@@ -812,6 +819,57 @@
             <td>Planning de diffusion post-sélection anticipé</td>
             <td style="color:var(--danger);">Non prévu — focus sur la phase conception</td>
             <td>Préparer un plan de communication aval pour montrer la vision à long terme au jury</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 class="kpi-sub" style="margin-top:28px;">2 — KPI prévisionnels de l'événement <span>prévus, non mesurés</span></h3>
+      <p style="margin:8px 0 0;">Même si l'événement n'a pas eu lieu, j'avais prévu dès la conception comment mesurer son efficacité. Chaque indicateur est relié à un objectif de communication : toucher la cible, laisser une image positive, puis faire agir. Ces objectifs n'ont pas pu être mesurés : il s'agit du dispositif d'évaluation que j'aurais mis en place.</p>
+      <table class="planning-table" style="margin-top:14px;">
+        <thead>
+          <tr>
+            <th>Indicateur</th>
+            <th>Objectif</th>
+            <th>Outil de mesure</th>
+            <th>Quand</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Taux de réponse aux invitations (RSVP)</td>
+            <td>≥ 70 % des invités</td>
+            <td>Réponses reçues sur contact@alema.fr</td>
+            <td>Avant le 10/12/2024</td>
+          </tr>
+          <tr>
+            <td>Taux de présence</td>
+            <td>≥ 80 % des inscrits, soit environ 40 personnes</td>
+            <td>Liste d'émargement à l'accueil</td>
+            <td>Jour J</td>
+          </tr>
+          <tr>
+            <td>Satisfaction des invités</td>
+            <td>Note moyenne ≥ 4/5</td>
+            <td>Questionnaire court accessible par QR code</td>
+            <td>Jour J à J+2</td>
+          </tr>
+          <tr>
+            <td>Respect du budget traiteur</td>
+            <td>≤ 1 500 € TTC</td>
+            <td>Devis signé et facture finale</td>
+            <td>Après l'événement</td>
+          </tr>
+          <tr>
+            <td>Retombées sur les réseaux sociaux</td>
+            <td>Publications d'Alema et des partenaires présents</td>
+            <td>Veille LinkedIn et Instagram</td>
+            <td>J à J+7</td>
+          </tr>
+          <tr>
+            <td>Intérêt pour le BTS Tourisme</td>
+            <td>Demandes d'information et candidatures liées à l'événement</td>
+            <td>Suivi du service admissions</td>
+            <td>M+1 à M+3</td>
           </tr>
         </tbody>
       </table>
